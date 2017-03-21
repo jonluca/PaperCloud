@@ -1,0 +1,8 @@
+default:
+  extensions:
+    Behat\MinkExtension:
+      base_url:  'localhost'
+      default_session: selenium2
+      browser_name: 'chrome'
+      selenium2:
+        capabilities: { "browser": "chrome", "version": ""}
