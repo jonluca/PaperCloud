@@ -1,22 +1,32 @@
 Feature: Search
-    As a user of SuperLyrics, one needs to be able to search for artists.
+    As a user of PaperCloud, one needs to be able to search for papers in the IEEE and ACM database.
 
-    Scenario: No Artist Selected
-        Given the search bar has no selected artist
+    @nosearch
+    Scenario: No Search Query has been made
+        Given the search bar has nothing in it
         When I click on the Search Button
         Then the button will be deactivated
 
-    Scenario: Auto Search
-        Given the search bar has two or more letters
-        When I type another letter
-        Then a Spotify API call will return matching artists
+    @loadingbar
+    Scenario: Loading Bar
+        Given I have searched for an author
+        When I click search
+        Then a loading bar will appear
 
-    Scenario: Select Artist
-        Given a drop down list of artists
-        When I click on an artist
-        Then the artist will be selected in the search bar
+    @prevsearch
+    Scenario: See previous searches
+        Given I have searched for something before
+        When I click on the history list
+        Then The previously searched artist will be there
 
+    @search-keyword
     Scenario: Search
-        Given I have selected an artist
+        Given I have selected a search keyword
         When I click the Search button
-        Then I will be brough to the wordcloud page
+        Then I will be brough to the papercloud page
+
+    @search-author
+    Scenario: Search
+        Given I have selected a search lastname
+        When I click the Search button
+        Then I will be brough to the papercloud page

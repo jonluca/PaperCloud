@@ -3,7 +3,7 @@ Feature: Word Cloud
     
     @display
     Scenario: Display Word Cloud
-        Given I have searched an artist
+        Given I have searched for an author's last name
         When I view the word cloud page
         Then I will see a word cloud of colors
 
