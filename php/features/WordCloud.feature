@@ -5,22 +5,40 @@ Feature: Word Cloud
     Scenario: Display Word Cloud
         Given I have searched for an author's last name
         When I view the word cloud page
-        Then I will see a word cloud of colors
+        Then I will see a word cloud of the top X papers
 
-    @addart
-    Scenario: Add Artist
-        Given I have selected another artist
-        When I click the add button
-        Then I will see a merged word cloud
+    @display
+    Scenario: Download image Word Cloud
+        Given I have a valid search and paper cloud
+        When I click save as image
+        Then the image download will begin
 
-    @share
-    Scenario: Share Word Cloud
-        Given I have a word cloud
-        When I click the share button
-        Then an image of the word cloud will be shared on Facebook
+    @export-pdf
+    Scenario: Export list of papers as pdf
+        Given I have a valid search and paper cloud
+        When I click export as pdf
+        Then I will get a download of all papers as pdf
 
-    @wordsize
-    Scenario: Word Size
-        Given I am on the artist page
-        When I view the word cloud
-        Then the words' size will correspond to their frequency
+    @export-txt
+    Scenario: Export list of papers as txt
+        Given I have a valid search and paper cloud
+        When I click export as txt
+        Then I will get a download of all papers as txt
+
+    @download-library
+    Scenario: Download from digital library
+        Given I have a valid search and paper cloud
+        When I click download from library for a paper
+        Then I will get redirected to the library page for that paper
+ 
+    @bibtex
+    Scenario: See bibtex of paper
+        Given I have a valid search and paper cloud
+        When I click view bibtex for a paper
+        Then I will get redirected to its corresponding bibtex view
+
+    @abstract
+    Scenario: See abstract of paper
+        Given I have a valid search and paper cloud
+        When I click the title of a paper
+        Then I will get be shown the abstract

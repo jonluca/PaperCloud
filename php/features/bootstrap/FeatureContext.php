@@ -23,7 +23,6 @@ class FeatureContext extends MinkContext
     {
     }
 
-
     /**
      * @Given I have clicked on a word
      */
@@ -65,9 +64,9 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @Given I am on the paper pages
+     * @Given I am on the paper list page
      */
-    public function iAmOnThePaperPages()
+    public function iAmOnThePaperListPage()
     {
         throw new PendingException();
     }
@@ -100,6 +99,70 @@ class FeatureContext extends MinkContext
      * @Then the page will display papers from that conference
      */
     public function thePageWillDisplayPapersFromThatConference()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I have a valid search and paper cloud
+     */
+    public function iHaveAValidSearchAndPaperCloud()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click the title of a paper
+     */
+    public function iClickTheTitleOfAPaper()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the words in the abstract will be highlighted
+     */
+    public function theWordsInTheAbstractWillBeHighlighted()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I have clicked the title of a paper
+     */
+    public function iHaveClickedTheTitleOfAPaper()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click download as PDF
+     */
+    public function iClickDownloadAsPdf()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the occurences of the searched word in the pdf will be highlighted
+     */
+    public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I select a subset of papers
+     */
+    public function iSelectASubsetOfPapers()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a new word cloud will appear with the selected papers as its source
+     */
+    public function aNewWordCloudWillAppearWithTheSelectedPapersAsItsSource()
     {
         throw new PendingException();
     }
@@ -225,81 +288,97 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @Then I will see a word cloud of colors
+     * @Then I will see a word cloud of the top X papers
      */
-    public function iWillSeeAWordCloudOfColors()
+    public function iWillSeeAWordCloudOfTheTopXPapers()
     {
         throw new PendingException();
     }
 
     /**
-     * @Given I have selected another artist
+     * @When I click save as image
      */
-    public function iHaveSelectedAnotherArtist()
+    public function iClickSaveAsImage()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click the add button
+     * @Then the image download will begin
      */
-    public function iClickTheAddButton()
+    public function theImageDownloadWillBegin()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I will see a merged word cloud
+     * @When I click export as pdf
      */
-    public function iWillSeeAMergedWordCloud()
+    public function iClickExportAsPdf()
     {
         throw new PendingException();
     }
 
     /**
-     * @Given I have a word cloud
+     * @Then I will get a download of all papers as pdf
      */
-    public function iHaveAWordCloud()
+    public function iWillGetADownloadOfAllPapersAsPdf()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click the share button
+     * @When I click export as txt
      */
-    public function iClickTheShareButton()
+    public function iClickExportAsTxt()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then an image of the word cloud will be shared on Facebook
+     * @Then I will get a download of all papers as txt
      */
-    public function anImageOfTheWordCloudWillBeSharedOnFacebook()
+    public function iWillGetADownloadOfAllPapersAsTxt()
     {
         throw new PendingException();
     }
 
     /**
-     * @Given I am on the artist page
+     * @When I click download from library for a paper
      */
-    public function iAmOnTheArtistPage()
+    public function iClickDownloadFromLibraryForAPaper()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I view the word cloud
+     * @Then I will get redirected to the library page for that paper
      */
-    public function iViewTheWordCloud()
+    public function iWillGetRedirectedToTheLibraryPageForThatPaper()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then the words' size will correspond to their frequency
+     * @When I click view bibtex for a paper
      */
-    public function theWordsSizeWillCorrespondToTheirFrequency()
+    public function iClickViewBibtexForAPaper()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I will get redirected to its corresponding bibtex view
+     */
+    public function iWillGetRedirectedToItsCorrespondingBibtexView()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I will get be shown the abstract
+     */
+    public function iWillGetBeShownTheAbstract()
     {
         throw new PendingException();
     }
