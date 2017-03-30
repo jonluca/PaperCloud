@@ -1,0 +1,36 @@
+Scrum Master: JonLuca De Caro
+
+1. What did you do yesterday?
+2. What will you do today?
+3. Are there any impediments in your way?
+
+Alex Pareto:
+	1. Nothing
+	2. Met with Professor Halfond in the morning to discuss requirements, then he met with the CPs with Myrl to get the final product backlog in the correct order of priority. They broke those down into tasks, and assigned them to people to get started. They also got some tasks done. Built front end for first couple of things, then started working on function. 
+	3. We need ACM search before connecting front/back end
+
+Janson Lau:
+	1. Nothing
+	2. Nothing
+	3. N/A
+
+Marshall Jacobs:
+	1. Nothing
+	2. Went to office hours with Zach, realized we were doing things slightly incorrectly with product backlog.
+	3. Having an exact idea of our backlog before being able to start coding.
+
+Myrl Marmarelis:
+	1. Nothing
+	2. Went to class, met with Alex, fleshed out the requirements of what to do in this sprint. Worked on IEEE search
+	3. N/A
+
+Zach Denham:
+	1. Nothing
+	2. Made initial product backlog. Went to office hours, found out what was wrong and ported the backlog to taiga. Started first sprint
+	3. N/A
+
+JonLuca De Caro:
+	1. Committed pictures of meetings and worked on feature files
+	2. Went to class, got clarification of exact specificiations for contents of github
+	3. Understanding of exact sprint backlog 
+
