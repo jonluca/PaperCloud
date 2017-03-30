@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
+    'Smalot\\PdfParser\\' => array($vendorDir . '/smalot/pdfparser/src'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Behat\\Transliterator' => array($vendorDir . '/behat/transliterator/src'),
