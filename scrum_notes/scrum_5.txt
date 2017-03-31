@@ -1,0 +1,39 @@
+JonLuca:
+
+	Yesterday: same as in scrum 3
+	Today: met with Marshall, began wireframes and design
+
+	Blocking: ACM has not been implemented yet
+Marshall Jacobs:
+	What have you completed since the last meeting? same as scrum 3
+
+	Today: JonLuca and I had a meeting today and completed UI diagrams for the features in our first Sprint backlog.
+
+
+	I plan on writing white-box and Selenium (black-box) test cases for the search functionality.
+
+
+	Blocking: I need to figure out what content the word cloud is populated with.
+Zachary Denham:
+	What have you completed since last meeting: 
+	nothing
+	What did you do yesterday:
+	Set up taiga, met with halfond
+	blocking:
+	nothing
+
+Myrl Marmarelis:
+	i haven't done anything since the last meeting
+	i plan on implementing ACM search functionality and writing tests for IEEE as well
+	blocking: nothing
+	yesterday alex and i did what we talked about last meeting, flushed out requirements and worked on frontend
+
+Janson:
+	Yesterday: same as scrum 3
+	Today: nothing
+	blocking: nothing
+
+Alex:
+	Yesterday: same as scrum3 
+	today: worked on taiga
+	blocking: acm search
