@@ -1,0 +1,31 @@
+JonLuca:
+	Yesterday: Met with Marshall, began wireframes and design
+	Today: Looked up ACM, using proxies
+	Blocking: ACM has no API
+
+Marshall Jacobs:
+	What have you completed since the last meeting? Looked up ACM information
+	Today: Nothing
+	Blocking: N/A
+
+Zachary Denham:
+	What have you completed since last meeting: 
+	nothing
+	What did you do yesterday:
+	blocking:
+	nothing
+
+Myrl Marmarelis:
+	Yesterday: Nothing
+	Today: Nothing
+	Blocking: ACM Searchj
+
+Janson:
+	Yesterday: Nothing
+	Today: Nothing
+	blocking: Nothing
+
+Alex:
+	Yesterday: Worked on taiga
+	today: Nothing
+	Blocking: acm search

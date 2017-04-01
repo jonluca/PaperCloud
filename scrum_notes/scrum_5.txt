@@ -1,19 +1,16 @@
 JonLuca:
 
-	Yesterday: same as in scrum 3
+	Yesterday: same as in scrum 4
 	Today: met with Marshall, began wireframes and design
-
 	Blocking: ACM has not been implemented yet
+	
 Marshall Jacobs:
+
 	What have you completed since the last meeting? same as scrum 3
-
 	Today: JonLuca and I had a meeting today and completed UI diagrams for the features in our first Sprint backlog.
-
-
 	I plan on writing white-box and Selenium (black-box) test cases for the search functionality.
-
-
 	Blocking: I need to figure out what content the word cloud is populated with.
+
 Zachary Denham:
 	What have you completed since last meeting: 
 	nothing
