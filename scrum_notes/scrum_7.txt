@@ -1,0 +1,29 @@
+JonLuca:
+	Yesterday: Looked up ACM and using proxies, answered questions on Piazza
+	Today: Work on ACM search and documentation
+	Blocking: ACM rate limiting and unknown documentation format
+
+Marshall Jacobs:
+	What have you completed since the last meeting? Nothing
+	Today: Write test cases or documentation
+	Blocking: Selecting either test cases or documentation
+
+Zachary Denham:
+	What have you completed since last meeting: Nothing
+	What did you do yesterday: Meet with Janson, find framework for front end tests, contribute to documentation, make automatic burn charts
+	Blocking: Documentation unknown format
+
+Myrl Marmarelis:
+	Yesterday: Nothing
+	Today: Contribute to documentation
+	Blocking: Nothing
+
+Janson:
+	Yesterday: Nothing
+	Today: Meeting with Zach to do pair programming
+	blocking: Time scheduling 
+
+Alex:
+	Yesterday: Nothing
+	today: Research on getting front-end up and running
+	Blocking: Connecting front end and back end
