@@ -174,7 +174,7 @@ class FeatureContext extends MinkContext
     {
         $session = $this->getSession();
         //the search bar has no selected artist initially
-        $session->visit('http://localhost/SuperLyrics');
+        $session->visit('http://localhost/PaperCloud');
         $this->page = $session->getPage();
     }
 
@@ -202,7 +202,22 @@ class FeatureContext extends MinkContext
      */
     public function iHaveSearchedForAnAuthor()
     {
-        throw new PendingException();
+        //get session
+        $session = $this->getSession();
+        $session->visit('http://localhost/PaperCloud');
+        $this->page = $session->getPage();
+
+        //click on search bar to have it open
+        $GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+
+        //enter two letters into search bar
+        $GLOBALS['searchBarText'] = $this->page->find('css', '#search')->setValue('erdos');
+
+        //open search bar and focus (there will be no search results)
+        $GLOBALS['searchBar']  = $this->page->find('css', '#search')->click();
+        $GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
+
+        sleep(1);
     }
 
     /**
@@ -210,7 +225,7 @@ class FeatureContext extends MinkContext
      */
     public function iClickSearch()
     {
-        throw new PendingException();
+        $GLOBALS['searchButton']  = $this->page->find('css', '#searchButton')->click();
     }
 
     /**
