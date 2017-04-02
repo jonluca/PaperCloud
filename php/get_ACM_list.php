@@ -6,7 +6,7 @@ Requests::register_autoloader();
 if (defined('STDIN')) {
     $search = $argv[1];
 } else {
-    $search = $_GET["author"];
+    $search = $_GET["search"];
 }
 
 
@@ -25,6 +25,7 @@ function performQuery($author)
     9. Copy only the Headers variable, replace it below
     10. Done!
     */
+
     $headers = array(
         'DNT' => '1',
         'Accept-Encoding' => 'gzip, deflate, sdch',

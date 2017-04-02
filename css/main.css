@@ -32,3 +32,11 @@ body {
 #wordcloudPage {
   display: none;
 }
+
+#wordcloud {
+    display: inline;
+    margin: 0 auto;
+    width: 800px;
+    height: 600px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}

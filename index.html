@@ -1,61 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
-  <title>PaperCloud</title>
-  <meta name="description" content="next generation paper cloud generator">
-  <meta name="author" content="Team I">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/main.css">
-
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="favicon.ico">
-
-</head>
-<body>
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-    <div class="holder">
-      <div class="title">
-        <h1>PaperCloud</h1>
-        <p>A Project by Team I</p>
-      </div>
-      <div id="wordcloudPage">
-        <p>Wordcloud will go here</p>
-        <canvas id="wordcloud"></canvas>
-      </div>
-      <div id="searchPage">
-        <input type="text" placeholder="Search here..." />
-        <input type="text" placeholder="# of papers" />
-        <button id="searchButton">Search</button>
+  <head>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>PaperCloud</title>
+    <meta name="description" content="next generation paper cloud generator">
+    <meta name="author" content="Team I">
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <script src="js/wordcloud2.js"></script>
+    <script src="js/wordCounter/wordfreq.js"> </script>
+  </head>
+  <body>
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+      <div class="holder">
+        <div class="title">
+          <h1>PaperCloud</h1>
+          <p>A Project by Team I</p>
+        </div>
+        <div id="wordcloudPage">
+          <canvas id="wordcloud"></canvas>
+        </div>
+        <div id="searchPage">
+          <input type="text" id="search" placeholder="Search (last name)" />
+          <input type="text" id="number_papers" placeholder="# of papers" />
+          <button id="searchButton">Search</button>
+        </div>
       </div>
     </div>
-  </div>
-
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  <script src="js/main.js"></script>
-</body>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+  </body>
 </html>
