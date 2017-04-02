@@ -13,7 +13,18 @@ if (defined('STDIN')) {
 
 function performQuery($author)
 {
-    
+    /*You MUST get new Headers every time you want to test this code. The steps to do it:
+    1. Right click on your page and click Inspect Element then go to the Network tab
+    2. Go to http://dl.acm.org.libproxy1.usc.edu/results.cfm?query=richard+feynman&Go.x=0&Go.y=0
+    3. Sign in to your myUSC if it asks you too, make sure to not close the Network tab in the Developer Tools
+    4. Once the page has loaded, scroll to the top of the Network results. It should look like https://i.imgur.com/amCDjAV.png
+    5. Right click on the one that says "results.cfm?query=richard+feynman&Go.x=0&Go.y=0"
+    6. Click Copy -> Copy as CURL
+    7. Go to https://curl.trillworks.com/ and paste the curl request into the left box
+    8. Select PHP from the drop down of languages
+    9. Copy only the Headers variable, replace it below
+    10. Done!
+    */
     $headers = array(
         'DNT' => '1',
         'Accept-Encoding' => 'gzip, deflate, sdch',
