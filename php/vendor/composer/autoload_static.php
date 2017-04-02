@@ -159,6 +159,13 @@ class ComposerStaticInitb1c3b92dd9bf1a6d7904d587b358b93c
                 0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
             ),
         ),
+        'R' => 
+        array (
+            'Requests' => 
+            array (
+                0 => __DIR__ . '/..' . '/rmccue/requests/library',
+            ),
+        ),
         'P' => 
         array (
             'Prophecy\\' => 

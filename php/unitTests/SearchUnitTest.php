@@ -48,7 +48,7 @@
 			exec('php ../get_ACM_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals("Web Application Modeling for Testing and Analysis", $json_output[1]);
+			$this->assertEquals("title", $json_output[0]);
 
 		}
 

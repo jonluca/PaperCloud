@@ -3,7 +3,7 @@
 if (defined('STDIN')) {
     $search = $argv[1];
 } else { 
-    $search = $_GET["uthor"];
+    $search = $_GET["author"];
 }
 
 function performQuery($author) {
