@@ -172,7 +172,10 @@ class FeatureContext extends MinkContext
      */
     public function theSearchBarHasNothingInIt()
     {
-        throw new PendingException();
+        $session = $this->getSession();
+        //the search bar has no selected artist initially
+        $session->visit('http://localhost/SuperLyrics');
+        $this->page = $session->getPage();
     }
 
     /**
@@ -180,7 +183,8 @@ class FeatureContext extends MinkContext
      */
     public function iClickOnTheSearchButton()
     {
-        throw new PendingException();
+        $GLOBALS['searchButton'] = $this->page->findById('searchButton');
+
     }
 
     /**
@@ -188,7 +192,9 @@ class FeatureContext extends MinkContext
      */
     public function theButtonWillBeDeactivated()
     {
-        throw new PendingException();
+        if (!$GLOBALS['searchButton']->hasAttribute('disabled')) {
+            throw new Exception;
+        }
     }
 
     /**
