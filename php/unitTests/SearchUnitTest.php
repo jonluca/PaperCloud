@@ -7,7 +7,7 @@
 			exec('php ../get_IEEE_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(22, $json_output['totalfound']);
+			$this->assertGreaterThanOrEqual(22, $json_output['totalfound']);
 		}
 
 		public function testIEEESearchMiller(){
@@ -15,45 +15,43 @@
 			exec('php ../get_IEEE_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(8554, $json_output['totalfound']);
+			$this->assertGreaterThanOrEqual(8554, $json_output['totalfound']);
 		}
 
 		public function testIEEESearchHalfond(){
-			$author = "William Halfond";
+			$author = "Halfond";
 			exec('php ../get_IEEE_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(18, $json_output['totalfound']);
+			$this->assertGreaterThanOrEqual(18, $json_output['totalfound']);
 		}
 
-	}
-
-	class GetACMtest extends TestCase {
-		public function testIEEESearchErdos(){
+		public function testACMSearchErdos(){
 			$author = "erdos";
 			exec('php ../get_ACM_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(22, $json_output['totalfound']);
+			$this->assertEquals("Discovering Facts with Boolean Tensor Tucker Decomposition", $json_output[1]);
 		}
 
-		public function testIEEESearchMiller(){
+		public function testACMSearchMiller(){
 			$author = "miller";
 			exec('php ../get_ACM_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(8554, $json_output['totalfound']);
+			$this->assertEquals("Gossiping in One-dimensional Synchronous Ad Hoc Wireless Radio Networks", $json_output[1]);
+
 		}
 
-		public function testIEEESearchHalfond(){
-			$author = "William Halfond";
+		public function testACMSearchHalfond(){
+			$author = "Halfond";
 			exec('php ../get_ACM_list.php '.escapeshellarg($author), $output, $return_var);
 			$json_output = json_decode($output[0], true);
 			$this->assertNotEquals(0, count($json_output));
-			$this->assertEquals(18, $json_output['totalfound']);
+			$this->assertEquals("Web Application Modeling for Testing and Analysis", $json_output[1]);
+
 		}
 
 	}
-
 
 ?>
