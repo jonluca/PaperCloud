@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+    //This is the function that gets called when you click on an invidual word in the word cloud. Not sure how we're doing it now, though, so it only returns true;
     function generateWordList() {
         return true;
     }
@@ -50,29 +52,41 @@ $(document).ready(function() {
 
     //called when search button searches
     $('#searchButton').on('click', function() {
+        //Get contents of serach bar
         var search_param = $("#search").val();
+
+        //Two promises for two searches. Might want to refactor in future
         $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
+
+            //If both searches succeeded
             if (a1[1] == "success" && a2[1] == "success") {
                 var results = JSON.parse(a1[0]);
                 var papers = results.document;
+
+                //titles is array of titles
                 var titles = [];
+                //all_titles is space delimited string of every word in every title
                 var all_titles = "";
+                //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
                 for (key in papers) {
                     titles.push(papers[key].title);
                     all_titles += papers[key].title;
                     all_titles += " ";
                 }
-                console.log(a2[0]);
+
                 var results = JSON.parse(a2[0]);
                 var titles = [];
+                //ACM search returns array of titles, very little parsing needed
                 for (key in results) {
                     titles.push(papers[key]);
                     all_titles += papers[key];
                     all_titles += " ";
                 }
 
+                //Create actual word cloud
                 getWordFrequency(all_titles);
             }
+        //TODO add else statement showing an error
         });
 
         //display word cloud
@@ -92,6 +106,8 @@ $(document).ready(function() {
         });
     }
 
+    //ACM search which takes in the actual search query by user
+    //TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
     function ACMSearch(search_param) {
         var url = "php/get_ACM_list.php";
 
