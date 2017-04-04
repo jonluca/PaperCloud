@@ -1,5 +1,11 @@
 $(document).ready(function() {
-
+    $('#search').keyup(function() {
+        if ($(this).val().length != 0) {
+            $('#searchButton').attr('disabled', false);
+        } else {
+            $('#searchButton').attr('disabled', true);
+        }
+    });
 
     //This is the function that gets called when you click on an invidual word in the word cloud. Not sure how we're doing it now, though, so it only returns true;
     function generateWordList() {
