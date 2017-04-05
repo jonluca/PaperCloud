@@ -1,0 +1,22 @@
+Sprint Review Tuesday 03-04-2017
+
+Collect data:
+
+We only have 15% completion but we did well following the scrum/XP practices.
+Our grade was 100%
+
+What went well:
+
+We did pair programming pretty well, finished everything we set out to finish for the sprint cycle, we were diligent with documentation and proof. We had regular meetings. We got some actual code written. 
+
+Did we achieve all stories in our sprint backlog that were placed in Taiga?
+
+Yes we did, we completed both the search page and word cloud which were number one and number two for the requirements.
+
+Was our burn rate optimal?
+
+Our burn chart was pretty good but we could get closer to optimal burn rate in the second sprint cycle. We can achieve this by starting pair programmer earlier.
+
+Some other improvements we can work on:
+
+We could distribute the workload more evenly amongst pair programming teams. Also we can start sprint planning immediately because we are more familiar with the scrum practices. Finally we would also like to start documentation for earlier on in the process.
