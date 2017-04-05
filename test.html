@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>PaperCloud Tests</title>
+    <meta name="description" content="next generation paper cloud generator">
+    <meta name="author" content="Team I">
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/mocha.css">
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="favicon.ico">
+    <script src="js/wordcloud2.js"></script>
+    <script src="js/wordCounter/wordfreq.js"> </script>
+  </head>
+  <body>
+    <div id="mocha"> </div>
+    <!-- Import Testing Frameworks
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="js/vendor/mocha.js"></script>
+    <script src="js/vendor/mocha.min.js"></script>
+    <script src="js/vendor/chai.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script
+    src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+    <script src="js/unitTests.js"></script>
+    <script> mocha.run() </script>
+  </body>
+</html>
