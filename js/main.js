@@ -55,7 +55,8 @@ $(document).ready(function() {
     /*
     * Search
     */
-
+    var url_download_template1 = "http://dl.acm.org.libproxy1.usc.edu/ft_gateway.cfm?id=";
+    var url_download_template2 = "&ftid=1715440&dwn=1&#URLTOKEN#";
     //called when search button searches
     $('#searchButton').on('click', function() {
         //Get contents of serach bar
@@ -80,13 +81,20 @@ $(document).ready(function() {
                     all_titles += " ";
                 }
 
-                var results = JSON.parse(a2[0]);
+                var results2 = JSON.parse(a2[0]);
                 var titles = [];
                 //ACM search returns array of titles, very little parsing needed
-                for (key in results) {
-                    titles.push(papers[key]);
-                    all_titles += papers[key];
+                for (key in results2) {
+                    titles.push(results2[key]);
+                    all_titles += results2[key];
                     all_titles += " ";
+                }
+                console.log(results2);
+                var paperList = $("#paperList");
+                paperList.css('display', 'block');
+                for (key in titles) {
+                    var paper_name = titles[key];
+                    paperList.append("<li>" + paper_name + "</li>");
                 }
 
                 //Create actual word cloud
