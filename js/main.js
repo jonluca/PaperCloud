@@ -16,6 +16,14 @@ $(document).ready(function() {
     /*
     * Wordcloud
     */
+
+
+    function generateWordList(item, dimension, event) {
+        var papers = getPaperListByName(item[0]);
+        console.log('test')
+        createPaperList(papers);
+    }
+
     var getWordFrequency = function(text) {
         var wordFreqOptions = {
             workerUrl: './js/wordCounter/wordfreq.worker.js',
@@ -64,10 +72,11 @@ $(document).ready(function() {
         //Get contents of serach bar
         var search_param = $("#search").val();
 
+        currFileList = [];
         //Two promises for two searches. Might want to refactor in future
         $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
 
-            currFileList = a1.concat(a2);
+
             //If both searches succeeded
             if (a1[1] == "success" && a2[1] == "success") {
                 var results = JSON.parse(a1[0]);
@@ -82,6 +91,7 @@ $(document).ready(function() {
                     titles.push(papers[key].title);
                     all_titles += papers[key].title;
                     all_titles += " ";
+                    currFileList.push(papers[key].title);
                 }
 
                 console.log(a1)
@@ -93,18 +103,22 @@ $(document).ready(function() {
                     titles.push(results2[key]);
                     all_titles += results2[key];
                     all_titles += " ";
+                    currFileList.push(results2[key])
                 }
                 console.log(results2);
+                /*
                 var paperList = $("#paperList");
                 paperList.css('display', 'block');
                 for (key in titles) {
                     var paper_name = titles[key];
                     paperList.append("<li>" + paper_name + "</li>");
                 }
+                */
 
                 //Create actual word cloud
                 getWordFrequency(all_titles);
             }
+
         //TODO add else statement showing an error
         });
 
@@ -146,10 +160,29 @@ function getPaperListByName(search_param) {
     var results = [];
 
     for (var i = 0; i < currFileList.length; i++) {
-        if (currFileList[i].title.includes(search_param)) {
-            results.append(currFileList[i]);
+        if (currFileList[i].includes(search_param)) {
+            resultEntry = []
+            resultEntry.push(currFileList[i])
+            results.push(resultEntry);
         }
     }
 
     return results;
 }
+
+function createPaperList(papers) {
+    console.log('test')
+    $('#paperList').css('display','block');
+    $('#searchPage').css('display','none');
+    $('#wordcloudPage').css('display','none');
+
+    $('.paperTable').DataTable({
+        data: papers,
+        columns: [{
+            title: 'Title'
+        }],
+        'bDestroy': true,
+    })
+}
+
+
