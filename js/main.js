@@ -112,18 +112,6 @@ $(document).ready(function() {
         $('#wordcloudPage').css('display', 'block');
     });
 
-    function getPaperListByName(search_param) {
-        var results = [];
-
-        for (var i = 0; i < currFileList.length; i++) {
-            if (currFileList[i].title.includes(search_param)) {
-                results.append(currFileList[i]);
-            }
-        }
-
-        return results;
-    }
-
     function IEEESearch(search_param) {
         var url = "php/get_IEEE_list.php";
 
@@ -153,3 +141,15 @@ $(document).ready(function() {
     }
 
 });
+
+function getPaperListByName(search_param) {
+    var results = [];
+
+    for (var i = 0; i < currFileList.length; i++) {
+        if (currFileList[i].title.includes(search_param)) {
+            results.append(currFileList[i]);
+        }
+    }
+
+    return results;
+}
