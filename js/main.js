@@ -1,3 +1,5 @@
+var currFileList = [];
+
 $(document).ready(function() {
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
@@ -65,6 +67,7 @@ $(document).ready(function() {
         //Two promises for two searches. Might want to refactor in future
         $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
 
+            currFileList = a1.concat(a2);
             //If both searches succeeded
             if (a1[1] == "success" && a2[1] == "success") {
                 var results = JSON.parse(a1[0]);
@@ -108,6 +111,18 @@ $(document).ready(function() {
         //display word cloud
         $('#wordcloudPage').css('display', 'block');
     });
+
+    function getPaperListByName(search_param) {
+        var results = [];
+
+        for (var i = 0; i < currFileList.length; i++) {
+            if (currFileList[i].title.includes(search_param)) {
+                results.append(currFileList[i]);
+            }
+        }
+
+        return results;
+    }
 
     function IEEESearch(search_param) {
         var url = "php/get_IEEE_list.php";
