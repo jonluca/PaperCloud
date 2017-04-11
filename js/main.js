@@ -81,6 +81,8 @@ $(document).ready(function() {
                     all_titles += " ";
                 }
 
+                console.log(a1)
+                console.log(a2)
                 var results2 = JSON.parse(a2[0]);
                 var titles = [];
                 //ACM search returns array of titles, very little parsing needed
