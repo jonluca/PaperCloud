@@ -153,8 +153,7 @@ $(document).ready(function() {
     }
 
 });
-<<<<<<< HEAD
-=======
+
 
 function getPaperListByName(search_param) {
     var results = [];
@@ -186,4 +185,3 @@ function createPaperList(papers) {
 }
 
 
->>>>>>> origin/pairprogram1
