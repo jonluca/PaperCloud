@@ -1,0 +1,9 @@
+language: php
+
+php:
+  - 5.6.23
+  - 7.0
+
+before_script:
+  - phpunit --self-update
+  - composer install
