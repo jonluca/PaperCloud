@@ -126,4 +126,3 @@ $headers = array(
 echo performQuery($search);
 
 ?>
-<?php
