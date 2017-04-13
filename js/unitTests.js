@@ -20,6 +20,17 @@ describe("Wordcloud List", function(){
     });
 });
 
+describe('ProgressBarFunctionsProperly', function(){
+	it('InitiatesWhenSearchIsClicked', function(){
+		var before = line.value();
+		$('#search').trigger('click');
+		var after = line.value();
+		expect(before).to.equal(0);
+		expect(after).to.not.equal(0);
+	});
+});
+
+
 describe("IEEE", function(){
     it("returnCorrectPdfUrl", function(){
         var output = IEEEGetPdfUrl(745444, "apparatus");

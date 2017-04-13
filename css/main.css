@@ -35,3 +35,9 @@ body {
 #paperList{
   display: none;
 }
+
+#progressbar{
+  width: 100vw;
+  top: -8px;
+  position: fixed;
+}
