@@ -1,0 +1,25 @@
+PHPUnit 5.7.15 by Sebastian Bergmann and contributors.
+
+...FFF                                                              6 / 6 (100%)
+
+Time: 9.03 seconds, Memory: 3.50MB
+
+There were 3 failures:
+
+1) GetIEEEtest::testACMSearchErdos
+Failed asserting that 0 is not equal to 0.
+
+/Users/jansonlau/Desktop/PaperCloud/php/unitTests/SearchUnitTest.php:33
+
+2) GetIEEEtest::testACMSearchMiller
+Failed asserting that 0 is not equal to 0.
+
+/Users/jansonlau/Desktop/PaperCloud/php/unitTests/SearchUnitTest.php:41
+
+3) GetIEEEtest::testACMSearchHalfond
+Failed asserting that 0 is not equal to 0.
+
+/Users/jansonlau/Desktop/PaperCloud/php/unitTests/SearchUnitTest.php:54
+
+FAILURES!
+Tests: 6, Assertions: 12, Failures: 3.
