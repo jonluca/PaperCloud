@@ -124,13 +124,39 @@ $(document).ready(function() {
         $('#wordcloudPage').css('display', 'block');
     });
 
+    function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
+     var url = "php/get_IEEE_list.php"
+     return $.ajax({
+      method: "GET",
+      url: url,
+      dataType: 'text',
+      data: {
+       arnumber: arnumber
+      }
+     })
+    }
+
+    function IEEEGetPdfUrl(arnumber, word) {
+     var url = "php/get_IEEE_list.php"
+     $.ajax({
+      method: "GET",
+      url: url,
+      dataType: 'text',
+      data: {
+       arnumber: arnumber,
+       word: word
+      }
+     })
+     return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf"
+    }
+
     function IEEESearch(search_param) {
         var url = "php/get_IEEE_list.php";
 
         return $.ajax({
             method: 'GET',
             url: url,
-            type: 'json',
+            dataType: 'text',
             data: {
                 search: search_param
             }
@@ -145,7 +171,7 @@ $(document).ready(function() {
         return $.ajax({
             method: 'GET',
             url: url,
-            type: 'json',
+            dataType: 'text',
             data: {
                 search: search_param
             }
@@ -183,5 +209,3 @@ function createPaperList(papers) {
         'bDestroy': true
     });
 }
-
-
