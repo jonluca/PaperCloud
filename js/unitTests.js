@@ -11,3 +11,13 @@ describe("NameOfFunctionalityToBeTested", function(){
 	});
 });
 
+describe("Wordcloud List", function(){
+    it("getListOfPapers", function(){
+        var output = getPaperListByName("hello");
+
+        expect(output).to.exist;
+        expect(output).to.be.a('array');
+    });
+});
+
+
