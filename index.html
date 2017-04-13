@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/skeleton.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
     <!-- Favicon
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <link rel="icon" type="image/png" href="favicon.ico">
@@ -36,8 +37,9 @@
         <div id="wordcloudPage">
           <canvas id="wordcloud"></canvas>
         </div>
-        <ul id="paperList">
-        </ul>
+        <div id="paperList">
+          <table class="paperTable" class="display" width="100%"></table>
+        </div>
         <div id="searchPage">
           <input type="text" id="search" placeholder="Search (last name)" />
          <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
@@ -51,6 +53,7 @@
     src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -37,6 +37,7 @@ for (var i = 0; i < this.numPages; i++) {
 }
 EOD;
  $document->addJavascriptObject($script, true);
+ return $document;
 }
 
 function get_raw_text($file) {

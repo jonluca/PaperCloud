@@ -33,7 +33,12 @@ $frames = $dom->getElementsByTagName('frame');
 $url =  $frames->item(1)->getAttribute('src');
 
 $response = Requests::get($url, $headers);
-file_put_contents("pdfs/IEEE-$arnumber.pdf", $response->body);
-echo get_raw_text("pdfs/IEEE-$arnumber.pdf");
+$file = "pdfs/IEEE-$arnumber.pdf";
+file_put_contents($file, $response->body); // write the PDF to file
+if (array_key_exists("word", $_GET)) {
+ $doc = add_javascript(load_document($file), $_GET["word"]); // if we specify word, put annotations in file
+	file_put_contents($file, $doc->Output('', 'S'));
+}
+echo get_raw_text($file);
 
 ?>
