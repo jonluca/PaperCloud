@@ -125,7 +125,7 @@ $(document).ready(function() {
     });
 
     function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
-     var url = "php/get_IEEE_list.php"
+     var url = "php/get_IEEE_text.php"
      return $.ajax({
       method: "GET",
       url: url,
@@ -137,7 +137,7 @@ $(document).ready(function() {
     }
 
     function IEEEGetPdfUrl(arnumber, word) {
-     var url = "php/get_IEEE_list.php"
+     var url = "php/get_IEEE_text.php"
      $.ajax({
       method: "GET",
       url: url,
