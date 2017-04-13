@@ -1,0 +1,61 @@
+
+
+Scrum 3:
+
+1. What did you do sine we last met
+
+2. What will you do before next meeting?
+
+3. Is there anything blocking?
+
+
+Alex
+
+1. Him and Martial worked together to finish a couple of tasks;
+Created unit tests
+return list of paper that match words
+make word cloud clickable
+
+2. Meet tomorrow to peer program and try to finish some of his tasks and try to do the provide the link to access bib text task
+
+3. blocking is getting ACM search stuff more details that just the titles
+
+Janson
+
+1. Document and pair programming
+
+2. Same thing before next meeting
+
+3. Nope
+
+Jonluca
+
+1. Looked at tyga and reorganized backlogs, helped pareto/martiall get up to speed and worked on downloading PDFs
+
+2. Get PDF downloads completed
+
+3. Nope
+
+Martial
+
+1. Alex and Martiall did four of the tasks in user story three which was clickable wordcloud words.
+
+2. He is going to finish user story three by adding more information to the search.
+
+3. He needs to figure out how to get it working locally
+
+Myrl
+
+1. He did some more of the PDF annotating stuff 
+
+2. but currently the PDF is taking a couple seconds to load so he is looking into using PDF.js 
+
+3. because it might be faster. He wants to find time with pair programming
+
+Zac 
+
+1. Wrote some tests for artist click function
+
+2. Started writing artist click function but didn’t have the list of artists yet
+
+3. blocked by not having the list yet, but that should be clearing up shortly

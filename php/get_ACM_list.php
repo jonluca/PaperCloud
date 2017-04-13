@@ -1,6 +1,7 @@
 <?php
 include 'vendor/rmccue/requests/library/Requests.php';
 include 'vendor/autoload.php';
+include 'parse_pdf.php';
 
 Requests::register_autoloader();
 
@@ -9,8 +10,6 @@ if (defined('STDIN')) {
 } else {
 	$search = $_GET["search"];
 }
-
-$parser = new \Smalot\PdfParser\Parser();
 
 function performQuery($author) {
 	/*You MUST get new Headers every time you want to test this code. The steps to do it:
@@ -77,7 +76,7 @@ function performQuery($author) {
 			curl_close($ch);
 			$result = file_put_contents($path, $data);
 
-			$title_and_contents[] = parsePDF($path);
+			$title_and_contents[] = get_raw_text($path);
 			$titles[$id] = $title_and_contents;
 		}
 	}
@@ -113,16 +112,6 @@ function performQuery($author) {
 
 }
 
-function parsePDF($pdf) {
-	if (is_null($pdf) || $pdf == "" || $pdf == null) {
-		return "";
-	} else {
-		$parser = new \Smalot\PdfParser\Parser();
-		$pdf = $parser->parseFile($pdf);
-		$text = $pdf->getText();
-		return $text;
-	}
-}
 $headers = array(
 	'DNT' => '1',
 	'Accept-Encoding' => 'gzip, deflate, sdch',
