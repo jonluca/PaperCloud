@@ -20,7 +20,7 @@ $(document).ready(function() {
 
     function generateWordList(item, dimension, event) {
         var papers = getPaperListByName(item[0]);
-        console.log('test')
+        console.log('test');
         createPaperList(papers);
     }
 
@@ -74,7 +74,8 @@ $(document).ready(function() {
         //Two promises for two searches. Might want to refactor in future
         $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
 
-
+            console.log(a1);
+            console.log(a2);
             //If both searches succeeded
             if (a1[1] == "success" && a2[1] == "success") {
                 var results = JSON.parse(a1[0]);
@@ -92,8 +93,7 @@ $(document).ready(function() {
                     currFileList.push(papers[key].title);
                 }
 
-                console.log(a1)
-                console.log(a2)
+
                 var results2 = JSON.parse(a2[0]);
                 var titles = [];
                 //ACM search returns array of titles, very little parsing needed
@@ -101,7 +101,7 @@ $(document).ready(function() {
                     titles.push(results2[key]);
                     all_titles += results2[key];
                     all_titles += " ";
-                    currFileList.push(results2[key])
+                    currFileList.push(results2[key]);
                 }
                 console.log(results2);
                 /*
@@ -160,8 +160,8 @@ function getPaperListByName(search_param) {
 
     for (var i = 0; i < currFileList.length; i++) {
         if (currFileList[i].includes(search_param)) {
-            resultEntry = []
-            resultEntry.push(currFileList[i])
+            resultEntry = [];
+            resultEntry.push(currFileList[i]);
             results.push(resultEntry);
         }
     }
@@ -170,18 +170,18 @@ function getPaperListByName(search_param) {
 }
 
 function createPaperList(papers) {
-    console.log('test')
-    $('#paperList').css('display','block');
-    $('#searchPage').css('display','none');
-    $('#wordcloudPage').css('display','none');
+    console.log('test');
+    $('#paperList').css('display', 'block');
+    $('#searchPage').css('display', 'none');
+    $('#wordcloudPage').css('display', 'none');
 
     $('.paperTable').DataTable({
         data: papers,
         columns: [{
             title: 'Title'
         }],
-        'bDestroy': true,
-    })
+        'bDestroy': true
+    });
 }
 
 
