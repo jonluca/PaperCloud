@@ -15,7 +15,7 @@ if (defined('STDIN')) {
 	$num = $argv[2];
 } else {
 	$search = $_GET["search"];
-	// $num = $_GET["num_papers"];
+ $num = $_GET["num_papers"];
 }
 
 $results = array();
