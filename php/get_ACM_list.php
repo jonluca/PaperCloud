@@ -31,10 +31,11 @@ $headers = array(
 	'Cookie' => '_vwo_uuid_v2=FED9B97519596F037D3BAF9E00E0A35A|faa55d1305647a8d9101f8b793fc940d; desktopCookie=uschomepage; __unam=79ac26c-15b3098e021-28bf8866-1; _ga=GA1.2.1626331614.1487707542; ezproxy=http://libproxy1.usc.edu,2yCbjI2OuWSy6Kh; CFID=750264237; CFTOKEN=97162500; IP_CLIENT=9941550; SITE_CLIENT=5598578; mp_mixpanel__c=3; mp_d2557637bad0bf1520733bad76dd4c3d_mixpanel=%7B%22distinct_id%22%3A%20%2215b01486cb6253-00ba23a9b4b492-1d3c6853-232800-15b01486cb77a3%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%2C%22%24search_engine%22%3A%20%22google%22%7D',
 );
 
-function downloadPDFFromDOI($doi) {
+function downloadPDFFromDOI($doi, $id) {
 
 	//Headers that we probably don't even need
 	global $headers;
+	global $result;
 
 	if ($doidot = strstr($doi, '/')) {
 		$doidot = str_replace("/", "", $doidot);
@@ -58,7 +59,9 @@ function downloadPDFFromDOI($doi) {
 
 			$full_text_link = $fulltext_xpath->query("//a[contains(@name,'FullTextPDF')]/@href");
 			if ($full_text_link->length > 0) {
-				return "http://dl.acm.org/" . $full_text_link[0]->textContent;
+				$orig_url =  "http://dl.acm.org/" . $full_text_link[0]->textContent;
+				$results[$id]["orig_url"] = $orig_url;
+				return $orig_url;
 			}
 		}
 	} else {
@@ -122,7 +125,7 @@ function performQuery($author, $num) {
 			}
 			$id = $line[1];
 			$doi = $line[11];
-			$download_url = downloadPDFFromDOI($doi);
+			$download_url = downloadPDFFromDOI($doi, $id);
 			global $results;
 			$results[$id]["title"] = $line[6];
 			if (is_null($download_url)) {
