@@ -14,15 +14,15 @@ $(document).ready(function() {
         }
     });
 
-    $('#wordcloud').on('wordcloudstop', function(){
+    $('#wordcloud').on('wordcloudstop', function() {
         line.stop();
         line.animate(1, {
-            duration: 175,
+            duration: 175
         }, function() {
             console.log('Animation has finished');
         });
-        setTimeout(function(){ 
-            line.set(0)
+        setTimeout(function() {
+            line.set(0);
         }, 900);
     });
 
@@ -80,7 +80,7 @@ $(document).ready(function() {
     };
 
 
-    var initiateProgressBar = function(){
+    var initiateProgressBar = function() {
 
         var duration = 400000;
 
@@ -91,8 +91,8 @@ $(document).ready(function() {
 
             // Easing for animation. See #easing section.
             // Default: 'linear'
-            easing: function(pos){
-                var val = Math.log(pos*duration + 1) / 14;
+            easing: function(pos) {
+                var val = Math.log(pos * duration + 1) / 14;
                 console.log(val);
                 return val;
             },
@@ -100,15 +100,19 @@ $(document).ready(function() {
             // See #custom-animations section
             // Built-in shape passes reference to itself and a custom attachment
             // object to step function
-            from: { color: '#ededed' },
-            to: { color: '#33C3F0' },
+            from: {
+                color: '#ededed'
+            },
+            to: {
+                color: '#33C3F0'
+            },
             step: function(state, circle, attachment) {
                 circle.path.setAttribute('stroke', state.color);
             }
         }, function() {
             console.log('Animation has finished');
         });
-    }
+    };
 
     /*
     * Search
@@ -178,29 +182,29 @@ $(document).ready(function() {
 
 
 function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
- var url = "php/get_IEEE_text.php"
- return $.ajax({
-  method: "GET",
-  url: url,
-  dataType: 'text',
-  data: {
-   arnumber: arnumber
-  }
- })
+    var url = "php/get_IEEE_text.php";
+    return $.ajax({
+        method: "GET",
+        url: url,
+        dataType: 'text',
+        data: {
+            arnumber: arnumber
+        }
+    });
 }
 
 function IEEEGetPdfUrl(arnumber, word) {
- var url = "php/get_IEEE_text.php"
- $.ajax({
-  method: "GET",
-  url: url,
-  dataType: 'text',
-  data: {
-   arnumber: arnumber,
-   word: word
-  }
- })
- return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf"
+    var url = "php/get_IEEE_text.php";
+    $.ajax({
+        method: "GET",
+        url: url,
+        dataType: 'text',
+        data: {
+            arnumber: arnumber,
+            word: word
+        }
+    });
+    return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf";
 }
 
 function IEEESearch(search_param) {
