@@ -1,12 +1,29 @@
 var currFileList = [];
 
 $(document).ready(function() {
+
+    //create a progress bar
+    var line = new ProgressBar.Line('#progressbar');
+
+
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
             $('#searchButton').attr('disabled', false);
         } else {
             $('#searchButton').attr('disabled', true);
         }
+    });
+
+    $('#wordcloud').on('wordcloudstop', function(){
+        line.stop();
+        line.animate(1, {
+            duration: 175,
+        }, function() {
+            console.log('Animation has finished');
+        });
+        setTimeout(function(){ 
+            line.set(0)
+        }, 900);
     });
 
     //This is the function that gets called when you click on an invidual word in the word cloud. Not sure how we're doing it now, though, so it only returns true;
@@ -62,11 +79,44 @@ $(document).ready(function() {
         });
     };
 
+
+    var initiateProgressBar = function(){
+
+        var duration = 400000;
+
+        line.animate(1, {
+            // Duration for animation in milliseconds
+            // Default: 800
+            duration: duration,
+
+            // Easing for animation. See #easing section.
+            // Default: 'linear'
+            easing: function(pos){
+                var val = Math.log(pos*duration + 1) / 14;
+                console.log(val);
+                return val;
+            },
+
+            // See #custom-animations section
+            // Built-in shape passes reference to itself and a custom attachment
+            // object to step function
+            from: { color: '#ededed' },
+            to: { color: '#33C3F0' },
+            step: function(state, circle, attachment) {
+                circle.path.setAttribute('stroke', state.color);
+            }
+        }, function() {
+            console.log('Animation has finished');
+        });
+    }
+
     /*
     * Search
     */
     //called when search button searches
     $('#searchButton').on('click', function() {
+
+        initiateProgressBar();
         //Get contents of serach bar
         var search_param = $("#search").val();
 
