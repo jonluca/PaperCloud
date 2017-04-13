@@ -124,36 +124,62 @@ $(document).ready(function() {
         $('#wordcloudPage').css('display', 'block');
     });
 
-    function IEEESearch(search_param) {
-        var url = "php/get_IEEE_list.php";
-
-        return $.ajax({
-            method: 'GET',
-            url: url,
-            type: 'json',
-            data: {
-                search: search_param
-            }
-        });
-    }
-
-    //ACM search which takes in the actual search query by user
-    //TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
-    function ACMSearch(search_param) {
-        var url = "php/get_ACM_list.php";
-
-        return $.ajax({
-            method: 'GET',
-            url: url,
-            type: 'json',
-            data: {
-                search: search_param
-            }
-        });
-    }
-
 });
 
+
+function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
+ var url = "php/get_IEEE_text.php"
+ return $.ajax({
+  method: "GET",
+  url: url,
+  dataType: 'text',
+  data: {
+   arnumber: arnumber
+  }
+ })
+}
+
+function IEEEGetPdfUrl(arnumber, word) {
+ var url = "php/get_IEEE_text.php"
+ $.ajax({
+  method: "GET",
+  url: url,
+  dataType: 'text',
+  data: {
+   arnumber: arnumber,
+   word: word
+  }
+ })
+ return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf"
+}
+
+function IEEESearch(search_param) {
+    var url = "php/get_IEEE_list.php";
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'text',
+        data: {
+            search: search_param
+        }
+    });
+}
+
+//ACM search which takes in the actual search query by user
+//TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
+function ACMSearch(search_param) {
+    var url = "php/get_ACM_list.php";
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'text',
+        data: {
+            search: search_param
+        }
+    });
+}
 
 function getPaperListByName(search_param) {
     var results = [];
@@ -183,5 +209,3 @@ function createPaperList(papers) {
         'bDestroy': true
     });
 }
-
-
