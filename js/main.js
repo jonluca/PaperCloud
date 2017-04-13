@@ -55,8 +55,6 @@ $(document).ready(function() {
     /*
     * Search
     */
-    var url_download_template1 = "http://dl.acm.org.libproxy1.usc.edu/ft_gateway.cfm?id=";
-    var url_download_template2 = "&ftid=1715440&dwn=1&#URLTOKEN#";
     //called when search button searches
     $('#searchButton').on('click', function() {
         //Get contents of serach bar
