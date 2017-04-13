@@ -1,0 +1,71 @@
+Scrum Meeting 4
+
+Scrum master: Zac Denham
+
+SCRUM QUESTIONS:
+
+What have you accomplished?
+
+What do you plan on doing before next meeting?
+
+Is there anything blocking you?
+
+
+Alex
+
+1. pair programming with Zac to write tests for the progress bar and then completed the progress bar 
+
+2. finish rest of tasks tonight
+
+3. Nothing blocking
+
+Janson
+
+1. pdf test, documentation, peer programming
+
+2. continue peer programming, adding pdf features
+
+3. none
+
+Jonluca 
+
+1. Helped Myrl with pairprogramming to finish up ACM search and downloading full text/pdf
+
+2. Front end 
+
+3. Nothing blocking
+
+Marshall
+
+1. peer programmed with janson. began connecting the front end to mostly complete backend
+
+2. continue connecting front end and change word cloud content to papers' text as opposed to titles
+
+3. nothing
+
+Myrl
+
+1. implemented plain text retrieval of IEEE papers, worked with JonLuca to fix up some ACM search code, worked with Janson to implement PDF parse
+
+2. work on the frontend to connect all these things. 
+
+3. Nothing
+
+Zac 
+
+1. Since last meeting, pair programmed with Alex to write tests for the progress bar and then completed the progress bar.
+
+2. Before next, implementing artist list for paper click and artist search on click.
+
+3. Nothing
+
+
+
+
+
+
+
+
+
+
+
