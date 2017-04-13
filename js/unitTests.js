@@ -20,4 +20,10 @@ describe("Wordcloud List", function(){
     });
 });
 
-
+describe("IEEE PDF URL", function(){
+    it("returnCorrectUrl", function(){
+        var output = IEEEGetPdfUrl(745444, "apparatus");
+        expect(output).to.exist;
+        expect(output).to.equal("php/pdfs/IEEE-745444-apparatus.pdf");
+    });
+});
