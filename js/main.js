@@ -37,7 +37,7 @@ $(document).ready(function() {
 
     function generateWordList(item, dimension, event) {
         var papers = getPaperListByName(item[0]);
-        console.log('test')
+        console.log('test');
         createPaperList(papers);
     }
 
@@ -124,7 +124,8 @@ $(document).ready(function() {
         //Two promises for two searches. Might want to refactor in future
         $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
 
-
+            console.log(a1);
+            console.log(a2);
             //If both searches succeeded
             if (a1[1] == "success" && a2[1] == "success") {
                 var results = JSON.parse(a1[0]);
@@ -142,8 +143,7 @@ $(document).ready(function() {
                     currFileList.push(papers[key].title);
                 }
 
-                console.log(a1)
-                console.log(a2)
+
                 var results2 = JSON.parse(a2[0]);
                 var titles = [];
                 //ACM search returns array of titles, very little parsing needed
@@ -151,7 +151,7 @@ $(document).ready(function() {
                     titles.push(results2[key]);
                     all_titles += results2[key];
                     all_titles += " ";
-                    currFileList.push(results2[key])
+                    currFileList.push(results2[key]);
                 }
                 console.log(results2);
                 /*
@@ -174,44 +174,70 @@ $(document).ready(function() {
         $('#wordcloudPage').css('display', 'block');
     });
 
-    function IEEESearch(search_param) {
-        var url = "php/get_IEEE_list.php";
-
-        return $.ajax({
-            method: 'GET',
-            url: url,
-            type: 'json',
-            data: {
-                search: search_param
-            }
-        });
-    }
-
-    //ACM search which takes in the actual search query by user
-    //TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
-    function ACMSearch(search_param) {
-        var url = "php/get_ACM_list.php";
-
-        return $.ajax({
-            method: 'GET',
-            url: url,
-            type: 'json',
-            data: {
-                search: search_param
-            }
-        });
-    }
-
 });
 
+
+function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
+ var url = "php/get_IEEE_text.php"
+ return $.ajax({
+  method: "GET",
+  url: url,
+  dataType: 'text',
+  data: {
+   arnumber: arnumber
+  }
+ })
+}
+
+function IEEEGetPdfUrl(arnumber, word) {
+ var url = "php/get_IEEE_text.php"
+ $.ajax({
+  method: "GET",
+  url: url,
+  dataType: 'text',
+  data: {
+   arnumber: arnumber,
+   word: word
+  }
+ })
+ return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf"
+}
+
+function IEEESearch(search_param) {
+    var url = "php/get_IEEE_list.php";
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'text',
+        data: {
+            search: search_param
+        }
+    });
+}
+
+//ACM search which takes in the actual search query by user
+//TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
+function ACMSearch(search_param) {
+    var url = "php/get_ACM_list.php";
+
+    return $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'text',
+        data: {
+            search: search_param
+        }
+    });
+}
 
 function getPaperListByName(search_param) {
     var results = [];
 
     for (var i = 0; i < currFileList.length; i++) {
         if (currFileList[i].includes(search_param)) {
-            resultEntry = []
-            resultEntry.push(currFileList[i])
+            resultEntry = [];
+            resultEntry.push(currFileList[i]);
             results.push(resultEntry);
         }
     }
@@ -220,18 +246,16 @@ function getPaperListByName(search_param) {
 }
 
 function createPaperList(papers) {
-    console.log('test')
-    $('#paperList').css('display','block');
-    $('#searchPage').css('display','none');
-    $('#wordcloudPage').css('display','none');
+    console.log('test');
+    $('#paperList').css('display', 'block');
+    $('#searchPage').css('display', 'none');
+    $('#wordcloudPage').css('display', 'none');
 
     $('.paperTable').DataTable({
         data: papers,
         columns: [{
             title: 'Title'
         }],
-        'bDestroy': true,
-    })
+        'bDestroy': true
+    });
 }
-
-

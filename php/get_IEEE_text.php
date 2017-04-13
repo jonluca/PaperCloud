@@ -36,8 +36,9 @@ $response = Requests::get($url, $headers);
 $file = "pdfs/IEEE-$arnumber.pdf";
 file_put_contents($file, $response->body); // write the PDF to file
 if (array_key_exists("word", $_GET)) {
- $doc = add_javascript(load_document($file), $_GET["word"]); // if we specify word, put annotations in file
-	file_put_contents($file, $doc->Output('', 'S'));
+	$word = $_GET["word"];
+ $doc = add_javascript(load_document($file), $word); // if we specify word, put annotations in file
+	file_put_contents("pdfs/IEEE-$arnumber-$word.pdf", $doc->Output('', 'S'));
 }
 echo get_raw_text($file);
 

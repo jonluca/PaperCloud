@@ -2,10 +2,12 @@
 ini_set('memory_limit', '1024M');
 
 include 'vendor/rmccue/requests/library/Requests.php';
+require "vendor/rolling-curl/RollingCurl.php";
 include 'vendor/autoload.php';
 include 'parse_pdf.php';
 
 Requests::register_autoloader();
+
 $num = 0;
 
 if (defined('STDIN')) {
@@ -13,16 +15,36 @@ if (defined('STDIN')) {
 	$num = $argv[2];
 } else {
 	$search = $_GET["search"];
-	// $num = $_GET["num_papers"];
+ $num = $_GET["num_papers"];
 }
 
-function downloadPDFFromDOI($doi) {
+$results = array();
+
+$headers = array(
+	'DNT' => '1',
+	'Accept-Encoding' => 'gzip, deflate, sdch',
+	'Accept-Language' => 'en-US,en;q=0.8,it;q=0.6',
+	'Upgrade-Insecure-Requests' => '1',
+	'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36',
+	'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+	'Connection' => 'keep-alive',
+	'Cookie' => '_vwo_uuid_v2=FED9B97519596F037D3BAF9E00E0A35A|faa55d1305647a8d9101f8b793fc940d; desktopCookie=uschomepage; __unam=79ac26c-15b3098e021-28bf8866-1; _ga=GA1.2.1626331614.1487707542; ezproxy=http://libproxy1.usc.edu,2yCbjI2OuWSy6Kh; CFID=750264237; CFTOKEN=97162500; IP_CLIENT=9941550; SITE_CLIENT=5598578; mp_mixpanel__c=3; mp_d2557637bad0bf1520733bad76dd4c3d_mixpanel=%7B%22distinct_id%22%3A%20%2215b01486cb6253-00ba23a9b4b492-1d3c6853-232800-15b01486cb77a3%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%2C%22%24search_engine%22%3A%20%22google%22%7D',
+);
+
+function downloadPDFFromDOI($doi, $id) {
+
+	//Headers that we probably don't even need
+	global $headers;
+	global $result;
+
 	if ($doidot = strstr($doi, '/')) {
 		$doidot = str_replace("/", "", $doidot);
 		try {
 			$query = "http://dl.acm.org/citation.cfm?doid=$doidot";
 			$response = Requests::get($query);
-		} catch (Requests_Exception $e) {}
+		} catch (Requests_Exception $e) {
+			print($e->getMessage());
+		}
 		$document = new DOMDocument();
 
 		libxml_use_internal_errors(TRUE); //disable libxml errors
@@ -37,7 +59,9 @@ function downloadPDFFromDOI($doi) {
 
 			$full_text_link = $fulltext_xpath->query("//a[contains(@name,'FullTextPDF')]/@href");
 			if ($full_text_link->length > 0) {
-				return "http://dl.acm.org/" . $full_text_link[0]->textContent;
+				$orig_url =  "http://dl.acm.org/" . $full_text_link[0]->textContent;
+				$results[$id]["orig_url"] = $orig_url;
+				return $orig_url;
 			}
 		}
 	} else {
@@ -59,23 +83,11 @@ function performQuery($author, $num) {
 		    9. Copy only the Headers variable, replace it below
 		    10. Done!
 	*/
-	//default case
-	if ($num == 0) {
-		$num = 5;
-	}
+
+	$actualnum = intval($num);
 
 	//Headers that we probably don't even need
-	$headers = array(
-		'DNT' => '1',
-		'Accept-Encoding' => 'gzip, deflate, sdch',
-		'Accept-Language' => 'en-US,en;q=0.8,it;q=0.6',
-		'Upgrade-Insecure-Requests' => '1',
-		'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36',
-		'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-		'Cache-Control' => 'max-age=0',
-		'Connection' => 'keep-alive',
-		'Cookie' => '_vwo_uuid_v2=FED9B97519596F037D3BAF9E00E0A35A|faa55d1305647a8d9101f8b793fc940d; desktopCookie=uschomepage; __unam=79ac26c-15b3098e021-28bf8866-1; _ga=GA1.2.1626331614.1487707542; mp_mixpanel__c=0; ezproxy=http://libproxy1.usc.edu,MWwbNyw23yzu4Bp; CFID=921747668; CFTOKEN=21023393; IP_CLIENT=9941550; SITE_CLIENT=5598578; mp_d2557637bad0bf1520733bad76dd4c3d_mixpanel=%7B%22distinct_id%22%3A%20%2215b01486cb6253-00ba23a9b4b492-1d3c6853-232800-15b01486cb77a3%22%2C%22%24initial_referrer%22%3A%20%22%24direct%22%2C%22%24initial_referring_domain%22%3A%20%22%24direct%22%2C%22%24search_engine%22%3A%20%22google%22%7D',
-	);
+	global $headers;
 
 	$success = false;
 	//Continue trying to get the URL, as it'll fail sometimes
@@ -88,8 +100,6 @@ function performQuery($author, $num) {
 			$success = false;
 		}
 	}
-
-	$counter = 0;
 	//Parse results as CSV
 	$csv = str_getcsv($response->body);
 	$lines = explode(PHP_EOL, $response->body);
@@ -98,44 +108,58 @@ function performQuery($author, $num) {
 		$csv_to_array[] = str_getcsv($line);
 	}
 
+	$counter = 0;
+	//multithreaded curl
+	$rc = new RollingCurl("request_callback");
+//concurrent connections
+	$rc->window_size = $actualnum;
+
+	$rc->options = array(CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTPHEADER => $headers);
 	//This will be the results array
-	$titles = array();
 	foreach ($csv_to_array as $line) {
-		$counter += 1;
-		if ($counter >= $num) {
-			break;
-		}
-		$title_and_contents = array();
-		if (array_key_exists(6, $line) && array_key_exists(1, $line) && $line[1] != "") {
-			$title_and_contents[] = $line[6];
-		}
-		if (array_key_exists(1, $line) && $line[1] != "" && $line[1] != "id") {
+
+		if (array_key_exists(1, $line) && array_key_exists(11, $line) && array_key_exists(6, $line) && $line[1] != "" && $line[1] != "id") {
+			$counter += 1;
+			if ($counter >= $actualnum) {
+				break;
+			}
 			$id = $line[1];
 			$doi = $line[11];
-			$download_url = downloadPDFFromDOI($doi);
+			$download_url = downloadPDFFromDOI($doi, $id);
+			global $results;
+			$results[$id]["title"] = $line[6];
 			if (is_null($download_url)) {
 				continue;
 			}
-			$ch = curl_init($download_url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-			$data = curl_exec($ch);
-			$path = 'pdfs/' . $id . '.pdf';
-			curl_close($ch);
-			$result = file_put_contents($path, $data);
-			try {
-				$title_and_contents[] = get_raw_text($path);
-				$titles[$id] = $title_and_contents;
-			} catch (Exception $e) {}
+			$request = new RollingCurlRequest($download_url);
+			$rc->add($request);
 		}
 	}
-
-	return json_encode($titles);
+	$rc->execute();
 
 }
 
-echo performQuery($search, $num);
+function request_callback($data, $info) {
+	$id = strstr($info["url"], 'id=');
+	$id = strstr($id, '&', true);
+	$id = str_replace("id=", "", $id);
+
+	$path = 'pdfs/' . $id . '.pdf';
+	$result = file_put_contents($path, $data);
+	try {
+		global $results;
+		$parser = new \Smalot\PdfParser\Parser();
+		$pdf = $parser->parseFile($path);
+
+		$text = $pdf->getText();
+		$results[$id]["paper"] = $text;
+		$results[$id]["url"] = $path;
+	} catch (Exception $e) {
+		print($e->getMessage());
+	}
+}
+performQuery($search, $num);
+
+echo json_encode($results);
 
 ?>
