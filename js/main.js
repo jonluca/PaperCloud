@@ -8,6 +8,8 @@ $(document).ready(function() {
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
 
+    
+
 
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
