@@ -41,3 +41,34 @@ body {
   top: -8px;
   position: fixed;
 }
+
+/*CSS for drop down menu of suggested searches*/
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 2px;
+    display: none;
+    position: absolute;
+    margin-top: -4px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-is-active {
+    display: block;
+}
+
+.search-item {
+  margin: 10px 5px;
+}
+
+.search-item:hover {
+  color: #33C3F0;
+  cursor: pointer;
+}

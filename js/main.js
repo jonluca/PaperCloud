@@ -8,15 +8,20 @@ $(document).ready(function() {
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
 
-    
-
-
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
             $('#searchButton').attr('disabled', false);
         } else {
             $('#searchButton').attr('disabled', true);
         }
+    });
+
+    $('#search').on('focus', function(){
+        $('.dropdown-content').addClass('dropdown-is-active');
+    });
+
+    $('#search').on('focusout', function(){
+        $('.dropdown-content').removeClass('dropdown-is-active');
     });
 
     $('#wordcloud').on('wordcloudstop', function() {
@@ -31,61 +36,67 @@ $(document).ready(function() {
         }, 900);
     });
 
-    //This is the function that gets called when you click on an invidual word in the word cloud. Not sure how we're doing it now, though, so it only returns true;
-    function generateWordList() {
-        return true;
-    }
     /*
-    * Wordcloud
+    * Search
     */
+    //called when search button searches
+    $('#searchButton').on('click', function() {
+        search();
+    });
 
+});
 
-    function generateWordList(item, dimension, event) {
-        var papers = getPaperListByName(item[0]);
-        console.log('test');
-        createPaperList(papers);
-    }
+function itemClick(target){
+    var text = target.textContent;
+    $('#search').val(text);
+    search();
+}
 
-    var getWordFrequency = function(text) {
-        var wordFreqOptions = {
-            workerUrl: './js/wordCounter/wordfreq.worker.js',
-            language: 'english',
-            minimalCount: 250,
-            stopWordSets: ['cjk', 'english1', 'english2']
-        };
+function generateWordList(item, dimension, event) {
+    var papers = getPaperListByName(item[0]);
+    console.log('test');
+    createPaperList(papers);
+}
 
-        //callbacks generates a wordcloud
-        var wordfreq = WordFreq(wordFreqOptions).process(text, function(list) {
-            //Word cloud options
-            var options = {
-                list: list,
-                gridSize: 18, //spacing between words
-                weightFactor: 6,
-                color: 'random-dark',
-                hover: window.drawBox,
-
-                // on click callback
-                click: generateWordList,
-                backgroundColor: '#fff',
-                minSize: 1,
-                minRotation: 0,
-                maxRotation: 0,
-                shape: function(phi) {
-                    phi = ((phi + 45) % 90 - 45) / 180 * Math.PI;
-                    return 1 / Math.cos(phi);
-                }
-            };
-            listOfWords = list;
-            //generate a wordcloud with the documents
-            WordCloud(document.getElementById('wordcloud'), options);
-            if (window.location.href.indexOf("getword") > -1) {
-                generateWordList(["me"]);
-            }
-        });
+function getWordFrequency(text) {
+    var wordFreqOptions = {
+        workerUrl: './js/wordCounter/wordfreq.worker.js',
+        language: 'english',
+        minimalCount: 250,
+        stopWordSets: ['cjk', 'english1', 'english2']
     };
 
+    //callbacks generates a wordcloud
+    var wordfreq = WordFreq(wordFreqOptions).process(text, function(list) {
+        //Word cloud options
+        var options = {
+            list: list,
+            gridSize: 18, //spacing between words
+            weightFactor: 6,
+            color: 'random-dark',
+            hover: window.drawBox,
 
-    var initiateProgressBar = function() {
+            // on click callback
+            click: generateWordList,
+            backgroundColor: '#fff',
+            minSize: 1,
+            minRotation: 0,
+            maxRotation: 0,
+            shape: function(phi) {
+                phi = ((phi + 45) % 90 - 45) / 180 * Math.PI;
+                return 1 / Math.cos(phi);
+            }
+        };
+        listOfWords = list;
+        //generate a wordcloud with the documents
+        WordCloud(document.getElementById('wordcloud'), options);
+        if (window.location.href.indexOf("getword") > -1) {
+            generateWordList(["me"]);
+        }
+    });
+};
+
+function initiateProgressBar() {
 
         var duration = 400000;
 
@@ -117,16 +128,6 @@ $(document).ready(function() {
             console.log('Animation has finished');
         });
     };
-
-    /*
-    * Search
-    */
-    //called when search button searches
-    $('#searchButton').on('click', function() {
-        search();
-    });
-
-});
 
 
 function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
@@ -212,13 +213,20 @@ function createPaperList(papers) {
     });
 }
 
+function addSearchToHistory(search_param){
+    if(!previousSearches.includes(search_param)){
+        previousSearches.push(search_param);
+        $('.dropdown-content').prepend('<div class="search-item" onClick="itemClick(this)">' + search_param + '</div>');
+    }
+}
+
 
 function search(){
     initiateProgressBar();
     //Get contents of serach bar
     var search_param = $("#search").val();
 
-    previousSearches.push(search_param);
+    addSearchToHistory(search_param);
 
     currFileList = [];
     //Two promises for two searches. Might want to refactor in future
