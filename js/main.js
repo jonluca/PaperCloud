@@ -1,9 +1,12 @@
 var currFileList = [];
+var previousSearches = [];
+
+var line;
 
 $(document).ready(function() {
 
     //create a progress bar
-    var line = new ProgressBar.Line('#progressbar');
+    line = new ProgressBar.Line('#progressbar');
 
 
     $('#search').keyup(function() {
@@ -93,7 +96,6 @@ $(document).ready(function() {
             // Default: 'linear'
             easing: function(pos) {
                 var val = Math.log(pos * duration + 1) / 14;
-                console.log(val);
                 return val;
             },
 
@@ -119,63 +121,7 @@ $(document).ready(function() {
     */
     //called when search button searches
     $('#searchButton').on('click', function() {
-
-        initiateProgressBar();
-        //Get contents of serach bar
-        var search_param = $("#search").val();
-
-        currFileList = [];
-        //Two promises for two searches. Might want to refactor in future
-        $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
-
-            console.log(a1);
-            console.log(a2);
-            //If both searches succeeded
-            if (a1[1] == "success" && a2[1] == "success") {
-                var results = JSON.parse(a1[0]);
-                var papers = results.document;
-
-                //titles is array of titles
-                var titles = [];
-                //all_titles is space delimited string of every word in every title
-                var all_titles = "";
-                //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
-                for (key in papers) {
-                    titles.push(papers[key].title);
-                    all_titles += papers[key].title;
-                    all_titles += " ";
-                    currFileList.push(papers[key].title);
-                }
-
-
-                var results2 = JSON.parse(a2[0]);
-                var titles = [];
-                //ACM search returns array of titles, very little parsing needed
-                for (key in results2) {
-                    titles.push(results2[key]);
-                    all_titles += results2[key];
-                    all_titles += " ";
-                    currFileList.push(results2[key]);
-                }
-                console.log(results2);
-                /*
-                var paperList = $("#paperList");
-                paperList.css('display', 'block');
-                for (key in titles) {
-                    var paper_name = titles[key];
-                    paperList.append("<li>" + paper_name + "</li>");
-                }
-                */
-
-                //Create actual word cloud
-                getWordFrequency(all_titles);
-            }
-
-        //TODO add else statement showing an error
-        });
-
-        //display word cloud
-        $('#wordcloudPage').css('display', 'block');
+        search();
     });
 
 });
@@ -262,4 +208,66 @@ function createPaperList(papers) {
         }],
         'bDestroy': true
     });
+}
+
+
+function search(){
+    initiateProgressBar();
+    //Get contents of serach bar
+    var search_param = $("#search").val();
+
+    previousSearches.push(search_param);
+
+    currFileList = [];
+    //Two promises for two searches. Might want to refactor in future
+    $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
+
+        console.log(a1);
+        console.log(a2);
+        //If both searches succeeded
+        if (a1[1] == "success" && a2[1] == "success") {
+            var results = JSON.parse(a1[0]);
+            var papers = results.document;
+
+            //titles is array of titles
+            var titles = [];
+            //all_titles is space delimited string of every word in every title
+            var all_titles = "";
+            //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
+            for (key in papers) {
+                titles.push(papers[key].title);
+                all_titles += papers[key].title;
+                all_titles += " ";
+                currFileList.push(papers[key].title);
+            }
+
+
+            // var results2 = JSON.parse(a2[0]);
+            // var titles = [];
+            // //ACM search returns array of titles, very little parsing needed
+            // for (key in results2) {
+            //     titles.push(results2[key]);
+            //     all_titles += results2[key];
+            //     all_titles += " ";
+            //     currFileList.push(results2[key]);
+            // }
+            // console.log(results2);
+            /*
+            var paperList = $("#paperList");
+            paperList.css('display', 'block');
+            for (key in titles) {
+                var paper_name = titles[key];
+                paperList.append("<li>" + paper_name + "</li>");
+            }
+            */
+
+            //Create actual word cloud
+            getWordFrequency(all_titles);
+        }
+
+    //TODO add else statement showing an error
+    });
+
+    //display word cloud
+    $('#wordcloudPage').css('display', 'block');
 }

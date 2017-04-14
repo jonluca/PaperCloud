@@ -30,7 +30,6 @@ describe('ProgressBarFunctionsProperly', function(){
 	});
 });
 
-
 describe("IEEE", function(){
     it("returnCorrectPdfUrl", function(){
         var output = IEEEGetPdfUrl(745444, "apparatus");
@@ -43,3 +42,17 @@ describe("IEEE", function(){
 								})
     });
 });
+
+//encountered a bug on ACM Search, from it returning not JSON
+describe("ACMSearchFormatsCorrectly", function(){
+	it('ReturnsJson', function(){
+		var textResponse = ACMSearch("smith");
+		console.log('textResponse:', textResponse);
+		var firstChar = textResponse.substring(0,1);
+		var jsonChar = '{';
+		var htmlErrorChar = '<';
+
+		expect(firstChar).to.equal(jsonChar);
+		expect(firstChar).not.to.equal(htmlErrorChar);
+	})
+})
