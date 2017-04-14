@@ -54,5 +54,23 @@ describe("ACMSearchFormatsCorrectly", function(){
 
 		expect(firstChar).to.equal(jsonChar);
 		expect(firstChar).not.to.equal(htmlErrorChar);
-	})
-})
+	});
+});
+
+describe("SearchSavesPreviousSearches". function(){
+	it('recordsSearchParameterOnSearch', function(){
+		var initialNumSearches = previousSearches.length;
+		search('smith');
+		var endNumSearches = previousSearches.length;
+		expect(initalNumSearches).to.equal(0);
+		expect(endNumSearches).to.equal(1);
+		expect(endNumSearches).not.to.equal(0);
+	});
+});	
+
+
+
+
+
+
+
