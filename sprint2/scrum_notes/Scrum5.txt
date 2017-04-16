@@ -1,0 +1,43 @@
+
+Scrum Meeting 5:
+
+1. What did you do since last meeting?
+
+2. What will you do before next meeting?
+
+3. Is there anything blocking you?
+
+Jonluca: 
+
+1. I looked at things I need to do tomorrow
+2. Refactor ACM search with abstracts
+3. loading times and downloading pdfs off campus
+
+Alex:
+
+1. Did research on accomplishing the bibtex
+2. Will complete the bibtex
+3. Nothing
+
+Marshall: 
+
+1. figured out what i need to do to connect front end to acm/ieee searches. 2. finish connecting everything. 
+3. nothing
+
+Myrl:
+
+1. what ive done since last meeting: nothing much. 
+2. what will do before next meeting: connect IEEE pdf search to frontend. 
+3. blocking: have to be on campus
+
+Janson:
+
+1. Continuous testing
+2. Continuous testing, pair programming
+3. nothing
+
+Zac:
+
+1. added tests and implemented the search history functionality. and added tests for bugs in ACM search
+2. will work on documentation and the conference functionality
+3. the USC wireless authentication
