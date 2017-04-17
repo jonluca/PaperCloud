@@ -20,15 +20,15 @@ describe("Wordcloud List", function(){
     });
 });
 
-describe('ProgressBarFunctionsProperly', function(){
-	it('InitiatesWhenSearchIsClicked', function(){
-		var before = line.value();
-		$('#search').trigger('click');
-		var after = line.value();
-		expect(before).to.equal(0);
-		expect(after).to.not.equal(0);
-	});
-});
+// describe('ProgressBarFunctionsProperly', function(){
+// 	it('InitiatesWhenSearchIsClicked', function(){
+// 		var before = line.value();
+// 		$('#search').trigger('click');
+// 		var after = line.value();
+// 		expect(before).to.equal(0);
+// 		expect(after).to.not.equal(0);
+// 	});
+// });
 
 describe("IEEE", function(){
     it("returnCorrectPdfUrl", function(){
@@ -57,16 +57,28 @@ describe("ACMSearchFormatsCorrectly", function(){
 	});
 });
 
-describe("SearchSavesPreviousSearches". function(){
-	it('recordsSearchParameterOnSearch', function(){
-		var initialNumSearches = previousSearches.length;
+// describe("SearchSavesPreviousSearches". function(){
+// 	it('recordsSearchParameterOnSearch', function(){
+// 		var initialNumSearches = previousSearches.length;
+// 		search('smith');
+// 		var endNumSearches = previousSearches.length;
+// 		expect(initalNumSearches).to.equal(0);
+// 		expect(endNumSearches).to.equal(1);
+// 		expect(endNumSearches).not.to.equal(0);
+// 	});
+// });	
+// 
+
+describe('SearchHistoryFunctionsCorrectly', function(){
+	it('DoesNotDuplicateSearches', function(){
 		search('smith');
-		var endNumSearches = previousSearches.length;
-		expect(initalNumSearches).to.equal(0);
-		expect(endNumSearches).to.equal(1);
-		expect(endNumSearches).not.to.equal(0);
+		var length = previousSearches.length;
+		search('smith');
+		var length2 = previousSearches.length;
+		expect(length).to.equal(length2);
+
 	});
-});	
+});
 
 
 
