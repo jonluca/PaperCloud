@@ -7,11 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
 
-/**
- * @since Class available since Release 3.6.0
- */
-class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
+use Countable;
+use IteratorAggregate;
+use Traversable;
+use Generator;
+
+class Count extends Constraint
 {
     /**
      * @var int
@@ -47,9 +50,11 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     protected function getCountOf($other)
     {
-        if ($other instanceof Countable || is_array($other)) {
-            return count($other);
-        } elseif ($other instanceof Traversable) {
+        if ($other instanceof Countable || \is_array($other)) {
+            return \count($other);
+        }
+
+        if ($other instanceof Traversable) {
             if ($other instanceof IteratorAggregate) {
                 $iterator = $other->getIterator();
             } else {
@@ -61,7 +66,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
             }
 
             $key   = $iterator->key();
-            $count = iterator_count($iterator);
+            $count = \iterator_count($iterator);
 
             // Manually rewind $iterator to previous key, since iterator_count
             // moves pointer.
@@ -105,7 +110,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     protected function failureDescription($other)
     {
-        return sprintf(
+        return \sprintf(
             'actual size %d matches expected size %d',
             $this->getCountOf($other),
             $this->expectedCount
@@ -117,7 +122,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'count matches %d',
             $this->expectedCount
         );

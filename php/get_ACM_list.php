@@ -44,7 +44,7 @@ function downloadPDFFromDOI($doi, $id) {
 			$query = "http://dl.acm.org/citation.cfm?doid=$doidot&preflayout=flat";
 			$response = Requests::get($query);
 		} catch (Requests_Exception $e) {
-			print($e->getMessage());
+			//print($e->getMessage());
 		}
 		$document = new DOMDocument();
 
@@ -52,7 +52,7 @@ function downloadPDFFromDOI($doi, $id) {
 
 		if (!empty($response->body)) {
 			//if any html is actually returned
-
+			$orig_html = $response->body;
 			$document->loadHTML($response->body);
 			libxml_clear_errors(); //remove errors
 
@@ -71,18 +71,19 @@ function downloadPDFFromDOI($doi, $id) {
 					$bibtex = strstr($start_bibtex, "</pre>", true);
 					$results[$id]["bibtex"] = $bibtex;
 				} catch (Requests_Exception $e) {
-					print($e->getMessage());
+					//print($e->getMessage());
 				}
 			}
 
 			//abstract
-			$abstract = html5qp($document, "#fback > div:nth-child(5) > div > p");
+			$abstract = $fulltext_xpath->query("/html/body/div[4]/div/div[3]/div");
+			$start_abstract = strstr($orig_html, '<div style="margin-left:10px; margin-top:10px; margin-right:10px; margin-bottom: 10px;" class="flatbody">');
+			$end_abstract = strstr($start_abstract, "</div>", true);
+			$actual_abstract_start = strstr($start_abstract, "<p>");
+			$actual_abstract = strstr($actual_abstract_start, "</p>", true);
+			$actual_abstract = str_replace("<p>", "", $actual_abstract);
 
-			var_dump($abstract);
-			if ($abstract->length > 0) {
-				$results[$id]["abstract"] = $abstract->text();
-				print($results[$id]["abstract"]);
-			}
+			$results[$id]["abstract"] = $actual_abstract;
 
 			$full_text_link = $fulltext_xpath->query("//a[contains(@name,'FullTextPDF')]/@href");
 			if ($full_text_link->length > 0) {
@@ -182,7 +183,7 @@ function request_callback($data, $info) {
 		$results[$id]["paper"] = $text;
 		$results[$id]["url"] = $path;
 	} catch (Exception $e) {
-		print($e->getMessage());
+		//print($e->getMessage());
 	}
 }
 performQuery($search, $num);

@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
 /**
  * Utility class for textual type (and value) representation.
- *
- * @since Class available since Release 3.0.0
  */
-class PHPUnit_Util_Type
+class Type
 {
     /**
      * @param string $type
@@ -22,7 +22,7 @@ class PHPUnit_Util_Type
      */
     public static function isType($type)
     {
-        return in_array(
+        return \in_array(
             $type,
             [
                 'numeric',
