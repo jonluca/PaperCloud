@@ -10,6 +10,7 @@
     "smalot/pdfparser": "^0.10.0",
     "rmccue/requests": "^1.7",
     "setasign/fpdi": "^1.6",
-    "tecnickcom/TCPDF": "^6.2"
+    "tecnickcom/TCPDF": "^6.2",
+    "querypath/QueryPath": ">=3.0.0"
   }
 }

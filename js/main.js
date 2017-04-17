@@ -16,11 +16,11 @@ $(document).ready(function() {
         }
     });
 
-    $('#search').on('focus', function(){
+    $('#search').on('focus', function() {
         $('.dropdown-content').addClass('dropdown-is-active');
     });
 
-    $('#search').on('focusout', function(){
+    $('#search').on('focusout', function() {
         $('.dropdown-content').removeClass('dropdown-is-active');
     });
 
@@ -46,7 +46,7 @@ $(document).ready(function() {
 
 });
 
-function itemClick(target){
+function itemClick(target) {
     var text = target.textContent;
     $('#search').val(text);
     search();
@@ -94,40 +94,40 @@ function getWordFrequency(text) {
             generateWordList(["me"]);
         }
     });
-};
+}
 
 function initiateProgressBar() {
 
-        var duration = 400000;
+    var duration = 400000;
 
-        line.animate(1, {
-            // Duration for animation in milliseconds
-            // Default: 800
-            duration: duration,
+    line.animate(1, {
+        // Duration for animation in milliseconds
+        // Default: 800
+        duration: duration,
 
-            // Easing for animation. See #easing section.
-            // Default: 'linear'
-            easing: function(pos) {
-                var val = Math.log(pos * duration + 1) / 14;
-                return val;
-            },
+        // Easing for animation. See #easing section.
+        // Default: 'linear'
+        easing: function(pos) {
+            var val = Math.log(pos * duration + 1) / 14;
+            return val;
+        },
 
-            // See #custom-animations section
-            // Built-in shape passes reference to itself and a custom attachment
-            // object to step function
-            from: {
-                color: '#ededed'
-            },
-            to: {
-                color: '#33C3F0'
-            },
-            step: function(state, circle, attachment) {
-                circle.path.setAttribute('stroke', state.color);
-            }
-        }, function() {
-            console.log('Animation has finished');
-        });
-    };
+        // See #custom-animations section
+        // Built-in shape passes reference to itself and a custom attachment
+        // object to step function
+        from: {
+            color: '#ededed'
+        },
+        to: {
+            color: '#33C3F0'
+        },
+        step: function(state, circle, attachment) {
+            circle.path.setAttribute('stroke', state.color);
+        }
+    }, function() {
+        console.log('Animation has finished');
+    });
+}
 
 
 function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
@@ -179,7 +179,8 @@ function ACMSearch(search_param) {
         url: url,
         dataType: 'text',
         data: {
-            search: search_param
+            search: search_param,
+            num_papers: 5
         }
     });
 }
@@ -213,15 +214,15 @@ function createPaperList(papers) {
     });
 }
 
-function addSearchToHistory(search_param){
-    if(!previousSearches.includes(search_param)){
+function addSearchToHistory(search_param) {
+    if (!previousSearches.includes(search_param)) {
         previousSearches.push(search_param);
         $('.dropdown-content').prepend('<div class="search-item" onClick="itemClick(this)">' + search_param + '</div>');
     }
 }
 
 
-function search(){
+function search() {
     initiateProgressBar();
     //Get contents of serach bar
     var search_param = $("#search").val();
@@ -234,6 +235,8 @@ function search(){
 
         console.log(a1);
         console.log(a2);
+        var b = JSON.parse(a2[0]);
+        console.log(b);
         //If both searches succeeded
         if (a1[1] == "success" && a2[1] == "success") {
             var results = JSON.parse(a1[0]);

@@ -1,5 +1,6 @@
 <?php
 ini_set('memory_limit', '1024M');
+require_once "vendor/autoload.php";
 
 include 'vendor/rmccue/requests/library/Requests.php';
 require "vendor/rolling-curl/RollingCurl.php";
@@ -15,7 +16,7 @@ if (defined('STDIN')) {
 	$num = $argv[2];
 } else {
 	$search = $_GET["search"];
- $num = $_GET["num_papers"];
+	$num = $_GET["num_papers"];
 }
 
 $results = array();
@@ -35,12 +36,12 @@ function downloadPDFFromDOI($doi, $id) {
 
 	//Headers that we probably don't even need
 	global $headers;
-	global $result;
+	global $results;
 
 	if ($doidot = strstr($doi, '/')) {
 		$doidot = str_replace("/", "", $doidot);
 		try {
-			$query = "http://dl.acm.org/citation.cfm?doid=$doidot";
+			$query = "http://dl.acm.org/citation.cfm?doid=$doidot&preflayout=flat";
 			$response = Requests::get($query);
 		} catch (Requests_Exception $e) {
 			print($e->getMessage());
@@ -55,11 +56,37 @@ function downloadPDFFromDOI($doi, $id) {
 			$document->loadHTML($response->body);
 			libxml_clear_errors(); //remove errors
 
-			$fulltext_xpath = new DOMXPath($document);
+			$fulltext_xpath = new DOMXPath($document); //*[@id="divtools"]/ul/li[3]/span/ul/li[1]/a
+
+			//bibtex
+			$bibtex_path = $fulltext_xpath->query("//a[text()='BibTeX']/@href");
+			if ($bibtex_path->length > 0) {
+				$bibtex_js = strstr($bibtex_path["value"]->textContent, 'exportformats.cfm?id=');
+				$bibtex_url = strstr($bibtex_js, "','theformats'", true);
+
+				try {
+					$query = "http://dl.acm.org/$bibtex_url";
+					$response = Requests::get($query);
+					$start_bibtex = strstr($response->body, "@inproceedings");
+					$bibtex = strstr($start_bibtex, "</pre>", true);
+					$results[$id]["bibtex"] = $bibtex;
+				} catch (Requests_Exception $e) {
+					print($e->getMessage());
+				}
+			}
+
+			//abstract
+			$abstract = html5qp($document, "#fback > div:nth-child(5) > div > p");
+
+			var_dump($abstract);
+			if ($abstract->length > 0) {
+				$results[$id]["abstract"] = $abstract->text();
+				print($results[$id]["abstract"]);
+			}
 
 			$full_text_link = $fulltext_xpath->query("//a[contains(@name,'FullTextPDF')]/@href");
 			if ($full_text_link->length > 0) {
-				$orig_url =  "http://dl.acm.org/" . $full_text_link[0]->textContent;
+				$orig_url = "http://dl.acm.org/" . $full_text_link[0]->textContent;
 				$results[$id]["orig_url"] = $orig_url;
 				return $orig_url;
 			}

@@ -204,28 +204,54 @@ class FeatureContext extends MinkContext {
 	 * @Then a loading bar will appear
 	 */
 	public function aLoadingBarWillAppear() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
 	 * @Given I have searched for something before
 	 */
 	public function iHaveSearchedForSomethingBefore() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud');
+		$this->page = $session->getPage();
+
+		//click on search bar to have it open
+		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+
+		//enter two letters into search bar
+		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->setValue('erdos');
+
+		//open search bar and focus (there will be no search results)
+		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
+		$GLOBALS['searchButton'] = $this->page->find('css', '#searchButton')->click();
+
+		sleep(1);
 	}
 
 	/**
 	 * @When I click on the history list
 	 */
 	public function iClickOnTheHistoryList() {
-		throw new PendingException();
+		//open search bar and focus (there will be no search results)
+		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
 	}
 
 	/**
 	 * @Then The previously searched artist will be there
 	 */
 	public function thePreviouslySearchedArtistWillBeThere() {
-		throw new PendingException();
+		//get name in search bar
+		$author = $this->page->find('css', '.search-item')->getHtml();
+
+		//check if name is equal to the one we searched
+		if ($author != 'erdos') {
+			throw new Exception;
+		}
 	}
 
 	/**
