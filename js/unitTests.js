@@ -80,6 +80,13 @@ describe('SearchHistoryFunctionsCorrectly', function(){
 	});
 });
 
+describe('SearchHistoryNullPopup', function(){
+	it('DoesNotProduceContainerWithoutSearch', function(){
+		var dropdownlength = $('.dropdown-content').length;
+		expect(dropdownlength).to.equal(0);
+	});
+});
+
 
 
 
