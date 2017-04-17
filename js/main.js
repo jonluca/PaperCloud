@@ -249,7 +249,9 @@ function search() {
             //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
             for (key in papers) {
                 titles.push(papers[key].title);
-                all_titles += papers[key].title;
+                if (papers[key].hasOwnProperty("abstract")) {
+                    all_titles += papers[key].abstract;
+                }
                 all_titles += " ";
                 currFileList.push(papers[key].title);
             }
