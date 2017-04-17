@@ -171,7 +171,7 @@ function IEEESearch(search_param) {
 
 //ACM search which takes in the actual search query by user
 //TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
-function ACMSearch(search_param) {
+function ACMSearch(search_param, num_papers) {
     var url = "php/get_ACM_list.php";
 
     return $.ajax({
@@ -180,7 +180,7 @@ function ACMSearch(search_param) {
         dataType: 'text',
         data: {
             search: search_param,
-            num_papers: 5
+            num_papers: num_papers
         }
     });
 }
@@ -226,12 +226,13 @@ function search() {
     initiateProgressBar();
     //Get contents of serach bar
     var search_param = $("#search").val();
+    var num_papers = $("#number_papers").val();
 
     addSearchToHistory(search_param);
 
     currFileList = [];
     //Two promises for two searches. Might want to refactor in future
-    $.when(IEEESearch(search_param), ACMSearch(search_param)).done(function(a1, a2) {
+    $.when(IEEESearch(search_param), ACMSearch(search_param, num_papers)).done(function(a1, a2) {
 
         console.log(a1);
         console.log(a2);
