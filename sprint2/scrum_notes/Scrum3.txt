@@ -1,61 +1,79 @@
+Scrum Meeting 2
+
+Scrum master: Zac Denham
+
+Sprint Planning:
+
+Note: Sprint 2 ends April 17th
+
+We have continued to work on PDFS. PDF highlighting coming along well. More downloading work. Status bar and progress are coming up next.
+
+We will a screenshot of the subtasks of these stories.
+
+SCRUM QUESTIONS:
+
+What have you accomplished?
+
+What do you plan on doing before next meeting?
+
+Is there anything blocking you?
 
 
-Scrum 3:
+Alex Pareto
 
-1. What did you do sine we last met
+1. Looked into feasability of PDFs
 
-2. What will you do before next meeting?
+2. Create button for digital library with Zac.
 
-3. Is there anything blocking?
-
-
-Alex
-
-1. Him and Martial worked together to finish a couple of tasks;
-Created unit tests
-return list of paper that match words
-make word cloud clickable
-
-2. Meet tomorrow to peer program and try to finish some of his tasks and try to do the provide the link to access bib text task
-
-3. blocking is getting ACM search stuff more details that just the titles
+3. Nothing blocking
 
 Janson
 
-1. Document and pair programming
+1. Pair programming, write documentation
 
-2. Same thing before next meeting
+2. Continue pair programming and documentation
 
-3. Nope
+3. none
 
-Jonluca
+Jonluca 
 
-1. Looked at tyga and reorganized backlogs, helped pareto/martiall get up to speed and worked on downloading PDFs
+1. Worked on pair programming with Janson for downloading pdfs
 
-2. Get PDF downloads completed
+2. Work on downloading pdfs more
 
-3. Nope
+3. Nothing blocking
 
-Martial
+Marshall
 
-1. Alex and Martiall did four of the tasks in user story three which was clickable wordcloud words.
+1. Some tests for clickable word cloud words
 
-2. He is going to finish user story three by adding more information to the search.
+2. Make word clouds words clickable
 
-3. He needs to figure out how to get it working locally
+3. I need to figure out when I can meet with Pareto
 
 Myrl
 
-1. He did some more of the PDF annotating stuff 
+1. Figured out how to parse PDFs on the PHP side as well as annotate them
 
-2. but currently the PDF is taking a couple seconds to load so he is looking into using PDF.js 
+2. Finish the tests, write up the code, and push it. 
 
-3. because it might be faster. He wants to find time with pair programming
+3. Nothing
 
 Zac 
 
-1. Wrote some tests for artist click function
+1. Started writing tests for click to artist search function
 
-2. Started writing artist click function but didn’t have the list of artists yet
+2. Actually implement the function we're testing
 
-3. blocked by not having the list yet, but that should be clearing up shortly
+3. Exhaustion
+
+
+
+
+
+
+
+
+
+
+
