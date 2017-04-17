@@ -7,38 +7,34 @@ Scrum Meeting 6:
 
 3. Is there anything blocking you?
 
-Jonluca: 
+Scrum 6:
 
-1. I worked on front end
-2. I'll show off PaperCloud for sprint 2 review
-3. NA
+Jonluca: 
+1. I worked on front end.
+2. I'll show off PaperCloud for sprint 2 review.
+3. NA.
 
 Alex:
-
-1. Nothing
-2. Nothing
-3. Nothing
+1. Documentation.
+2. Nothing.
+3. Nothing.
 
 Marshall: 
-
-1. Documentation
-2. Documentation before sprint2 ends
-3. Tests take a long time
+1. Documentation.
+2. Documentation before Sprint 2 ends.
+3. Tests take a long time.
 
 Myrl:
-
-1. Nothing
+1. Nothing.
 2. Connect IEEE pdf search to frontend. 
-3. Nothing
+3. Nothing.
 
 Janson:
-
-1. Documentation
-2. nothing
-3. nothing
+1. Documentation.
+2. Nothing.
+3. Nothing.
 
 Zac:
-
-1. Added testing information
-2. Documentation
-3. Nothing
+1. Added testing information.
+2. Documentation.
+3. Nothing.
