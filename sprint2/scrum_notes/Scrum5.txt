@@ -1,71 +1,43 @@
-Scrum Meeting 4
 
-Scrum master: Zac Denham
+Scrum Meeting 5:
 
-SCRUM QUESTIONS:
+1. What did you do since last meeting?
 
-What have you accomplished?
+2. What will you do before next meeting?
 
-What do you plan on doing before next meeting?
+3. Is there anything blocking you?
 
-Is there anything blocking you?
+Jonluca: 
 
+1. I looked at things I need to do tomorrow
+2. Refactor ACM search with abstracts
+3. loading times and downloading pdfs off campus
 
-Alex
+Alex:
 
-1. pair programming with Zac to write tests for the progress bar and then completed the progress bar 
+1. Did research on accomplishing the bibtex
+2. Will complete the bibtex
+3. Nothing
 
-2. finish rest of tasks tonight
+Marshall: 
 
-3. Nothing blocking
-
-Janson
-
-1. pdf test, documentation, peer programming
-
-2. continue peer programming, adding pdf features
-
-3. none
-
-Jonluca 
-
-1. Helped Myrl with pairprogramming to finish up ACM search and downloading full text/pdf
-
-2. Front end 
-
-3. Nothing blocking
-
-Marshall
-
-1. peer programmed with janson. began connecting the front end to mostly complete backend
-
-2. continue connecting front end and change word cloud content to papers' text as opposed to titles
-
+1. figured out what i need to do to connect front end to acm/ieee searches. 2. finish connecting everything. 
 3. nothing
 
-Myrl
+Myrl:
 
-1. implemented plain text retrieval of IEEE papers, worked with JonLuca to fix up some ACM search code, worked with Janson to implement PDF parse
+1. what ive done since last meeting: nothing much. 
+2. what will do before next meeting: connect IEEE pdf search to frontend. 
+3. blocking: have to be on campus
 
-2. work on the frontend to connect all these things. 
+Janson:
 
-3. Nothing
+1. Continuous testing
+2. Continuous testing, pair programming
+3. nothing
 
-Zac 
+Zac:
 
-1. Since last meeting, pair programmed with Alex to write tests for the progress bar and then completed the progress bar.
-
-2. Before next, implementing artist list for paper click and artist search on click.
-
-3. Nothing
-
-
-
-
-
-
-
-
-
-
-
+1. added tests and implemented the search history functionality. and added tests for bugs in ACM search
+2. will work on documentation and the conference functionality
+3. the USC wireless authentication

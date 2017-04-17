@@ -1,5 +1,3 @@
-
-
 Scrum Meeting 2
 
 Scrum master: Zac Denham
@@ -8,21 +6,7 @@ Sprint Planning:
 
 Note: Sprint 2 ends April 17th
 
-We only have completed 15% thus far, we want to step it up and get to 70% completion by the end of the third sprint so we have lots of time to squash bugs and refactor code in the third sprint.
-
-Come up with a new sprint backlog:
-
-With this ambitious attitude in mind, we want to accomplish the following stories from our product back log this sprint:
-
-* Clickable word clouds
-* Link to download from digital library
-* Provide a Link to access bibles
-* Show a status bar for the current progress
-* Author search from author list
-* conference paper list
-* clickable title shows abstract
-* Export list of papers as PDF and plain text
-* access previous searches
+We have continued to work on PDFS. PDF highlighting coming along well. More downloading work. Status bar and progress are coming up next.
 
 We will a screenshot of the subtasks of these stories.
 
@@ -37,53 +21,51 @@ Is there anything blocking you?
 
 Alex Pareto
 
-1. Went over the review and retrospective.
-Sprint planning, assigned things into class
+1. Looked into feasability of PDFs
 
-2. Create button for digital library and create a button for bibtex and create unit tests with Zac.
+2. Create button for digital library with Zac.
 
 3. Nothing blocking
 
 Janson
 
-1. Did review and retrospective.
+1. Pair programming, write documentation
 
-2. Start documentation.
+2. Continue pair programming and documentation
 
-3. no
+3. none
 
 Jonluca 
 
-1. Retrospective/sprint-panning
+1. Worked on pair programming with Janson for downloading pdfs
 
-2. I’ll a take a look and work on something, loading bar and and cleaning ACMsearch Myrl.
+2. Work on downloading pdfs more
 
 3. Nothing blocking
 
 Marshall
 
-1. Retrospective/sprint planning.
+1. Some tests for clickable word cloud words
 
-2. He is going to do clickable word cloud with Pareto.
+2. Make word clouds words clickable
 
-3. nothing blocking.
+3. I need to figure out when I can meet with Pareto
 
 Myrl
 
-1. retrospective/planning
+1. Figured out how to parse PDFs on the PHP side as well as annotate them
 
-2. He wants to build  with Janson.
+2. Finish the tests, write up the code, and push it. 
 
-3. nothing blocking
+3. Nothing
 
 Zac 
 
-1. Added js testing framework mocha/chai.
+1. Started writing tests for click to artist search function
 
-2. I am going to make the authors clickable and make click function that initiates search.
+2. Actually implement the function we're testing
 
-3. Nothing blocking.
-
+3. Exhaustion
 
 
 

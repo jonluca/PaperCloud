@@ -1,61 +1,71 @@
+Scrum Meeting 4
 
+Scrum master: Zac Denham
 
-Scrum 3:
+SCRUM QUESTIONS:
 
-1. What did you do sine we last met
+What have you accomplished?
 
-2. What will you do before next meeting?
+What do you plan on doing before next meeting?
 
-3. Is there anything blocking?
+Is there anything blocking you?
 
 
 Alex
 
-1. Him and Martial worked together to finish a couple of tasks;
-Created unit tests
-return list of paper that match words
-make word cloud clickable
+1. pair programming with Zac to write tests for the progress bar and then completed the progress bar 
 
-2. Meet tomorrow to peer program and try to finish some of his tasks and try to do the provide the link to access bib text task
+2. finish rest of tasks tonight
 
-3. blocking is getting ACM search stuff more details that just the titles
+3. Nothing blocking
 
 Janson
 
-1. Document and pair programming
+1. pdf test, documentation, peer programming
 
-2. Same thing before next meeting
+2. continue peer programming, adding pdf features
 
-3. Nope
+3. none
 
-Jonluca
+Jonluca 
 
-1. Looked at tyga and reorganized backlogs, helped pareto/martiall get up to speed and worked on downloading PDFs
+1. Helped Myrl with pairprogramming to finish up ACM search and downloading full text/pdf
 
-2. Get PDF downloads completed
+2. Front end 
 
-3. Nope
+3. Nothing blocking
 
-Martial
+Marshall
 
-1. Alex and Martiall did four of the tasks in user story three which was clickable wordcloud words.
+1. peer programmed with janson. began connecting the front end to mostly complete backend
 
-2. He is going to finish user story three by adding more information to the search.
+2. continue connecting front end and change word cloud content to papers' text as opposed to titles
 
-3. He needs to figure out how to get it working locally
+3. nothing
 
 Myrl
 
-1. He did some more of the PDF annotating stuff 
+1. implemented plain text retrieval of IEEE papers, worked with JonLuca to fix up some ACM search code, worked with Janson to implement PDF parse
 
-2. but currently the PDF is taking a couple seconds to load so he is looking into using PDF.js 
+2. work on the frontend to connect all these things. 
 
-3. because it might be faster. He wants to find time with pair programming
+3. Nothing
 
 Zac 
 
-1. Wrote some tests for artist click function
+1. Since last meeting, pair programmed with Alex to write tests for the progress bar and then completed the progress bar.
 
-2. Started writing artist click function but didn’t have the list of artists yet
+2. Before next, implementing artist list for paper click and artist search on click.
 
-3. blocked by not having the list yet, but that should be clearing up shortly
+3. Nothing
+
+
+
+
+
+
+
+
+
+
+
