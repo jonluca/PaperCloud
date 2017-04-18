@@ -76,14 +76,14 @@ function getWordFrequency(text) {
         var options = {
             list: list,
             gridSize: 18, //spacing between words
-            weightFactor: 2,
+            weightFactor: 8,
             color: 'random-dark',
             hover: window.drawBox,
 
             // on click callback
             click: generateWordList,
             backgroundColor: '#fff',
-            minSize: 1,
+            minSize: 16,
             minRotation: 0,
             maxRotation: 0,
             shape: function(phi) {
@@ -262,6 +262,7 @@ function search() {
         var b = JSON.parse(a2[0]);
         console.log(b);
         //If both searches succeeded
+        var counter = 0;
         if (a1[1] == "success" && a2[1] == "success") {
             var results = JSON.parse(a1[0]);
             var papers = results.document;
@@ -272,6 +273,7 @@ function search() {
             var all_titles = "";
             //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
             for (key in papers) {
+
                 var title = papers[key].title;
                 titles.push(title);
                 if (papers[key].hasOwnProperty("abstract")) {
@@ -281,21 +283,31 @@ function search() {
                 all_titles += " ";
 
                 currFileList.push(papers[key]);
-            }
-
-
-            var results2 = JSON.parse(a2[0]);
-            //ACM search returns array of titles, very little parsing needed
-            for (key in results2) {
-                var title = results2[key].title;
-
-                titles.push(title);
-                if (results2[key].hasOwnProperty("abstract")) {
-                    all_titles += results2[key].abstract;
+                ++counter;
+                if (counter >= num_papers) {
+                    break;
                 }
-
-                currFileList.push(results2[key]);
             }
+            //if we still dont have enough papers
+            if (counter < num_papers) {
+                var results2 = JSON.parse(a2[0]);
+                //ACM search returns array of titles, very little parsing needed
+                for (key in results2) {
+                    ++counter;
+                    if (counter > num_papers) {
+                        break;
+                    }
+                    var title = results2[key].title;
+
+                    titles.push(title);
+                    if (results2[key].hasOwnProperty("abstract")) {
+                        all_titles += results2[key].abstract;
+                    }
+
+                    currFileList.push(results2[key]);
+                }
+            }
+
             /*
             var paperList = $("#paperList");
             paperList.css('display', 'block');

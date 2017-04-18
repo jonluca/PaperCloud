@@ -185,7 +185,7 @@ function request_callback($data, $info) {
 
 		$text = $pdf->getText();
 		$results[$id]["paper"] = $text;
-		$results[$id]["url"] = $path;
+		$results[$id]["url"] = 'php/' . $path;
 		if ($results[$id]["abstract"] == "") {
 			$results[$id]["abstract"] = substr($text, 0, 250);
 		}
