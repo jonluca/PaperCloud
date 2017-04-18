@@ -100,9 +100,10 @@ function getBibtex(doi) {
             doi: doi
         },
         success: function(data, code, jqXHR) {
-            $("#bibtex").text(data);
-            $('#bibtex').css('display', 'block');
-            $("#bibtex").dialog();
+            $("#pop-up-info").text(data);
+            $('#pop-up-info').css('display', 'block');
+            $("#pop-up-info").dialog('option', 'title', 'BibTeX');
+            $("#pop-up-info").dialog();
         }
     });
 }
@@ -262,6 +263,10 @@ function getPaperListByName(word) {
             if (currFileList[i].hasOwnProperty("doi")) {
                 results_object.doi = currFileList[i].doi;
             }
+
+            if (currFileList[i].hasOwnProperty("abstract")) {
+                results_object.abstract = currFileList[i].abstract;
+            }
             //add object to results array
             results.push(results_object);
         }
@@ -276,6 +281,14 @@ function getPaperListByName(word) {
         url: 'url2'
     }];*/
     return results;
+}
+
+function showAbstract(abstract) {
+    $("#pop-up-info").text(abstract);
+    $('#pop-up-info').css('display', 'block');
+    $("#pop-up-info").dialog('option', 'title', 'Abstract');
+    $("#pop-up-info").dialog();
+
 }
 
 //Take in results of getPaperListByName and generate view of papers
@@ -293,19 +306,24 @@ function createPaperList(papers) {
     for (var key in papers) {
         titles.push(papers[key].title);
     }
-    console.log(papers);
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href='" + papers[iRow].url + "'>" + oData + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + oData + "</a>");
+
+            }
+        }, {
+            title: 'BibTeX',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href=\"#\" onClick='getBibtex(\"" + papers[iRow].doi + "\")'>BibTeX</a>");
             }
         }, {
             title: 'Download',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='getBibtex(\"" + papers[iRow].doi + "\")'>BibTeX</a>");
+                $(nTd).html("<a href=\"" + papers[iRow].url + "\">PDF</a>");
             }
         }],
         'bDestroy': true
