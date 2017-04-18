@@ -100,6 +100,9 @@ function getWordFrequency(text) {
     //callbacks generates a wordcloud
     var wordfreq = WordFreq(wordFreqOptions).process(text, function(list) {
         //Word cloud options
+        if (list.length > 250) {
+            list = list.slice(0, 250);
+        }
         var options = {
             list: list,
             gridSize: Math.round(24 * $('#wordcloud').width() / 1024),
@@ -379,6 +382,7 @@ function search() {
 
     //reinit the file list so that we don't use the old stuff
     currFileList = [];
+    list_of_words = "";
     if (parseInt(num_papers) <= 20) {
         //recycled code from IEEESearch function so we don't have to deal with promises for a single ajax call
         var url = "php/get_IEEE_list.php";
@@ -394,6 +398,8 @@ function search() {
                 parseIEEE(data);
                 //generate word cloud
                 getWordFrequency(list_of_words);
+                $('#wordcloudPage').css('display', 'block');
+
             }
         });
     } else {
@@ -401,8 +407,7 @@ function search() {
         //Only search for num_papers - 20 amount
         var acm_amount = num_papers - 20;
         $.when(IEEESearch(search_param), ACMSearch(search_param, acm_amount)).done(parseTwoResults);
+        $('#wordcloudPage').css('display', 'block');
 
     }
-    //display word cloud
-    $('#wordcloudPage').css('display', 'block');
 }
