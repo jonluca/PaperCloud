@@ -24,6 +24,7 @@
     <link rel="icon" type="image/png" href="favicon.ico">
     <script src="js/wordcloud2.js"></script>
     <script src="js/wordCounter/wordfreq.js"> </script>
+    <!-- Hacky code found on stackoverflow to download canvas -->
     <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
     <script src ="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
   </head>
@@ -40,7 +41,7 @@
           <p>A Project by Team I</p>
         </div>
         <div id="wordcloudPage">
-          <canvas id="wordcloud"></canvas>
+          <canvas id="wordcloud" width="800px" height="600px"></canvas>
         </div>
         <div id="paperList">
           <button class="backList">Back</button>
@@ -55,7 +56,7 @@
         </div>
         <input type="text" id="number_papers" placeholder="# of papers" />
         <button id="searchButton" disabled>Search</button>
-        <a id="download" href="#">Download</a>
+        <button id="download">Download</button>
       </div>
     </div>
     <!-- End Document

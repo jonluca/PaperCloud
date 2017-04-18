@@ -11,6 +11,7 @@ $(document).ready(function() {
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
 
+    //enables/disables search button based on if there is text in box
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
             $('#searchButton').attr('disabled', false);
@@ -19,14 +20,17 @@ $(document).ready(function() {
         }
     });
 
+    //Search history dropdown - disable
     $('#search').on('focus', function() {
         $('.dropdown-content').addClass('dropdown-is-active');
     });
 
+    //Search history dropdown - enable
     $('#search').on('focusout', function() {
         $('.dropdown-content').removeClass('dropdown-is-active');
     });
 
+    //Added back button after clicking on word in wordcloud
     $(".backList").on('click', function() {
         $('#paperList').css('display', 'none');
         $('#searchPage').css('display', 'block');
@@ -34,6 +38,7 @@ $(document).ready(function() {
         $(".backList").css('display', 'none');
     });
 
+    //Stops progress bar after loading is done
     $('#wordcloud').on('wordcloudstop', function() {
         line.stop();
         line.animate(1, {
@@ -42,7 +47,7 @@ $(document).ready(function() {
         setTimeout(function() {
             line.set(0);
         }, 900);
-        $('#download').css('display', 'block');
+        $('#download').css('display', 'inline');
     });
 
     /*
@@ -52,24 +57,29 @@ $(document).ready(function() {
     $('#searchButton').on('click', function() {
         search();
     });
+    //register download button with download action
     document.getElementById("download").addEventListener('click', dlCanvas, false);
     if (typeof mocha !== 'undefined') {
         mocha.run();
     }
 });
 
+//downloads canvas
 function dlCanvas() {
+    //get canvas
     var canvas = document.getElementById("wordcloud");
+    //call function defined by hacky github js code
     canvas.toBlob(function(blob) {
         saveAs(blob, "output.png");
     }, "image/png");
 }
 
-
-
-function itemClick(target) {
+//function called when a previous search item is clicked
+function historyItemClicked(target) {
+    //get text, set search box to that text, then search again
     var text = target.textContent;
     $('#search').val(text);
+
     search();
 }
 
@@ -79,10 +89,10 @@ function generateWordList(item, dimension, event) {
 }
 
 function getWordFrequency(text) {
+
     var wordFreqOptions = {
         workerUrl: './js/wordCounter/wordfreq.worker.js',
         language: 'english',
-        minimalCount: 250,
         stopWordSets: ['cjk', 'english1', 'english2']
     };
 
@@ -91,23 +101,20 @@ function getWordFrequency(text) {
         //Word cloud options
         var options = {
             list: list,
-            gridSize: 18, //spacing between words
-            weightFactor: 8,
+            gridSize: Math.round(24 * $('#wordcloud').width() / 1024),
+            weightFactor: function(size) {
+                return Math.pow(size, 2.3) * $('#wordcloud').width() / 1024;
+            },
             color: 'random-dark',
-            hover: window.drawBox,
-
             // on click callback
             click: generateWordList,
             backgroundColor: '#fff',
-            minSize: 16,
-            minRotation: 0,
+            minSize: 4,
             maxRotation: 0,
-            shape: function(phi) {
-                phi = ((phi + 45) % 90 - 45) / 180 * Math.PI;
-                return 1 / Math.cos(phi);
-            }
+            drawOutOfBound: false
         };
         listOfWords = list;
+        console.log(list);
         //generate a wordcloud with the documents
         WordCloud(document.getElementById('wordcloud'), options);
         if (window.location.href.indexOf("getword") > -1) {
@@ -144,9 +151,7 @@ function initiateProgressBar() {
         step: function(state, circle, attachment) {
             circle.path.setAttribute('stroke', state.color);
         }
-    }, function() {
-        console.log('Animation has finished');
-    });
+    }, function() {});
 }
 
 
@@ -256,7 +261,7 @@ function createPaperList(papers) {
 function addSearchToHistory(search_param) {
     if (!previousSearches.includes(search_param)) {
         previousSearches.push(search_param);
-        $('.dropdown-content').prepend('<div class="search-item" onClick="itemClick(this)">' + search_param + '</div>');
+        $('.dropdown-content').prepend('<div class="search-item" onClick="historyItemClicked(this)">' + search_param + '</div>');
     }
 }
 
