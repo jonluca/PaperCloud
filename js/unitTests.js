@@ -46,7 +46,7 @@ describe("IEEE", function(){
 //encountered a bug on ACM Search, from it returning not JSON
 describe("ACMSearchFormatsCorrectly", function(){
 	it('ReturnsJson', function(){
-		ACMSearch("smith").done(function(textResponse) {
+		ACMSearch("smith", 10).done(function(textResponse) {
 		 console.log('textResponse:', textResponse);
 		 var firstChar = textResponse.substring(0,1);
 		 var jsonChar = '{';
