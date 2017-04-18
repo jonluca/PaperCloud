@@ -71,9 +71,11 @@ describe("ACMSearchFormatsCorrectly", function(){
 
 describe('SearchHistoryFunctionsCorrectly', function(){
 	it('DoesNotDuplicateSearches', function(){
-		search('smith');
+		$("#search").val("smith");
+		$("#number_papers").val(10);
+		search();
 		var length = previousSearches.length;
-		search('smith');
+		search();
 		var length2 = previousSearches.length;
 		expect(length).to.equal(length2);
 
