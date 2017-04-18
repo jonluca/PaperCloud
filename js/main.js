@@ -8,7 +8,6 @@ var titles = [];
 var line;
 
 $(document).ready(function() {
-
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
 
@@ -84,9 +83,28 @@ function historyItemClicked(target) {
 }
 
 function generateWordList(item, dimension, event) {
-    //item[0] = word being search for. getPaperListByName looks for all occurences of that word in all papers
+    //item[0] is the word being search for. getPaperListByName looks for all occurences of that word in all papers
     var papers = getPaperListByName(item[0]);
     createPaperList(papers);
+}
+
+//Returns Bibtex in a string format (with newlines already)
+function getBibtex(doi) {
+    var url = "php/get_bibtex.php";
+
+    $.ajax({
+        method: 'GET',
+        url: url,
+        dataType: 'text',
+        data: {
+            doi: doi
+        },
+        success: function(data, code, jqXHR) {
+            $("#bibtex").text(data);
+            $('#bibtex').css('display', 'block');
+            $("#bibtex").dialog();
+        }
+    });
 }
 
 function getWordFrequency(text) {
@@ -115,6 +133,7 @@ function getWordFrequency(text) {
             backgroundColor: '#fff',
             minSize: 4,
             maxRotation: 0,
+            minRotation: 0,
             drawOutOfBound: false
         };
         listOfWords = list;
@@ -239,19 +258,23 @@ function getPaperListByName(word) {
                 //If url object does not exist, then default to dl.acm.org 
                 results_object.url = "http://dl.acm.org";
             }
+
+            if (currFileList[i].hasOwnProperty("doi")) {
+                results_object.doi = currFileList[i].doi;
+            }
             //add object to results array
             results.push(results_object);
         }
 
     }
-    //return array of objects. formatted like so:
-    // [{
-    //     title: 'title',
-    //     url: 'url'
-    // }, {
-    //     title: 'title2',
-    //     url: 'url2'
-    // }];
+    /*return array of objects. formatted like so:
+    [{
+        title: 'title',
+        url: 'url'
+    }, {
+        title: 'title2',
+        url: 'url2'
+    }];*/
     return results;
 }
 
@@ -270,6 +293,7 @@ function createPaperList(papers) {
     for (var key in papers) {
         titles.push(papers[key].title);
     }
+    console.log(papers);
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
@@ -278,9 +302,11 @@ function createPaperList(papers) {
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 $(nTd).html("<a href='" + papers[iRow].url + "'>" + oData + "</a>");
             }
-        // render: function(data, type, row, meta) {
-        //     return '<a href="' + data.url + '">' + data.title + '</a>';
-        // }
+        }, {
+            title: 'Download',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href=\"#\" onClick='getBibtex(\"" + papers[iRow].doi + "\")'>BibTeX</a>");
+            }
         }],
         'bDestroy': true
     });

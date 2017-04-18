@@ -156,6 +156,7 @@ function performQuery($author, $num) {
 			}
 			global $results;
 			$results[$id]["title"] = $line[6];
+			$results[$id]["doi"] = $doi;
 			$valid_downloads += 1;
 			$request = new RollingCurlRequest($download_url);
 			$rc->add($request);
