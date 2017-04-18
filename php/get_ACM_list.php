@@ -41,7 +41,7 @@ function downloadPDFFromDOI($doi, $id) {
 	if ($doidot = strstr($doi, '/')) {
 		$doidot = str_replace("/", "", $doidot);
 		try {
-			$query = "http://dl.acm.org/citation.cfm?doid=$doidot&preflayout=flat";
+			$query = "http://dl.acm.org/citation.cfm?id=$id";
 			$response = Requests::get($query);
 		} catch (Requests_Exception $e) {
 			//print($e->getMessage());
@@ -137,6 +137,7 @@ function performQuery($author, $num) {
 	}
 
 	$counter = 0;
+	$valid_downloads = 0;
 	//multithreaded curl
 	$rc = new RollingCurl("request_callback");
 //concurrent connections
@@ -147,23 +148,26 @@ function performQuery($author, $num) {
 	foreach ($csv_to_array as $line) {
 
 		if (array_key_exists(1, $line) && array_key_exists(11, $line) && array_key_exists(6, $line) && $line[1] != "" && $line[1] != "id") {
+			$id = $line[1];
+			$doi = $line[11];
+			$download_url = downloadPDFFromDOI($doi, $id);
+			if (is_null($download_url)) {
+				continue;
+			}
+			global $results;
+			$results[$id]["title"] = $line[6];
+			$valid_downloads += 1;
+			$request = new RollingCurlRequest($download_url);
+			$rc->add($request);
 			$counter += 1;
 			if ($counter >= $actualnum) {
 				break;
 			}
-			$id = $line[1];
-			$doi = $line[11];
-			$download_url = downloadPDFFromDOI($doi, $id);
-			global $results;
-			$results[$id]["title"] = $line[6];
-			if (is_null($download_url)) {
-				continue;
-			}
-			$request = new RollingCurlRequest($download_url);
-			$rc->add($request);
 		}
 	}
-	$rc->execute();
+	if ($valid_downloads > 1) {
+		$rc->execute();
+	}
 
 }
 

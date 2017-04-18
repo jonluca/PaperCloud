@@ -24,13 +24,18 @@ $(document).ready(function() {
         $('.dropdown-content').removeClass('dropdown-is-active');
     });
 
+    $(".backList").on('click', function() {
+        $('#paperList').css('display', 'none');
+        $('#searchPage').css('display', 'block');
+        $('#wordcloudPage').css('display', 'block');
+        $(".backList").css('display', 'none');
+    });
+
     $('#wordcloud').on('wordcloudstop', function() {
         line.stop();
         line.animate(1, {
             duration: 175
-        }, function() {
-            console.log('Animation has finished');
-        });
+        }, function() {});
         setTimeout(function() {
             line.set(0);
         }, 900);
@@ -54,7 +59,6 @@ function itemClick(target) {
 
 function generateWordList(item, dimension, event) {
     var papers = getPaperListByName(item[0]);
-    console.log('test');
     createPaperList(papers);
 }
 
@@ -72,7 +76,7 @@ function getWordFrequency(text) {
         var options = {
             list: list,
             gridSize: 18, //spacing between words
-            weightFactor: 6,
+            weightFactor: 2,
             color: 'random-dark',
             hover: window.drawBox,
 
@@ -187,28 +191,44 @@ function ACMSearch(search_param, num_papers) {
 
 function getPaperListByName(search_param) {
     var results = [];
-
     for (var i = 0; i < currFileList.length; i++) {
-        if (currFileList[i].includes(search_param)) {
+        if (currFileList[i].abstract.includes(search_param)) {
             resultEntry = [];
-            resultEntry.push(currFileList[i]);
-            results.push(resultEntry);
+            resultEntry.push(currFileList[i].title);
+            var results_object = {
+                title: currFileList[i].title
+            };
+            if (currFileList[i].hasOwnProperty("pdf")) {
+                results_object.url = currFileList[i].pdf;
+            } else if (currFileList[i].hasOwnProperty("url")) {
+                results_object.url = currFileList[i].url;
+            } else {
+                results_object.url = "http://dl.acm.org";
+            }
+            results.push(results_object);
         }
+
     }
 
     return results;
 }
 
 function createPaperList(papers) {
-    console.log('test');
     $('#paperList').css('display', 'block');
     $('#searchPage').css('display', 'none');
     $('#wordcloudPage').css('display', 'none');
+    $(".backList").css('display', 'block');
 
     $('.paperTable').DataTable({
-        data: papers,
+        aaData: papers,
         columns: [{
-            title: 'Title'
+            title: 'Title',
+            render: function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href='" + oData.url + "'>" + oData.title + "</a>");
+            }
+        // render: function(data, type, row, meta) {
+        //     return '<a href="' + data.url + '">' + data.title + '</a>';
+        // }
         }],
         'bDestroy': true
     });
@@ -249,25 +269,31 @@ function search() {
             var all_titles = "";
             //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
             for (key in papers) {
-                titles.push(papers[key].title);
+                var title = papers[key].title;
+                titles.push(title);
                 if (papers[key].hasOwnProperty("abstract")) {
                     all_titles += papers[key].abstract;
+
                 }
                 all_titles += " ";
-                currFileList.push(papers[key].title);
+
+                currFileList.push(papers[key]);
             }
 
 
-            // var results2 = JSON.parse(a2[0]);
-            // var titles = [];
-            // //ACM search returns array of titles, very little parsing needed
-            // for (key in results2) {
-            //     titles.push(results2[key]);
-            //     all_titles += results2[key];
-            //     all_titles += " ";
-            //     currFileList.push(results2[key]);
-            // }
-            // console.log(results2);
+            var results2 = JSON.parse(a2[0]);
+            //ACM search returns array of titles, very little parsing needed
+            for (key in results2) {
+                var title = results2[key].title;
+
+                titles.push(title);
+                if (results2[key].hasOwnProperty("abstract")) {
+                    all_titles += results2[key].abstract;
+
+                }
+
+                currFileList.push(results2[key]);
+            }
             /*
             var paperList = $("#paperList");
             paperList.css('display', 'block');
@@ -277,6 +303,8 @@ function search() {
             }
             */
 
+
+            console.log(currFileList);
             //Create actual word cloud
             getWordFrequency(all_titles);
         }
