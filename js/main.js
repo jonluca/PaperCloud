@@ -374,10 +374,13 @@ function search() {
     var search_param = $("#search").val();
     num_papers = $("#number_papers").val();
 
+    //Add the search to the history 
     addSearchToHistory(search_param);
 
+    //reinit the file list so that we don't use the old stuff
     currFileList = [];
     if (parseInt(num_papers) <= 20) {
+        //recycled code from IEEESearch function so we don't have to deal with promises for a single ajax call
         var url = "php/get_IEEE_list.php";
         $.ajax({
             method: 'GET',
@@ -387,7 +390,9 @@ function search() {
                 search: search_param
             },
             success: function(data, code, jqXHR) {
+                //parse data 
                 parseIEEE(data);
+                //generate word cloud
                 getWordFrequency(list_of_words);
             }
         });
