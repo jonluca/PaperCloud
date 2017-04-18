@@ -50,7 +50,7 @@ $(document).ready(function() {
         search();
     });
     document.getElementById("download").addEventListener('click', dlCanvas, false);
-
+    if (typeof mocha !== 'undefined') mocha.run()
 });
 
 function dlCanvas() {

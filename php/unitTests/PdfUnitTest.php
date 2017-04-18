@@ -3,6 +3,8 @@ use PHPUnit\Framework\TestCase;
 
 include("../parse_pdf.php");
 
+error_reporting(E_ALL ^ E_NOTICE);
+
 class PdfTest extends TestCase {
 	private function removeDocumentID($file) {
 		$data = file_get_contents($file);
