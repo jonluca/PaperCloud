@@ -46,14 +46,14 @@ describe("IEEE", function(){
 //encountered a bug on ACM Search, from it returning not JSON
 describe("ACMSearchFormatsCorrectly", function(){
 	it('ReturnsJson', function(){
-		var textResponse = ACMSearch("smith");
-		console.log('textResponse:', textResponse);
-		var firstChar = textResponse.substring(0,1);
-		var jsonChar = '{';
-		var htmlErrorChar = '<';
-
-		expect(firstChar).to.equal(jsonChar);
-		expect(firstChar).not.to.equal(htmlErrorChar);
+		ACMSearch("smith").done(function(textResponse) {
+		 console.log('textResponse:', textResponse);
+		 var firstChar = textResponse.substring(0,1);
+		 var jsonChar = '{';
+		 var htmlErrorChar = '<';
+		 expect(firstChar).to.equal(jsonChar);
+		 expect(firstChar).not.to.equal(htmlErrorChar);
+  });
 	});
 });
 
@@ -66,8 +66,8 @@ describe("ACMSearchFormatsCorrectly", function(){
 // 		expect(endNumSearches).to.equal(1);
 // 		expect(endNumSearches).not.to.equal(0);
 // 	});
-// });	
-// 
+// });
+//
 
 describe('SearchHistoryFunctionsCorrectly', function(){
 	it('DoesNotDuplicateSearches', function(){
@@ -86,10 +86,3 @@ describe('SearchHistoryNullPopup', function(){
 		expect(dropdownlength).to.equal(0);
 	});
 });
-
-
-
-
-
-
-
