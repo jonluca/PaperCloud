@@ -3,6 +3,7 @@ var previousSearches = [];
 var list_of_words = "";
 var counter = 0;
 var num_papers = 0;
+var titles = [];
 
 var line;
 
@@ -294,16 +295,11 @@ function addSearchToHistory(search_param) {
 function parseIEEE(a1) {
     console.log("IEEE:");
     console.log(a1);
-    //IEEE results will be a string if called on their own, or an array with the first index containing the string if it's from the promise
-    if (typeof a1 === "string") {
-        var results = JSON.parse(a1);
-    } else {
-        var results = JSON.parse(a1[0]);
-    }
+
+    var results = JSON.parse(a1);
+
     var papers = results.document;
 
-    //titles is array of titles
-    var titles = [];
     //list_of_words is space delimited string of every word in every title
     //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
     for (key in papers) {
@@ -315,9 +311,12 @@ function parseIEEE(a1) {
             list_of_words += papers[key].abstract;
 
         }
+        //Add space between abstracts so that the end of one abstract doesnt turn into the beginning of another
+        //i.e. ... ending word.Start of other ...
         list_of_words += " ";
 
         currFileList.push(papers[key]);
+        //Inc counter - if we have enough papers, break
         ++counter;
         if (counter >= num_papers) {
             break;
@@ -325,37 +324,43 @@ function parseIEEE(a1) {
     }
 }
 
+//Parses returned ACM search results
 function parseACM(a2) {
     console.log("ACM: ");
     console.log(a2);
 
+    //Only parse them if we don't have enough papers in our paper list yet
     if (counter < num_papers) {
         var results2 = JSON.parse(a2[0]);
         //ACM search returns array of titles, very little parsing needed
         for (key in results2) {
+            var title = results2[key].title;
+            //Add title to list of titles
+            titles.push(title);
+            //If it has an abstract, add it to the full list of them
+            if (results2[key].hasOwnProperty("abstract")) {
+                list_of_words += results2[key].abstract;
+            }
+            //Add the entire object (And all associated information to the file list)
+            currFileList.push(results2[key]);
+            //Increment counter. If we have enough, break
             ++counter;
             if (counter > num_papers) {
                 break;
             }
-            var title = results2[key].title;
-
-            titles.push(title);
-            if (results2[key].hasOwnProperty("abstract")) {
-                list_of_words += results2[key].abstract;
-            }
-
-            currFileList.push(results2[key]);
         }
     }
 }
 function parseTwoResults(a1, a2) {
-    //If both searches succeeded
+    //reinitialize the paper amount counter to 0 and all the words to empty string
     counter = 0;
     list_of_words = "";
+    //If both searches succeeded, parse them
     if (a1[1] == "success" && a2[1] == "success") {
-
-
-        parseIEEE(a1);
+        //reinit titles arrray
+        titles = [];
+        //parse IEEE results
+        parseIEEE(a1[0]);
         //if we still dont have enough papers
         parseACM(a2);
         //Create actual word cloud
@@ -363,8 +368,9 @@ function parseTwoResults(a1, a2) {
     }
 }
 function search() {
+    //Start top progress bar
     initiateProgressBar();
-    //Get contents of serach bar
+    //Get contents of search bar & num papers
     var search_param = $("#search").val();
     num_papers = $("#number_papers").val();
 
