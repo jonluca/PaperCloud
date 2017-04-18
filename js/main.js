@@ -30,6 +30,16 @@ $(document).ready(function() {
         $('.dropdown-content').removeClass('dropdown-is-active');
     });
 
+    //Makes enter search on num papers input box
+    $('#number_papers').bind("enterKey", function(e) {
+        search();
+    });
+
+    $('#number_papers').keyup(function(e) {
+        if (e.keyCode == 13) {
+            $(this).trigger("enterKey");
+        }
+    });
     //Added back button after clicking on word in wordcloud
     $(".backList").on('click', function() {
         $('#paperList').css('display', 'none');
@@ -102,8 +112,9 @@ function getBibtex(doi) {
         success: function(data, code, jqXHR) {
             $("#pop-up-info").text(data);
             $('#pop-up-info').css('display', 'block');
-            $("#pop-up-info").dialog('option', 'title', 'BibTeX');
             $("#pop-up-info").dialog();
+            $("#pop-up-info").dialog('option', 'title', 'BibTeX');
+
         }
     });
 }
@@ -286,9 +297,8 @@ function getPaperListByName(word) {
 function showAbstract(abstract) {
     $("#pop-up-info").text(abstract);
     $('#pop-up-info').css('display', 'block');
-    $("#pop-up-info").dialog('option', 'title', 'Abstract');
     $("#pop-up-info").dialog();
-
+    $("#pop-up-info").dialog('option', 'title', 'Abstract');
 }
 
 //Take in results of getPaperListByName and generate view of papers
