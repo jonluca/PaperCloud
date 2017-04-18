@@ -92,7 +92,23 @@ class FeatureContext extends MinkContext {
 	 * @Given I have a valid search and paper cloud
 	 */
 	public function iHaveAValidSearchAndPaperCloud() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud');
+		$this->page = $session->getPage();
+
+		//click on search bar to have it open
+		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+
+		//enter two letters into search bar
+		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->setValue('erdos');
+		$GLOBALS['searchBarNum'] = $this->page->find('css', '#number_papers')->setValue('3');
+
+		//open search bar and focus (there will be no search results)
+		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
+		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
+
+		sleep(1);
 	}
 
 	/**
@@ -185,6 +201,7 @@ class FeatureContext extends MinkContext {
 
 		//enter two letters into search bar
 		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->setValue('erdos');
+		$GLOBALS['searchBarNum'] = $this->page->find('css', '#number_papers')->setValue('3');
 
 		//open search bar and focus (there will be no search results)
 		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
@@ -223,6 +240,7 @@ class FeatureContext extends MinkContext {
 
 		//enter two letters into search bar
 		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->setValue('erdos');
+		$GLOBALS['searchBarNum'] = $this->page->find('css', '#number_papers')->setValue('3');
 
 		//open search bar and focus (there will be no search results)
 		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
@@ -310,14 +328,17 @@ class FeatureContext extends MinkContext {
 	 * @When I click save as image
 	 */
 	public function iClickSaveAsImage() {
-		throw new PendingException();
+		$GLOBALS['download'] = $this->page->find('css', '#download');
 	}
 
 	/**
 	 * @Then the image download will begin
 	 */
 	public function theImageDownloadWillBegin() {
-		throw new PendingException();
+		$button = $GLOBALS['download'];
+		if ($this->page->find('css', '#wordcloud')->isVisible()) {
+			$button->click();
+		}
 	}
 
 	/**
