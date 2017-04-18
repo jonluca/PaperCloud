@@ -1,6 +1,6 @@
 var currFileList = [];
 var previousSearches = [];
-var all_titles = "";
+var list_of_words = "";
 var counter = 0;
 var num_papers = 0;
 
@@ -79,17 +79,17 @@ function historyItemClicked(target) {
     //get text, set search box to that text, then search again
     var text = target.textContent;
     $('#search').val(text);
-
     search();
 }
 
 function generateWordList(item, dimension, event) {
+    //item[0] = word being search for. getPaperListByName looks for all occurences of that word in all papers
     var papers = getPaperListByName(item[0]);
     createPaperList(papers);
 }
 
 function getWordFrequency(text) {
-
+    //Options for word counter
     var wordFreqOptions = {
         workerUrl: './js/wordCounter/wordfreq.worker.js',
         language: 'english',
@@ -114,9 +114,10 @@ function getWordFrequency(text) {
             drawOutOfBound: false
         };
         listOfWords = list;
-        console.log(list);
         //generate a wordcloud with the documents
         WordCloud(document.getElementById('wordcloud'), options);
+
+        //debug code for testing
         if (window.location.href.indexOf("getword") > -1) {
             generateWordList(["me"]);
         }
@@ -124,7 +125,7 @@ function getWordFrequency(text) {
 }
 
 function initiateProgressBar() {
-
+    //Logarithmic decay progress bar
     var duration = 400000;
 
     line.animate(1, {
@@ -154,7 +155,7 @@ function initiateProgressBar() {
     }, function() {});
 }
 
-
+//Returns a promise for $.when...
 function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
     var url = "php/get_IEEE_text.php";
     return $.ajax({
@@ -167,6 +168,7 @@ function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
     });
 }
 
+//Get URL of each PDF
 function IEEEGetPdfUrl(arnumber, word) {
     var url = "php/get_IEEE_text.php";
     $.ajax({
@@ -181,6 +183,7 @@ function IEEEGetPdfUrl(arnumber, word) {
     return "php/pdfs/IEEE-" + arnumber + "-" + word + ".pdf";
 }
 
+//Actual search - returns promise for $.when...
 function IEEESearch(search_param) {
     var url = "php/get_IEEE_list.php";
 
@@ -195,7 +198,7 @@ function IEEESearch(search_param) {
 }
 
 //ACM search which takes in the actual search query by user
-//TODO differentiate between author and keyword, should be done in PHP based on what GET param is passed
+//REturns promise of search. ACM has one query field, so no differentiation needed between author and keyword
 function ACMSearch(search_param, num_papers) {
     var url = "php/get_ACM_list.php";
 
@@ -210,39 +213,60 @@ function ACMSearch(search_param, num_papers) {
     });
 }
 
-function getPaperListByName(search_param) {
+//Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array 
+//return array after checking every abstract. This is to build the list of papers
+function getPaperListByName(word) {
     var results = [];
+    //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
-        if (currFileList[i].abstract.includes(search_param)) {
-            resultEntry = [];
-            resultEntry.push(currFileList[i].title);
+        //If abstract of current object contains the word (guaranteed at least one!)
+        if (currFileList[i].abstract.includes(word)) {
+            //Create object to insert to results, initiate with title
             var results_object = {
                 title: currFileList[i].title
             };
+            //If IEEE inserted it, the url is in a key called pdf
             if (currFileList[i].hasOwnProperty("pdf")) {
                 results_object.url = currFileList[i].pdf;
+            //If ACM returned it, the url will be in a key called url
             } else if (currFileList[i].hasOwnProperty("url")) {
                 results_object.url = currFileList[i].url;
             } else {
+                //If url object does not exist, then default to dl.acm.org 
                 results_object.url = "http://dl.acm.org";
             }
+            //add object to results array
             results.push(results_object);
         }
 
     }
-
+    //return array of objects. formatted like so:
+    // [{
+    //     title: 'title',
+    //     url: 'url'
+    // }, {
+    //     title: 'title2',
+    //     url: 'url2'
+    // }];
     return results;
 }
 
+//Take in results of getPaperListByName and generate view of papers
 function createPaperList(papers) {
+    //Show paper list table
     $('#paperList').css('display', 'block');
+    //Hide search
     $('#searchPage').css('display', 'none');
+    //Hide wordcloud
     $('#wordcloudPage').css('display', 'none');
+    //show back button
     $(".backList").css('display', 'block');
+    //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
         titles.push(papers[key].title);
     }
+    //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
         columns: [{
@@ -258,6 +282,7 @@ function createPaperList(papers) {
     });
 }
 
+//Add each unique search to history for dropdown history
 function addSearchToHistory(search_param) {
     if (!previousSearches.includes(search_param)) {
         previousSearches.push(search_param);
@@ -265,9 +290,11 @@ function addSearchToHistory(search_param) {
     }
 }
 
+//Parses returned IEEE results
 function parseIEEE(a1) {
-    console.log("A1");
+    console.log("IEEE:");
     console.log(a1);
+    //IEEE results will be a string if called on their own, or an array with the first index containing the string if it's from the promise
     if (typeof a1 === "string") {
         var results = JSON.parse(a1);
     } else {
@@ -277,17 +304,18 @@ function parseIEEE(a1) {
 
     //titles is array of titles
     var titles = [];
-    //all_titles is space delimited string of every word in every title
+    //list_of_words is space delimited string of every word in every title
     //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
     for (key in papers) {
-
+        //Get paper title, add to title list
         var title = papers[key].title;
         titles.push(title);
+        //If it has an abstract add it to list_of_words, the large string containing all words for word cloud
         if (papers[key].hasOwnProperty("abstract")) {
-            all_titles += papers[key].abstract;
+            list_of_words += papers[key].abstract;
 
         }
-        all_titles += " ";
+        list_of_words += " ";
 
         currFileList.push(papers[key]);
         ++counter;
@@ -298,7 +326,7 @@ function parseIEEE(a1) {
 }
 
 function parseACM(a2) {
-    console.log("A2");
+    console.log("ACM: ");
     console.log(a2);
 
     if (counter < num_papers) {
@@ -313,7 +341,7 @@ function parseACM(a2) {
 
             titles.push(title);
             if (results2[key].hasOwnProperty("abstract")) {
-                all_titles += results2[key].abstract;
+                list_of_words += results2[key].abstract;
             }
 
             currFileList.push(results2[key]);
@@ -323,7 +351,7 @@ function parseACM(a2) {
 function parseTwoResults(a1, a2) {
     //If both searches succeeded
     counter = 0;
-    all_titles = "";
+    list_of_words = "";
     if (a1[1] == "success" && a2[1] == "success") {
 
 
@@ -331,7 +359,7 @@ function parseTwoResults(a1, a2) {
         //if we still dont have enough papers
         parseACM(a2);
         //Create actual word cloud
-        getWordFrequency(all_titles);
+        getWordFrequency(list_of_words);
     }
 }
 function search() {
@@ -354,12 +382,14 @@ function search() {
             },
             success: function(data, code, jqXHR) {
                 parseIEEE(data);
-                getWordFrequency(all_titles);
+                getWordFrequency(list_of_words);
             }
         });
     } else {
         //IEEE search returns 20 ish results. Only search ACM (which takes a lot longer) if search query is >20
-        $.when(IEEESearch(search_param), ACMSearch(search_param, num_papers)).done(parseResults);
+        //Only search for num_papers - 20 amount
+        var acm_amount = num_papers - 20;
+        $.when(IEEESearch(search_param), ACMSearch(search_param, acm_amount)).done(parseTwoResults);
 
     }
     //display word cloud
