@@ -39,6 +39,7 @@ $(document).ready(function() {
         setTimeout(function() {
             line.set(0);
         }, 900);
+        $('#download').css('display', 'block');
     });
 
     /*
@@ -48,8 +49,18 @@ $(document).ready(function() {
     $('#searchButton').on('click', function() {
         search();
     });
+    document.getElementById("download").addEventListener('click', dlCanvas, false);
 
 });
+
+function dlCanvas() {
+    var canvas = document.getElementById("wordcloud");
+    canvas.toBlob(function(blob) {
+        saveAs(blob, "output.png");
+    }, "image/png");
+}
+
+
 
 function itemClick(target) {
     var text = target.textContent;

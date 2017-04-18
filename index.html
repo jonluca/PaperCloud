@@ -24,18 +24,17 @@
     <link rel="icon" type="image/png" href="favicon.ico">
     <script src="js/wordcloud2.js"></script>
     <script src="js/wordCounter/wordfreq.js"> </script>
+    <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
+    <script src ="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
   </head>
   <body>
-
     <!-- Primary Page Layout
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="container">
       <div class="holder">
         <!-- Progress Bar
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-      <div id="progressbar"> </div>
-
-
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <div id="progressbar"> </div>
         <div class="title">
           <h1>PaperCloud</h1>
           <p>A Project by Team I</p>
@@ -44,19 +43,19 @@
           <canvas id="wordcloud"></canvas>
         </div>
         <div id="paperList">
-        <button class="backList">Back</button>
-          <table class="paperTable" class="display" width="100%"></table>
-        </div>
-        <div id="searchPage">
-         <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
-          <div class="dropdown">
-            <input type="text" id="search" placeholder="Search (last name)" />
-            <div class="dropdown-content">
-            </div>
+          <button class="backList">Back</button>
+        <table class="paperTable" class="display" width="100%"></table>
+      </div>
+      <div id="searchPage">
+        <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
+        <div class="dropdown">
+          <input type="text" id="search" placeholder="Search (last name)" />
+          <div class="dropdown-content">
           </div>
-          <input type="text" id="number_papers" placeholder="# of papers" />
-          <button id="searchButton" disabled>Search</button>
         </div>
+        <input type="text" id="number_papers" placeholder="# of papers" />
+        <button id="searchButton" disabled>Search</button>
+        <a id="download" href="#">Download</a>
       </div>
     </div>
     <!-- End Document
@@ -67,7 +66,7 @@
     crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js">
     </script>
   </body>
 </html>
