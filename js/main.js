@@ -218,13 +218,16 @@ function createPaperList(papers) {
     $('#searchPage').css('display', 'none');
     $('#wordcloudPage').css('display', 'none');
     $(".backList").css('display', 'block');
-
+    var titles = [];
+    for (var key in papers) {
+        titles.push(papers[key].title);
+    }
     $('.paperTable').DataTable({
-        aaData: papers,
+        data: titles,
         columns: [{
             title: 'Title',
-            render: function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href='" + oData.url + "'>" + oData.title + "</a>");
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href='" + papers[iRow].url + "'>" + oData + "</a>");
             }
         // render: function(data, type, row, meta) {
         //     return '<a href="' + data.url + '">' + data.title + '</a>';
@@ -289,7 +292,6 @@ function search() {
                 titles.push(title);
                 if (results2[key].hasOwnProperty("abstract")) {
                     all_titles += results2[key].abstract;
-
                 }
 
                 currFileList.push(results2[key]);
