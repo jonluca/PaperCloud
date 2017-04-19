@@ -349,7 +349,7 @@ function createPaperList(papers) {
                 if (papers[iRow].org == "IEEE") {
                     $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(0," + papers[iRow].arn + ")\">TXT</a>");
                 } else {
-                    $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(1," + "not done" + ")\">TXT</a>");
+                    $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(1," + papers[iRow].doi + ")\">TXT</a>");
                 }
             }
         }],
@@ -363,12 +363,22 @@ function saveAsTextIEEE(data) {
     });
     saveAs(blob, "download.txt");
 }
-function downloadAsText(type, paper) {
+function downloadAsText(type, uniquenum) {
     if (type == 0) {
-        $.when(IEEEGetText(paper)).done(saveAsTextIEEE);
-    //IEEE
+        //IEEE
+
+        $.when(IEEEGetText(uniquenum)).done(saveAsTextIEEE);
     } else {
-        //ACM
+        //ACM - iterate over papers, if doi match save text
+        for (key in currFileList) {
+            if (currFileList[key].doi == uniquenum) {
+                var blob = new Blob([currFileList[key].paper], {
+                    type: "text/plain;charset=utf-8"
+                });
+                saveAs(blob, "download.txt");
+                break;
+            }
+        }
     }
 }
 
