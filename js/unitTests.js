@@ -88,3 +88,14 @@ describe('SearchHistoryNullPopup', function(){
 		expect(dropdownlength).to.equal(0);
 	});
 });
+
+describe('BugResolvedForBadInputOnNumberPapers', function(){
+	it('cannotAcceptBadInputFromKeyPress', function(){
+		var e = jQuery.Event("keydown");
+		e.which = 50; // # Some key code value
+		var beforeVal = $("#number_papers").val();
+		$("#number_papers").trigger(e);
+		var afterVal = $("#number_papers").val();
+		expect(beforeVal).to.equal(afterVal);
+	});
+});
