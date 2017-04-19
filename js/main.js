@@ -52,12 +52,9 @@ $(document).ready(function() {
     $("#exportPDF").on('click', function() {
         var doc = new jsPDF();
         var table = document.getElementById("DataTables_Table_0_wrapper");
-        doc.fromHTML(
-            table,
-            50,
-            15);
-
+        doc.fromHTML(table);
         doc.output("dataurlnewwindow");
+    //PDF generated below looks better but takes forever
     // html2pdf(table, {
     //     margin: 1,
     //     filename: 'myfile.pdf',
@@ -385,9 +382,18 @@ function createPaperList(papers) {
                     $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(1," + papers[iRow].doi + ")\">TXT</a>");
                 }
             }
-        }],
-        'bDestroy': true
+        }]
     });
+
+    //This code attempts to add buttons - doesn't work right now
+    var table = $("#listPapers").DataTable();
+    new $.fn.dataTable.Buttons(table, {
+        buttons: [
+            'copy', 'excel', 'pdf'
+        ]
+    });
+    table.buttons().container()
+        .appendTo($('.paperTable', table.table().container()));
 }
 
 function saveAsTextIEEE(data) {
