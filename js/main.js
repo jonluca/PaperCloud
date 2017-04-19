@@ -50,28 +50,12 @@ $(document).ready(function() {
 
     //Export table as PDF
     $("#exportPDF").on('click', function() {
-        var doc = new jsPDF();
-        var table = document.getElementById("DataTables_Table_0_wrapper");
-        doc.fromHTML(table);
-        doc.output("dataurlnewwindow");
-    //PDF generated below looks better but takes forever
-    // html2pdf(table, {
-    //     margin: 1,
-    //     filename: 'myfile.pdf',
-    //     image: {
-    //         type: 'jpeg',
-    //         quality: 0.98
-    //     },
-    //     html2canvas: {
-    //         dpi: 192,
-    //         letterRendering: true
-    //     },
-    //     jsPDF: {
-    //         unit: 'in',
-    //         format: 'letter',
-    //         orientation: 'portrait'
-    //     }
-    // });
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        pdf.canvas.height = 72 * 11;
+        pdf.canvas.width = 72 * 8.5;
+        html2pdf(document.getElementById('listPapers'), pdf, function(pdf){
+            pdf.output('dataurlnewwindow');
+        });
     });
 
     //Export table as TXT
@@ -279,18 +263,21 @@ function ACMSearch(search_param, num_papers) {
     });
 }
 
-//Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array 
+//Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array
 //return array after checking every abstract. This is to build the list of papers
 function getPaperListByName(word) {
     var results = [];
     //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
-        if (currFileList[i].abstract.includes(word)) {
+        var re = new RegExp(word,"g");
+        var count = (currFileList[i].abstract.match(re) || []).length;
+        if (count > 0) {
             //Create object to insert to results, initiate with title
             var results_object = {
                 title: currFileList[i].title
             };
+            results_object.frequency = count;
             //If IEEE inserted it, the url is in a key called pdf
             if (currFileList[i].hasOwnProperty("pdf")) {
                 //results_object.url = currFileList[i].pdf;
@@ -299,7 +286,7 @@ function getPaperListByName(word) {
             } else if (currFileList[i].hasOwnProperty("url")) {
                 results_object.url = currFileList[i].url;
             } else {
-                //If url object does not exist, then default to dl.acm.org 
+                //If url object does not exist, then default to dl.acm.org
                 results_object.url = "http://dl.acm.org";
             }
 
@@ -309,6 +296,14 @@ function getPaperListByName(word) {
 
             if (currFileList[i].hasOwnProperty("abstract")) {
                 results_object.abstract = currFileList[i].abstract;
+            }
+
+            if (currFileList[i].hasOwnProperty("authors")) {
+                results_object.authors = currFileList[i].authors.toString();
+            }
+
+            if (currFileList[i].hasOwnProperty("pubtitle")) {
+                results_object.pubtitle = currFileList[i].pubtitle;
             }
 
             if (currFileList[i].hasOwnProperty("arnumber")) {
@@ -353,16 +348,45 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
-        titles.push(papers[key].title);
+        titles.push([])
+        titles[titles.length-1].push(papers[key].title);
+        titles[titles.length-1].push(papers[key].authors);
+        titles[titles.length-1].push(papers[key].pubtitle);
+        titles[titles.length-1].push(papers[key].frequency);
+        titles[titles.length-1].push(papers[key].doi);
+        titles[titles.length-1].push(papers[key].url);
+        titles[titles.length-1].push(papers[key].arn);
     }
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
+        order: [[ 3, "desc" ]],
+        sType: [{ "sType": "numeric", "aTargets": [ 3 ] }],
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + oData + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
 
+            }
+        }, {
+            title: 'Author',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                var authorString = papers[iRow].authors;
+                var authorArray = authorString.split(';');
+                $(nTd).html('');
+                for (var i = 0; i < authorArray.length; i++) {
+                    $(nTd).append("<a href='#'>" + authorArray[i] + "</a></br>");
+                }
+            }
+        },{
+            title: 'Conference',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href='#'>" + papers[iRow].pubtitle + "</a>");
+            }
+        },{
+            title: 'Frequency',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                //$(nTd).html(papers[iRow].frequency);
             }
         }, {
             title: 'BibTeX',
@@ -385,16 +409,6 @@ function createPaperList(papers) {
             }
         }]
     });
-
-    //This code attempts to add buttons - doesn't work right now
-    var table = $("#listPapers").DataTable();
-    new $.fn.dataTable.Buttons(table, {
-        buttons: [
-            'copy', 'excel', 'pdf'
-        ]
-    });
-    table.buttons().container()
-        .appendTo($('.paperTable', table.table().container()));
 }
 
 function saveAsTextIEEE(data) {
@@ -437,9 +451,9 @@ function addSearchToHistory(search_param) {
 //Parses returned IEEE results
 function parseIEEE(a1) {
     console.log("IEEE:");
-    console.log(a1);
 
     var results = JSON.parse(a1);
+    console.log(results)
 
     var papers = results.document;
 
@@ -470,11 +484,11 @@ function parseIEEE(a1) {
 //Parses returned ACM search results
 function parseACM(a2) {
     console.log("ACM: ");
-    console.log(a2);
 
     //Only parse them if we don't have enough papers in our paper list yet
     if (counter < num_papers) {
         var results2 = JSON.parse(a2[0]);
+        console.log(results2)
         //ACM search returns array of titles, very little parsing needed
         for (key in results2) {
             var title = results2[key].title;
@@ -518,7 +532,7 @@ function search() {
     var search_param = $("#search").val();
     num_papers = $("#number_papers").val();
 
-    //Add the search to the history 
+    //Add the search to the history
     addSearchToHistory(search_param);
 
     //reinit the file list so that we don't use the old stuff
@@ -535,7 +549,7 @@ function search() {
                 search: search_param
             },
             success: function(data, code, jqXHR) {
-                //parse data 
+                //parse data
                 parseIEEE(data);
                 //generate word cloud
                 getWordFrequency(list_of_words);
