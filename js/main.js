@@ -56,24 +56,6 @@ $(document).ready(function() {
         html2pdf(document.getElementById('listPapers'), pdf, function(pdf){
             pdf.output('dataurlnewwindow');
         });
-    //PDF generated below looks better but takes forever
-    // html2pdf(table, {
-    //     margin: 1,
-    //     filename: 'myfile.pdf',
-    //     image: {
-    //         type: 'jpeg',
-    //         quality: 0.98
-    //     },
-    //     html2canvas: {
-    //         dpi: 192,
-    //         letterRendering: true
-    //     },
-    //     jsPDF: {
-    //         unit: 'in',
-    //         format: 'letter',
-    //         orientation: 'portrait'
-    //     }
-    // });
     });
 
     //Export table as TXT
@@ -288,11 +270,14 @@ function getPaperListByName(word) {
     //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
-        if (currFileList[i].abstract.includes(word)) {
+        var re = new RegExp(word,"g");
+        var count = (currFileList[i].abstract.match(re) || []).length;
+        if (count > 0) {
             //Create object to insert to results, initiate with title
             var results_object = {
                 title: currFileList[i].title
             };
+            results_object.frequency = count;
             //If IEEE inserted it, the url is in a key called pdf
             if (currFileList[i].hasOwnProperty("pdf")) {
                 //results_object.url = currFileList[i].pdf;
@@ -311,6 +296,14 @@ function getPaperListByName(word) {
 
             if (currFileList[i].hasOwnProperty("abstract")) {
                 results_object.abstract = currFileList[i].abstract;
+            }
+
+            if (currFileList[i].hasOwnProperty("authors")) {
+                results_object.authors = currFileList[i].authors.toString();
+            }
+
+            if (currFileList[i].hasOwnProperty("pubtitle")) {
+                results_object.pubtitle = currFileList[i].pubtitle;
             }
 
             if (currFileList[i].hasOwnProperty("arnumber")) {
@@ -357,14 +350,36 @@ function createPaperList(papers) {
     for (var key in papers) {
         titles.push(papers[key].title);
     }
+    console.log(papers)
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
+        "order": [[ 3, "desc" ]],
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + oData + "</a>");
 
+            }
+        }, {
+            title: 'Author',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                var authorString = papers[iRow].authors;
+                var authorArray = authorString.split(';');
+                $(nTd).html('');
+                for (var i = 0; i < authorArray.length; i++) {
+                    $(nTd).append("<a href='#'>" + authorArray[i] + "</a></br>");
+                }
+            }
+        },{
+            title: 'Conference',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<a href='#'>" + papers[iRow].pubtitle + "</a>");
+            }
+        },{
+            title: 'Frequency',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html(papers[iRow].frequency);
             }
         }, {
             title: 'BibTeX',
@@ -439,9 +454,9 @@ function addSearchToHistory(search_param) {
 //Parses returned IEEE results
 function parseIEEE(a1) {
     console.log("IEEE:");
-    console.log(a1);
 
     var results = JSON.parse(a1);
+    console.log(results)
 
     var papers = results.document;
 
@@ -472,11 +487,11 @@ function parseIEEE(a1) {
 //Parses returned ACM search results
 function parseACM(a2) {
     console.log("ACM: ");
-    console.log(a2);
 
     //Only parse them if we don't have enough papers in our paper list yet
     if (counter < num_papers) {
         var results2 = JSON.parse(a2[0]);
+        console.log(results2)
         //ACM search returns array of titles, very little parsing needed
         for (key in results2) {
             var title = results2[key].title;
