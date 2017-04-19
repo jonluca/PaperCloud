@@ -4,6 +4,7 @@ var list_of_words = "";
 var counter = 0;
 var num_papers = 0;
 var titles = [];
+var papers = [];
 
 var line;
 
@@ -18,6 +19,10 @@ $(document).ready(function() {
         } else {
             $('#searchButton').attr('disabled', true);
         }
+    });
+
+    $('#exportTXT').on('click', function(){
+        downloadListAsText();
     });
 
     //Search history dropdown - disable
@@ -109,7 +114,7 @@ function historyItemClicked(target) {
 
 function generateWordList(item, dimension, event) {
     //item[0] is the word being search for. getPaperListByName looks for all occurences of that word in all papers
-    var papers = getPaperListByName(item[0]);
+    papers = getPaperListByName(item[0]);
     createPaperList(papers);
 }
 
@@ -570,4 +575,20 @@ function search() {
         $('#wordcloudPage').css('display', 'block');
 
     }
+}
+
+function downloadListAsText(){
+    var textToSave = '';
+
+    for(var i = 0; i < papers.length; i++){
+        var paper = papers[i];
+        textToSave += 'Title: ' + paper.title + '\n';
+        textToSave += 'Authors: ' + paper.authors + '\n';
+        textToSave += 'Conference: ' + paper.pubtitle + '\n \n';
+    }
+
+    var blob = new Blob([textToSave],{
+        type: "text/plain;charset=utf-8"
+    });
+    saveAs(blob, 'myText.txt');
 }
