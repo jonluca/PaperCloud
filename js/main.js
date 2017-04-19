@@ -4,6 +4,7 @@ var list_of_words = "";
 var counter = 0;
 var num_papers = 0;
 var titles = [];
+var titlesWithWord = [];
 
 var line;
 
@@ -18,6 +19,10 @@ $(document).ready(function() {
         } else {
             $('#searchButton').attr('disabled', true);
         }
+    });
+
+    $('#exportTXT').on('click', function(){
+        downloadListAsText();
     });
 
     //Search history dropdown - disable
@@ -351,13 +356,13 @@ function createPaperList(papers) {
     //show back button
     $(".backList").css('display', 'block');
     //Create titles array from papers object
-    var titles = [];
+    titlesWithWord = [];
     for (var key in papers) {
-        titles.push(papers[key].title);
+        titlesWithWord.push(papers[key].title);
     }
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
-        data: titles,
+        data: titlesWithWord,
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
@@ -405,6 +410,7 @@ function saveAsTextIEEE(data) {
     });
     saveAs(blob, "download.txt");
 }
+
 function downloadAsText(type, uniquenum) {
     $(".sk-cube-grid").css('display', 'block');
     if (type == 0) {
@@ -424,6 +430,21 @@ function downloadAsText(type, uniquenum) {
             }
         }
     }
+}
+
+function downloadListAsText(){
+    var rows = $('tbody')[0].childNodes;
+
+    var textToSave = '';
+
+    for(var i = 0; i < titlesWithWord.length; i++){
+        textToSave += 'Title: ' + titlesWithWord[i] + '\n';
+    }
+
+    var blob = new Blob([textToSave],{
+        type: "text/plain;charset=utf-8"
+    });
+    saveAs(blob, 'myText.txt');
 }
 
 //Add each unique search to history for dropdown history
