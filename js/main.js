@@ -1,10 +1,10 @@
 var currFileList = [];
-var previousSearches = [];
 var list_of_words = "";
 var counter = 0;
 var num_papers = 0;
 var titles = [];
 var papers = [];
+var previousSearches = [];
 
 var line;
 
@@ -385,7 +385,7 @@ function createPaperList(papers) {
                 var authorArray = authorString.split(';');
                 $(nTd).html('');
                 for (var i = 0; i < authorArray.length; i++) {
-                    $(nTd).append("<a href='#'>" + authorArray[i] + "</a></br>");
+                    $(nTd).append("<a class='author-link' onClick='authorClicked(this)' href='#'>" + authorArray[i] + "</a></br>");
                 }
             }
         },{
@@ -591,4 +591,14 @@ function downloadListAsText(){
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, 'myText.txt');
+}
+
+function authorClicked(el){
+    var searchAuthor = $(el)[0].innerText;
+    $('#paperList').css({display: 'none'});
+    $('#searchPage').css('display', 'block');
+    $('#wordcloudPage').css('display', 'block');
+    $(".backList").css('display', 'none');
+    $('#search').val(searchAuthor);
+    search();
 }
