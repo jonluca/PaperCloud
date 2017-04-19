@@ -348,17 +348,24 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
-        titles.push(papers[key].title);
+        titles.push([])
+        titles[titles.length-1].push(papers[key].title);
+        titles[titles.length-1].push(papers[key].authors);
+        titles[titles.length-1].push(papers[key].pubtitle);
+        titles[titles.length-1].push(papers[key].frequency);
+        titles[titles.length-1].push(papers[key].doi);
+        titles[titles.length-1].push(papers[key].url);
+        titles[titles.length-1].push(papers[key].arn);
     }
-    console.log(papers)
     //Create data table fromt titles, use render function to make them link to to their download
     $('.paperTable').DataTable({
         data: titles,
-        "order": [[ 3, "desc" ]],
+        order: [[ 3, "desc" ]],
+        sType: [{ "sType": "numeric", "aTargets": [ 3 ] }],
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + oData + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
 
             }
         }, {
@@ -379,7 +386,7 @@ function createPaperList(papers) {
         },{
             title: 'Frequency',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html(papers[iRow].frequency);
+                //$(nTd).html(papers[iRow].frequency);
             }
         }, {
             title: 'BibTeX',
@@ -402,16 +409,6 @@ function createPaperList(papers) {
             }
         }]
     });
-
-    //This code attempts to add buttons - doesn't work right now
-    var table = $("#listPapers").DataTable();
-    new $.fn.dataTable.Buttons(table, {
-        buttons: [
-            'copy', 'excel', 'pdf'
-        ]
-    });
-    table.buttons().container()
-        .appendTo($('.paperTable', table.table().container()));
 }
 
 function saveAsTextIEEE(data) {
