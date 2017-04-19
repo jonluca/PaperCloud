@@ -149,8 +149,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			if ($options['verify'] === false) {
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($this->handle, CURLOPT_SSL_VERIFYPEER, 0);
-			}
-			elseif (is_string($options['verify'])) {
+			} elseif (is_string($options['verify'])) {
 				curl_setopt($this->handle, CURLOPT_CAINFO, $options['verify']);
 			}
 		}
@@ -180,6 +179,8 @@ class Requests_Transport_cURL implements Requests_Transport {
 		// Otherwise Requests_Transport_cURL wont be garbage collected and the curl_close() will never be called.
 		curl_setopt($this->handle, CURLOPT_HEADERFUNCTION, null);
 		curl_setopt($this->handle, CURLOPT_WRITEFUNCTION, null);
+
+		curl_setopt($this->handle, CURLOPT_TIMEOUT, 400);
 
 		return $this->headers;
 	}
@@ -219,8 +220,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			do {
 				$status = curl_multi_exec($multihandle, $active);
-			}
-			while ($status === CURLM_CALL_MULTI_PERFORM);
+			} while ($status === CURLM_CALL_MULTI_PERFORM);
 
 			$to_process = array();
 
@@ -239,15 +239,14 @@ class Requests_Transport_cURL implements Requests_Transport {
 					//get error string for handle.
 					$reason = curl_error($done['handle']);
 					$exception = new Requests_Exception_Transport_cURL(
-									$reason,
-									Requests_Exception_Transport_cURL::EASY,
-									$done['handle'],
-									$done['result']
-								);
+						$reason,
+						Requests_Exception_Transport_cURL::EASY,
+						$done['handle'],
+						$done['result']
+					);
 					$responses[$key] = $exception;
 					$options['hooks']->dispatch('transport.internal.parse_error', array(&$responses[$key], $requests[$key]));
-				}
-				else {
+				} else {
 					$responses[$key] = $subrequests[$key]->process_response($subrequests[$key]->response_data, $options);
 
 					$options['hooks']->dispatch('transport.internal.parse_response', array(&$responses[$key], $requests[$key]));
@@ -261,8 +260,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 				}
 				$completed++;
 			}
-		}
-		while ($active || $completed < count($subrequests));
+		} while ($active || $completed < count($subrequests));
 
 		$request['options']['hooks']->dispatch('curl.after_multi_exec', array(&$multihandle));
 
@@ -310,7 +308,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		$options['hooks']->dispatch('curl.before_request', array(&$this->handle));
 
 		// Force closing the connection for old versions of cURL (<7.22).
-		if ( ! isset( $headers['Connection'] ) ) {
+		if (!isset($headers['Connection'])) {
 			$headers['Connection'] = 'close';
 		}
 
@@ -322,33 +320,32 @@ class Requests_Transport_cURL implements Requests_Transport {
 			if ($data_format === 'query') {
 				$url = self::format_get($url, $data);
 				$data = '';
-			}
-			elseif (!is_string($data)) {
+			} elseif (!is_string($data)) {
 				$data = http_build_query($data, null, '&');
 			}
 		}
 
 		switch ($options['type']) {
-			case Requests::POST:
-				curl_setopt($this->handle, CURLOPT_POST, true);
+		case Requests::POST:
+			curl_setopt($this->handle, CURLOPT_POST, true);
+			curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
+			break;
+		case Requests::HEAD:
+			curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+			curl_setopt($this->handle, CURLOPT_NOBODY, true);
+			break;
+		case Requests::TRACE:
+			curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+			break;
+		case Requests::PATCH:
+		case Requests::PUT:
+		case Requests::DELETE:
+		case Requests::OPTIONS:
+		default:
+			curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
+			if (!empty($data)) {
 				curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
-				break;
-			case Requests::HEAD:
-				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
-				curl_setopt($this->handle, CURLOPT_NOBODY, true);
-				break;
-			case Requests::TRACE:
-				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
-				break;
-			case Requests::PATCH:
-			case Requests::PUT:
-			case Requests::DELETE:
-			case Requests::OPTIONS:
-			default:
-				curl_setopt($this->handle, CURLOPT_CUSTOMREQUEST, $options['type']);
-				if (!empty($data)) {
-					curl_setopt($this->handle, CURLOPT_POSTFIELDS, $data);
-				}
+			}
 		}
 
 		// cURL requires a minimum timeout of 1 second when using the system
@@ -361,15 +358,13 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if (is_int($timeout) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT, ceil($timeout));
-		}
-		else {
+		} else {
 			curl_setopt($this->handle, CURLOPT_TIMEOUT_MS, round($timeout * 1000));
 		}
 
 		if (is_int($options['connect_timeout']) || $this->version < self::CURL_7_16_2) {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT, ceil($options['connect_timeout']));
-		}
-		else {
+		} else {
 			curl_setopt($this->handle, CURLOPT_CONNECTTIMEOUT_MS, round($options['connect_timeout'] * 1000));
 		}
 		curl_setopt($this->handle, CURLOPT_URL, $url);
@@ -380,8 +375,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		}
 		if ($options['protocol_version'] === 1.1) {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-		}
-		else {
+		} else {
 			curl_setopt($this->handle, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
 		}
 
@@ -408,8 +402,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 		if ($options['filename'] !== false) {
 			fclose($this->stream_handle);
 			$this->headers = trim($this->headers);
-		}
-		else {
+		} else {
 			$this->headers .= $response;
 		}
 
@@ -479,8 +472,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 		if ($this->stream_handle) {
 			fwrite($this->stream_handle, $data);
-		}
-		else {
+		} else {
 			$this->response_data .= $data;
 		}
 
@@ -500,8 +492,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 			$url_parts = parse_url($url);
 			if (empty($url_parts['query'])) {
 				$query = $url_parts['query'] = '';
-			}
-			else {
+			} else {
 				$query = $url_parts['query'];
 			}
 
@@ -510,8 +501,7 @@ class Requests_Transport_cURL implements Requests_Transport {
 
 			if (empty($url_parts['query'])) {
 				$url .= '?' . $query;
-			}
-			else {
+			} else {
 				$url = str_replace($url_parts['query'], $query, $url);
 			}
 		}

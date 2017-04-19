@@ -358,12 +358,15 @@ function createPaperList(papers) {
 }
 
 function saveAsTextIEEE(data) {
+    $(".sk-cube-grid").css('display', 'none');
+
     var blob = new Blob([data], {
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, "download.txt");
 }
 function downloadAsText(type, uniquenum) {
+    $(".sk-cube-grid").css('display', 'block');
     if (type == 0) {
         //IEEE
 
@@ -372,6 +375,7 @@ function downloadAsText(type, uniquenum) {
         //ACM - iterate over papers, if doi match save text
         for (key in currFileList) {
             if (currFileList[key].doi == uniquenum) {
+                $(".sk-cube-grid").css('display', 'none');
                 var blob = new Blob([currFileList[key].paper], {
                     type: "text/plain;charset=utf-8"
                 });
