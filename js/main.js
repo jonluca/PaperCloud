@@ -278,6 +278,13 @@ function getPaperListByName(word) {
             if (currFileList[i].hasOwnProperty("abstract")) {
                 results_object.abstract = currFileList[i].abstract;
             }
+
+            if (currFileList[i].hasOwnProperty("arnumber")) {
+                results_object.arn = currFileList[i].arnumber;
+            }
+            if (currFileList[i].hasOwnProperty("org")) {
+                results_object.org = currFileList[i].org;
+            }
             //add object to results array
             results.push(results_object);
         }
@@ -331,13 +338,37 @@ function createPaperList(papers) {
                 $(nTd).html("<a href=\"#\" onClick='getBibtex(\"" + papers[iRow].doi + "\")'>BibTeX</a>");
             }
         }, {
-            title: 'Download',
+            title: 'PDF',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 $(nTd).html("<a href=\"" + papers[iRow].url + "\">PDF</a>");
+            }
+        }, {
+            title: 'TXT',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                if (papers[iRow].org == "IEEE") {
+                    $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(0," + papers[iRow].arn + ")\">TXT</a>");
+                } else {
+                    $(nTd).html("<a href=\"#\" onClick=\"downloadAsText(1," + "not done" + ")\">TXT</a>");
+                }
             }
         }],
         'bDestroy': true
     });
+}
+
+function saveAsTextIEEE(data) {
+    var blob = new Blob([data], {
+        type: "text/plain;charset=utf-8"
+    });
+    saveAs(blob, "download.txt");
+}
+function downloadAsText(type, paper) {
+    if (type == 0) {
+        $.when(IEEEGetText(paper)).done(saveAsTextIEEE);
+    //IEEE
+    } else {
+        //ACM
+    }
 }
 
 //Add each unique search to history for dropdown history
@@ -366,11 +397,11 @@ function parseIEEE(a1) {
         //If it has an abstract add it to list_of_words, the large string containing all words for word cloud
         if (papers[key].hasOwnProperty("abstract")) {
             list_of_words += papers[key].abstract;
-
         }
         //Add space between abstracts so that the end of one abstract doesnt turn into the beginning of another
         //i.e. ... ending word.Start of other ...
         list_of_words += " ";
+        papers[key].org = "IEEE";
 
         currFileList.push(papers[key]);
         //Inc counter - if we have enough papers, break
@@ -398,6 +429,7 @@ function parseACM(a2) {
             if (results2[key].hasOwnProperty("abstract")) {
                 list_of_words += results2[key].abstract;
             }
+            results2[key].org = "ACM";
             //Add the entire object (And all associated information to the file list)
             currFileList.push(results2[key]);
             //Increment counter. If we have enough, break
