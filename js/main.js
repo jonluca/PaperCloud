@@ -50,10 +50,12 @@ $(document).ready(function() {
 
     //Export table as PDF
     $("#exportPDF").on('click', function() {
-        var doc = new jsPDF();
-        var table = document.getElementById("DataTables_Table_0_wrapper");
-        doc.fromHTML(table);
-        doc.output("dataurlnewwindow");
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        pdf.canvas.height = 72 * 11;
+        pdf.canvas.width = 72 * 8.5;
+        html2pdf(document.getElementById('listPapers'), pdf, function(pdf){
+            pdf.output('dataurlnewwindow');
+        });
     //PDF generated below looks better but takes forever
     // html2pdf(table, {
     //     margin: 1,
@@ -278,7 +280,7 @@ function ACMSearch(search_param, num_papers) {
     });
 }
 
-//Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array 
+//Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array
 //return array after checking every abstract. This is to build the list of papers
 function getPaperListByName(word) {
     var results = [];
@@ -298,7 +300,7 @@ function getPaperListByName(word) {
             } else if (currFileList[i].hasOwnProperty("url")) {
                 results_object.url = currFileList[i].url;
             } else {
-                //If url object does not exist, then default to dl.acm.org 
+                //If url object does not exist, then default to dl.acm.org
                 results_object.url = "http://dl.acm.org";
             }
 
@@ -517,7 +519,7 @@ function search() {
     var search_param = $("#search").val();
     num_papers = $("#number_papers").val();
 
-    //Add the search to the history 
+    //Add the search to the history
     addSearchToHistory(search_param);
 
     //reinit the file list so that we don't use the old stuff
@@ -534,7 +536,7 @@ function search() {
                 search: search_param
             },
             success: function(data, code, jqXHR) {
-                //parse data 
+                //parse data
                 parseIEEE(data);
                 //generate word cloud
                 getWordFrequency(list_of_words);
