@@ -98,9 +98,10 @@ $(document).ready(function() {
         search();
     });
     //register download button with download action
-    document.getElementById("download").addEventListener('click', dlCanvas, false);
     if (typeof mocha !== 'undefined') {
         mocha.run();
+    } else {
+        document.getElementById("download").addEventListener('click', dlCanvas, false);
     }
 });
 
