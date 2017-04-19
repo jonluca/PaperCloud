@@ -1,0 +1,54 @@
+Scrum Meeting 1
+
+Scrum master: Myrl Marmarelis
+
+Sprint review:
+Demo went pretty well, though we are only at around 40% completion. Tests are a little too sparse (i.e. we need to increase coverage), but not too bad.
+
+======================================================
+
+SCRUM QUESTIONS:
+
+1. What have you accomplished?
+
+2. What do you plan on doing before next meeting?
+
+3. Is there anything blocking you?
+
+======================================================
+
+Alex
+
+1. Worked on table to make it have conference, author, frequency, and sort by all this. also fixed pdf generator to download pdf of table.
+2. Work on generating word cloud from subset of paper list
+3. Nothing.
+
+JonLuca
+
+1. Some refactoring. Bibtex, abstract, downloading stuff (PDF, text).
+2. More tests.
+3. Nothing really: just ACM is a pain
+
+Marshall
+
+1. Integrated number of papers feature.
+2. Going to write a lot of tests.
+3. Nothing.
+
+Zach
+
+1. Added a bug test for number entry (check for letters). Added unit tests for author search. Implemented click-on-author-to-earch. Download table as text.
+2. Going to work on search by conference.
+3. There's a bug when you click on a word sometimes it throws an error.
+
+Myrl
+
+1. Demoed the software. Fixed multiple bugs while preparing for it.
+2. Will work on more test coverage.
+3. Nothing.
+
+Janson
+
+1. Did a lot of work on our documentation.
+2. Will keep doing continuous testing.
+3. Nothing.
