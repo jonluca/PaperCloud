@@ -358,6 +358,11 @@ function createPaperList(papers) {
         titles[titles.length-1].push(papers[key].arn);
     }
     //Create data table fromt titles, use render function to make them link to to their download
+    if ($.fn.dataTable.isDataTable( '.paperTable' ) ) {
+        let table = $('.paperTable').DataTable();
+        table.destroy();
+    }
+
     $('.paperTable').DataTable({
         data: titles,
         order: [[ 3, "desc" ]],
