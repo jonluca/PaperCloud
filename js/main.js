@@ -262,7 +262,8 @@ function getPaperListByName(word) {
             };
             //If IEEE inserted it, the url is in a key called pdf
             if (currFileList[i].hasOwnProperty("pdf")) {
-                results_object.url = currFileList[i].pdf;
+                //results_object.url = currFileList[i].pdf;
+                results_object.url = IEEEGetPdfUrl(currFileList[i].arnumber, word);
             //If ACM returned it, the url will be in a key called url
             } else if (currFileList[i].hasOwnProperty("url")) {
                 results_object.url = currFileList[i].url;
