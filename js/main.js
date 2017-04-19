@@ -41,12 +41,45 @@ $(document).ready(function() {
         }
     });
     //Added back button after clicking on word in wordcloud
-    $(".backList").on('click', function() {
+    $("#goBack").on('click', function() {
         $('#paperList').css('display', 'none');
         $('#searchPage').css('display', 'block');
         $('#wordcloudPage').css('display', 'block');
         $(".backList").css('display', 'none');
     });
+
+    //Export table as PDF
+    $("#exportPDF").on('click', function() {
+        var doc = new jsPDF();
+        var table = document.getElementById("DataTables_Table_0_wrapper");
+        doc.fromHTML(
+            table,
+            50,
+            15);
+
+        doc.output("dataurlnewwindow");
+    // html2pdf(table, {
+    //     margin: 1,
+    //     filename: 'myfile.pdf',
+    //     image: {
+    //         type: 'jpeg',
+    //         quality: 0.98
+    //     },
+    //     html2canvas: {
+    //         dpi: 192,
+    //         letterRendering: true
+    //     },
+    //     jsPDF: {
+    //         unit: 'in',
+    //         format: 'letter',
+    //         orientation: 'portrait'
+    //     }
+    // });
+    });
+
+    //Export table as TXT
+    $("#exportTXT").on('click', function() {});
+
 
     //Stops progress bar after loading is done
     $('#wordcloud').on('wordcloudstop', function() {
