@@ -99,3 +99,23 @@ describe('BugResolvedForBadInputOnNumberPapers', function(){
 		expect(beforeVal).to.equal(afterVal);
 	});
 });
+
+
+describe('SearchOperatesWhenAuthorIsClicked', function(){
+	it('fillsSearchBar', function(){
+		$('.author').trigger('click');
+		var searchVal = $('#search').val();
+		var empty = '';
+		expect(searchVal).not.to.equal(empty);
+	});
+
+	//after ten seconds check to see if the search performed
+	it('performsSearch', function(){
+		var firstList = list_of_words;
+		$('.author').trigger('click');
+		setTimeout(function(){
+			var secondList = list_of_words;
+			expect(firstList).not.to.equal(secondList);
+		}, 10000);
+	})
+});
