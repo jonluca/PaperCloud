@@ -26,6 +26,14 @@ $(document).ready(function() {
         downloadListAsText();
     });
 
+    $('#searchTypeButton').on('click', function() {
+        if ($('#searchTypeButton')[0].textContent == "Author") {
+            $('#searchTypeButton').text("Keyword");
+        } else {
+            $('#searchTypeButton').text("Author");
+        }
+    });
+
     //Search history dropdown - disable
     $('#search').on('focus', function() {
         $('.dropdown-content').addClass('dropdown-is-active');
@@ -593,12 +601,14 @@ function search() {
     if (parseInt(num_papers) <= 20) {
         //recycled code from IEEESearch function so we don't have to deal with promises for a single ajax call
         var url = "php/get_IEEE_list.php";
+        var type = $('#searchTypeButton')[0].textContent;
         $.ajax({
             method: 'GET',
             url: url,
             dataType: 'text',
             data: {
-                search: search_param
+                search: search_param,
+                type: type
             },
             success: function(data, code, jqXHR) {
                 //parse data
