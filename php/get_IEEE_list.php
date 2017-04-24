@@ -16,7 +16,7 @@ if (defined('STDIN')) {
 }
 
 function performQuery($search, $type) {
-	$cmd = ($type == "keyword") ? "idxterms" : "au";
+	$cmd = ($type == "Keyword") ? "idxterms" : "au";
 	$url = "https://ieeexplore.ieee.org/gateway/ipsSearch.jsp?$cmd=$search";
 	$xml_result = file_get_contents($url);
 	$xml = simplexml_load_string($xml_result, 'SimpleXMLElement', LIBXML_NOCDATA);

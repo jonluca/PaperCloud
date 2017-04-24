@@ -330,9 +330,9 @@ function getPaperListByName(word) {
             }
 
             if (currFileList[i].hasOwnProperty('url')) {
-                results_object.libURL = currFileList[i].url
+                results_object.libURL = currFileList[i].url;
             } else if (currFileList[i].hasOwnProperty('pdf')) {
-                results_object.libURL = currFileList[i].pdf
+                results_object.libURL = currFileList[i].pdf;
             }
 
 
@@ -690,13 +690,13 @@ function conferenceSearch(conference) {
 function getSubsetWordCloud(array) {
     var totalString = "";
 
-    var newArray = []
+    var newArray = [];
     for (var i = 0; i < array.length; i++) {
 
         for (var j = 0; j < currFileList.length; j++) {
             if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
                 totalString += currFileList[j].abstract;
-                newArray.push(currFileList[j])
+                newArray.push(currFileList[j]);
                 break;
             }
         }
