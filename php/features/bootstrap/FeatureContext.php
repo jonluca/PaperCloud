@@ -71,7 +71,9 @@ class FeatureContext extends MinkContext {
 	 * @Then a new search will begin querying that author
 	 */
 	public function aNewSearchWillBeginQueryingThatAuthor() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
