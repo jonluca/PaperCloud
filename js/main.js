@@ -321,10 +321,10 @@ function getPaperListByName(word) {
                 results_object.url = "http://dl.acm.org";
             }
 
-            if (currFileList.hasOwnProperty('url')) {
-                results_object.libURL = currFileList.url
-            } else if (currFileList.hasOwnProperty('pdf')) {
-                results_object.libURL = currFileList.pdf
+            if (currFileList[i].hasOwnProperty('url')) {
+                results_object.libURL = currFileList[i].url
+            } else if (currFileList[i].hasOwnProperty('pdf')) {
+                results_object.libURL = currFileList[i].pdf
             }
 
             if (currFileList[i].hasOwnProperty("doi")) {
@@ -391,8 +391,8 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
-        x;
         titles.push([]);
+        titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].authors);
         titles[titles.length - 1].push(papers[key].pubtitle);
