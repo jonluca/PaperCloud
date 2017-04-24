@@ -129,3 +129,13 @@ describe('SearchHistoryIsStillClickableBug', function(){
 		expect(dropdown).not.to.equal(undefined);
 	})
 });
+
+describe('GenerateWordCloudFromSubset', function(){
+    it('generateWordCloudFromSubset', function(){
+        var listOfPapers =  []
+
+        var answer = getSubsetWordCloud(listOfPapers);
+
+        expect(answer).to.be.a('string');
+    });
+});

@@ -48,6 +48,7 @@ $(document).ready(function() {
             $(this).trigger("enterKey");
         }
     });
+
     //Added back button after clicking on word in wordcloud
     $("#goBack").on('click', function() {
         $('#paperList').css('display', 'none');
@@ -80,6 +81,25 @@ $(document).ready(function() {
             line.set(0);
         }, 900);
         $('#download').css('display', 'inline');
+    });
+
+    //get subset word cloud from selected words
+    $("#getSubset").on('click', function() {
+        var array = []
+
+        $('.getSubsetCheckbox').each(function(index, element) {
+            console.log($(element).prop('checked'))
+            if ($(element).prop('checked')) {
+                array.push($(element).data('title'));
+            }
+        })
+
+        console.log(array);
+        console.log(getSubsetWordCloud(array))
+        getWordFrequency(getSubsetWordCloud(array));
+        $('#paperList').css('display', 'none');
+        $('#searchPage').css('display', 'block');
+        $('#wordcloudPage').css('display', 'block');
     });
 
     /*
@@ -359,6 +379,7 @@ function createPaperList(papers) {
     for (var key in papers) {
         titles.push([])
         titles[titles.length-1].push(papers[key].title);
+        titles[titles.length-1].push(papers[key].title);
         titles[titles.length-1].push(papers[key].authors);
         titles[titles.length-1].push(papers[key].pubtitle);
         titles[titles.length-1].push(papers[key].frequency);
@@ -374,9 +395,13 @@ function createPaperList(papers) {
 
     $('.paperTable').DataTable({
         data: titles,
-        order: [[ 3, "desc" ]],
-        sType: [{ "sType": "numeric", "aTargets": [ 3 ] }],
+        order: [[ 4, "desc" ]],
         columns: [{
+            title: '',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<input type='checkbox' class='getSubsetCheckbox' data-title='" + papers[iRow].title + "'>");
+            }
+        }, {
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
@@ -605,4 +630,19 @@ function authorClicked(el){
     $(".backList").css('display', 'none');
     $('#search').val(searchAuthor);
     search();
+}
+
+function getSubsetWordCloud(array) {
+    var totalString = "";
+    for (var i = 0; i < array.length; i++) {
+
+        for (var j = 0; j < currFileList.length; j++) {
+            if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
+                totalString += currFileList[j].abstract;
+                break;
+            }
+        }
+    }
+
+    return totalString;
 }
