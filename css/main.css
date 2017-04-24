@@ -39,6 +39,10 @@ body {
   white-space: pre-wrap;
 }
 
+.highlight {
+  background-color: yellow;
+}
+
 .ui-widget {
   font-family: Verdana, Arial, sans-serif;
   font-size: .8em;
@@ -160,7 +164,7 @@ body {
   background-color: #333;
   float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+          animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
 .sk-cube-grid .sk-cube1 {
   -webkit-animation-delay: 0.2s;
@@ -196,7 +200,7 @@ body {
             transform: scale3D(1, 1, 1);
   } 35% {
     -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1); 
+            transform: scale3D(0, 0, 1);
   }
 }
 
@@ -207,5 +211,5 @@ body {
   } 35% {
     -webkit-transform: scale3D(0, 0, 1);
             transform: scale3D(0, 0, 1);
-  } 
+  }
 }
