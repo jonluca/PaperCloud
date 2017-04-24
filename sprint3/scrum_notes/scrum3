@@ -1,0 +1,51 @@
+Scrum Meeting 3
+
+Scrum master: Myrl Marmarelis
+
+======================================================
+
+SCRUM QUESTIONS:
+
+1. What have you accomplished?
+
+2. What do you plan on doing before next meeting?
+
+3. Is there anything blocking you?
+
+======================================================
+
+Alex
+
+1. Paper subset search
+2. Work on documentation
+3. Nothing
+
+JonLuca
+
+1. Worked on author/keyword search, conference search.
+2. Refactors/better code.
+3. Nothing.
+
+Marshall
+
+1. Implemented tests, peer programming with alex and jonluca
+2. Documentation
+3. Nothing
+
+Zachary
+
+1. Fixed bug for history search and added front end tests.
+2. Add more tests and contribute to documentation.
+3. Nothing
+
+Myrl
+
+1. Many more unit tests and fixed some obscure bugs.
+2. Will work on more tests!
+3. Nothing.
+
+Janson
+
+1. Updated features in documentation
+2. Continue documentation
+3. Nothing
