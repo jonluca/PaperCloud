@@ -32,7 +32,10 @@ $(document).ready(function() {
 
     //Search history dropdown - enable
     $('#search').on('focusout', function() {
-        $('.dropdown-content').removeClass('dropdown-is-active');
+        setTimeout(function(){
+            $('.dropdown-content').removeClass('dropdown-is-active');
+        }, 250);
+        
     });
 
     //Makes enter search on num papers input box
@@ -106,6 +109,7 @@ function dlCanvas() {
 
 //function called when a previous search item is clicked
 function historyItemClicked(target) {
+    console.log('a history item was clicked');
     //get text, set search box to that text, then search again
     var text = target.textContent;
     $('#search').val(text);
