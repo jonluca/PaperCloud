@@ -21,7 +21,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#exportTXT').on('click', function(){
+    $('#exportTXT').on('click', function() {
         downloadListAsText();
     });
 
@@ -58,7 +58,7 @@ $(document).ready(function() {
         var pdf = new jsPDF('p', 'pt', 'letter');
         pdf.canvas.height = 72 * 11;
         pdf.canvas.width = 72 * 8.5;
-        html2pdf(document.getElementById('listPapers'), pdf, function(pdf){
+        html2pdf(document.getElementById('listPapers'), pdf, function(pdf) {
             pdf.output('dataurlnewwindow');
         });
     });
@@ -275,7 +275,7 @@ function getPaperListByName(word) {
     //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
-        var re = new RegExp(word,"g");
+        var re = new RegExp(word, "g");
         var count = (currFileList[i].abstract.match(re) || []).length;
         if (count > 0) {
             //Create object to insert to results, initiate with title
@@ -353,25 +353,28 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
-        titles.push([])
-        titles[titles.length-1].push(papers[key].title);
-        titles[titles.length-1].push(papers[key].authors);
-        titles[titles.length-1].push(papers[key].pubtitle);
-        titles[titles.length-1].push(papers[key].frequency);
-        titles[titles.length-1].push(papers[key].doi);
-        titles[titles.length-1].push(papers[key].url);
-        titles[titles.length-1].push(papers[key].arn);
+        titles.push([]);
+        titles[titles.length - 1].push(papers[key].title);
+        titles[titles.length - 1].push(papers[key].authors);
+        titles[titles.length - 1].push(papers[key].pubtitle);
+        titles[titles.length - 1].push(papers[key].frequency);
+        titles[titles.length - 1].push(papers[key].doi);
+        titles[titles.length - 1].push(papers[key].url);
+        titles[titles.length - 1].push(papers[key].arn);
     }
     //Create data table fromt titles, use render function to make them link to to their download
-    if ($.fn.dataTable.isDataTable( '.paperTable' ) ) {
+    if ($.fn.dataTable.isDataTable('.paperTable')) {
         let table = $('.paperTable').DataTable();
         table.destroy();
     }
 
     $('.paperTable').DataTable({
         data: titles,
-        order: [[ 3, "desc" ]],
-        sType: [{ "sType": "numeric", "aTargets": [ 3 ] }],
+        order: [[3, "desc"]],
+        sType: [{
+            "sType": "numeric",
+            "aTargets": [3]
+        }],
         columns: [{
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
@@ -388,12 +391,12 @@ function createPaperList(papers) {
                     $(nTd).append("<a class='author-link' onClick='authorClicked(this)' href='#'>" + authorArray[i] + "</a></br>");
                 }
             }
-        },{
+        }, {
             title: 'Conference',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href='#'>" + papers[iRow].pubtitle + "</a>");
+                $(nTd).html("<a href='#' onClick='conferenceSearch(\"" + papers[iRow].pubtitle + "\")'>" + papers[iRow].pubtitle + "</a>");
             }
-        },{
+        }, {
             title: 'Frequency',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 //$(nTd).html(papers[iRow].frequency);
@@ -463,7 +466,7 @@ function parseIEEE(a1) {
     console.log("IEEE:");
 
     var results = JSON.parse(a1);
-    console.log(results)
+    console.log(results);
 
     var papers = results.document;
 
@@ -498,7 +501,7 @@ function parseACM(a2) {
     //Only parse them if we don't have enough papers in our paper list yet
     if (counter < num_papers) {
         var results2 = JSON.parse(a2[0]);
-        console.log(results2)
+        console.log(results2);
         //ACM search returns array of titles, very little parsing needed
         for (key in results2) {
             var title = results2[key].title;
@@ -577,28 +580,59 @@ function search() {
     }
 }
 
-function downloadListAsText(){
+function downloadListAsText() {
     var textToSave = '';
 
-    for(var i = 0; i < papers.length; i++){
+    for (var i = 0; i < papers.length; i++) {
         var paper = papers[i];
         textToSave += 'Title: ' + paper.title + '\n';
         textToSave += 'Authors: ' + paper.authors + '\n';
         textToSave += 'Conference: ' + paper.pubtitle + '\n \n';
     }
 
-    var blob = new Blob([textToSave],{
+    var blob = new Blob([textToSave], {
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, 'myText.txt');
 }
 
-function authorClicked(el){
+function authorClicked(el) {
     var searchAuthor = $(el)[0].innerText;
-    $('#paperList').css({display: 'none'});
+    $('#paperList').css({
+        display: 'none'
+    });
     $('#searchPage').css('display', 'block');
     $('#wordcloudPage').css('display', 'block');
     $(".backList").css('display', 'none');
     $('#search').val(searchAuthor);
     search();
+}
+
+function conferenceSearch(conference) {
+    var url = "php/get_IEEE_conference_list.php";
+    $.ajax({
+        method: 'GET',
+        url: url,
+        data: {
+            search: conference
+        },
+        success: function(data, code, jqXHR) {
+            var papers;
+            try {
+                papers = JSON.parse(data);
+            } catch ( e ) {
+                console.log("Error parsing conferences!");
+            }
+            console.log(papers);
+            papers = papers.document;
+            $("#pop-up-info").html("<ul id='popup-table'></ul>");
+            for (key in papers) {
+                $("#popup-table").append('<li>' + papers[key].title + '</li>');
+            }
+            $('#pop-up-info').css('display', 'block');
+            $("#pop-up-info").dialog();
+            $("#pop-up-info").dialog('option', 'title', conference);
+
+        }
+    });
 }

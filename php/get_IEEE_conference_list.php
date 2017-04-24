@@ -7,8 +7,7 @@ if (defined('STDIN')) {
 }
 
 function performQuery($search) {
-
-	$url = "https://ieeexplore.ieee.org/gateway/ipsSearch.jsp?au=$search";
+	$url = "https://ieeexplore.ieee.org/gateway/ipsSearch.jsp?querytext=$search&ctype=Conferences";
 	$xml_result = file_get_contents($url);
 	$xml = simplexml_load_string($xml_result, 'SimpleXMLElement', LIBXML_NOCDATA);
 	$json = json_encode($xml);
@@ -16,7 +15,5 @@ function performQuery($search) {
 }
 
 echo (performQuery($search));
-
-// not sure if we should parse in PHP but it's easy with: new SimpleXMLElement("..");
 
 ?>
