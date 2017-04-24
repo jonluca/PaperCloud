@@ -1,0 +1,54 @@
+Scrum Meeting 1
+
+Scrum master: Myrl Marmarelis
+
+Sprint review:
+Demo went pretty well, though we are only at around 40% completion. Tests are a little too sparse (i.e. we need to increase coverage), but not too bad.
+
+======================================================
+
+SCRUM QUESTIONS:
+
+1. What have you accomplished?
+
+2. What do you plan on doing before next meeting?
+
+3. Is there anything blocking you?
+
+======================================================
+
+Alex
+
+1. Nothing
+2. Documentation
+3. Nothing
+
+JonLuca
+
+1. Some refactors
+2. Search by author/conference
+3. Peer programming
+
+Marshall
+
+1. Wrote tests
+2. Clickable title shows abstract (user story 9) 
+3. I need someone to peer program with
+
+Zach
+
+1. Nothing
+2. Front end of conference search
+3. Nothing
+
+Myrl
+
+1. Nathing.
+2. Will work on more tests.
+3. Peer programming.
+
+Janson
+
+1. Nothing
+2. Fill in docs
+3. Nothing
