@@ -5,7 +5,7 @@ var num_papers = 0;
 var titles = [];
 var papers = [];
 var previousSearches = [];
-var clickedWord = ""
+var clickedWord = "";
 
 var line;
 
@@ -322,9 +322,9 @@ function getPaperListByName(word) {
             }
 
             if (currFileList.hasOwnProperty('url')) {
-                results_object.libURL = currFileList.url
+                results_object.libURL = currFileList.url;
             } else if (currFileList.hasOwnProperty('pdf')) {
-                results_object.libURL = currFileList.pdf
+                results_object.libURL = currFileList.pdf;
             }
 
             if (currFileList[i].hasOwnProperty("doi")) {
@@ -371,7 +371,7 @@ function showAbstract(abstract, url) {
     var aElement = "<a href='" + url + "'>Download PDF</a>";
     $("#pop-up-info").html(abstract + "<br/>" + aElement);
     if (clickedWord.length > 0) {
-         $("#pop-up-info").mark(clickedWord);
+        $("#pop-up-info").mark(clickedWord);
     }
     $('#pop-up-info').css('display', 'block');
     $("#pop-up-info").dialog();
@@ -391,7 +391,6 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
-        x;
         titles.push([]);
         titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].authors);
@@ -418,7 +417,7 @@ function createPaperList(papers) {
         }, {
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\",\"" + papers[iRow].url + "\")'>"  + papers[iRow].title + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\",\"" + papers[iRow].url + "\")'>" + papers[iRow].title + "</a>");
 
             }
         }, {
