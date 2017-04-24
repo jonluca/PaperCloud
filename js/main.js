@@ -5,6 +5,7 @@ var num_papers = 0;
 var titles = [];
 var papers = [];
 var previousSearches = [];
+var clickedWord = ""
 
 var line;
 
@@ -296,6 +297,7 @@ function ACMSearch(search_param, num_papers) {
 //return array after checking every abstract. This is to build the list of papers
 function getPaperListByName(word) {
     var results = [];
+    clickedWord = word;
     //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
@@ -317,6 +319,12 @@ function getPaperListByName(word) {
             } else {
                 //If url object does not exist, then default to dl.acm.org
                 results_object.url = "http://dl.acm.org";
+            }
+
+            if (currFileList.hasOwnProperty('url')) {
+                results_object.libURL = currFileList.url
+            } else if (currFileList.hasOwnProperty('pdf')) {
+                results_object.libURL = currFileList.pdf
             }
 
             if (currFileList[i].hasOwnProperty("doi")) {
@@ -357,8 +365,14 @@ function getPaperListByName(word) {
     return results;
 }
 
-function showAbstract(abstract) {
-    $("#pop-up-info").text(abstract);
+function showAbstract(abstract, url) {
+
+
+    var aElement = "<a href='" + url + "'>Download PDF</a>";
+    $("#pop-up-info").html(abstract + "<br/>" + aElement);
+    if (clickedWord.length > 0) {
+         $("#pop-up-info").mark(clickedWord);
+    }
     $('#pop-up-info').css('display', 'block');
     $("#pop-up-info").dialog();
     $("#pop-up-info").dialog('option', 'title', 'Abstract');
@@ -384,7 +398,7 @@ function createPaperList(papers) {
         titles[titles.length - 1].push(papers[key].pubtitle);
         titles[titles.length - 1].push(papers[key].frequency);
         titles[titles.length - 1].push(papers[key].doi);
-        titles[titles.length - 1].push(papers[key].url);
+        titles[titles.length - 1].push(papers[key].libURL);
         titles[titles.length - 1].push(papers[key].arn);
     }
     //Create data table fromt titles, use render function to make them link to to their download
@@ -404,7 +418,7 @@ function createPaperList(papers) {
         }, {
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\",\"" + papers[iRow].url + "\")'>"  + papers[iRow].title + "</a>");
 
             }
         }, {
@@ -435,7 +449,7 @@ function createPaperList(papers) {
         }, {
             title: 'PDF',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"" + papers[iRow].url + "\">PDF</a>");
+                $(nTd).html("<a href=\"" + papers[iRow].libURL + "\">PDF</a>");
             }
         }, {
             title: 'TXT',
