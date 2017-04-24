@@ -119,3 +119,13 @@ describe('SearchOperatesWhenAuthorIsClicked', function(){
 		}, 10000);
 	})
 });
+
+describe('GenerateWordCloudFromSubset', function(){
+    it('generateWordCloudFromSubset', function(){
+        var listOfPapers =  []
+
+        var answer = getSubsetWordCloud(listOfPapers);
+
+        expect(answer).to.be.a('string');
+    });
+});
