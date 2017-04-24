@@ -5,6 +5,7 @@ var num_papers = 0;
 var titles = [];
 var papers = [];
 var previousSearches = [];
+var clickedWord = ""
 
 var line;
 
@@ -296,6 +297,7 @@ function ACMSearch(search_param, num_papers) {
 //return array after checking every abstract. This is to build the list of papers
 function getPaperListByName(word) {
     var results = [];
+    clickedWord = word;
     //Iterate over array of objects
     for (var i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
@@ -357,8 +359,14 @@ function getPaperListByName(word) {
     return results;
 }
 
-function showAbstract(abstract) {
-    $("#pop-up-info").text(abstract);
+function showAbstract(abstract, url) {
+
+
+    var aElement = "<a href='" + url + "'>Download PDF</a>";
+    $("#pop-up-info").html(abstract + "<br/>" + aElement);
+    if (clickedWord.length > 0) {
+         $("#pop-up-info").mark(clickedWord);
+    }
     $('#pop-up-info').css('display', 'block');
     $("#pop-up-info").dialog();
     $("#pop-up-info").dialog('option', 'title', 'Abstract');
@@ -404,7 +412,7 @@ function createPaperList(papers) {
         }, {
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
+                $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\",\"" + papers[iRow].url + "\")'>"  + papers[iRow].title + "</a>");
 
             }
         }, {
