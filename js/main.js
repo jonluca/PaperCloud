@@ -329,11 +329,12 @@ function getPaperListByName(word) {
                 results_object.url = "http://dl.acm.org";
             }
 
-            if (currFileList.hasOwnProperty('url')) {
-                results_object.libURL = currFileList.url;
-            } else if (currFileList.hasOwnProperty('pdf')) {
-                results_object.libURL = currFileList.pdf;
+            if (currFileList[i].hasOwnProperty('url')) {
+                results_object.libURL = currFileList[i].url
+            } else if (currFileList[i].hasOwnProperty('pdf')) {
+                results_object.libURL = currFileList[i].pdf
             }
+
 
             if (currFileList[i].hasOwnProperty("doi")) {
                 results_object.doi = currFileList[i].doi;
@@ -400,6 +401,7 @@ function createPaperList(papers) {
     var titles = [];
     for (var key in papers) {
         titles.push([]);
+        titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].authors);
         titles[titles.length - 1].push(papers[key].pubtitle);
@@ -687,15 +689,20 @@ function conferenceSearch(conference) {
 }
 function getSubsetWordCloud(array) {
     var totalString = "";
+
+    var newArray = []
     for (var i = 0; i < array.length; i++) {
 
         for (var j = 0; j < currFileList.length; j++) {
             if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
                 totalString += currFileList[j].abstract;
+                newArray.push(currFileList[j])
                 break;
             }
         }
     }
+
+    currFileList = newArray;
 
     return totalString;
 }
