@@ -20,15 +20,17 @@ describe("Wordcloud List", function(){
     });
 });
 
-// describe('ProgressBarFunctionsProperly', function(){
-// 	it('InitiatesWhenSearchIsClicked', function(){
-// 		var before = line.value();
-// 		$('#search').trigger('click');
-// 		var after = line.value();
-// 		expect(before).to.equal(0);
-// 		expect(after).to.not.equal(0);
-// 	});
-// });
+describe('ProgressBarFunctionsProperly', function(){
+	it('InitiatesWhenSearchIsClicked', function(){
+		var before = line.value();
+		$('#search').trigger('click');
+		setTimeout(function(){
+			var after = line.value();
+			expect(before).to.equal(0);
+			expect(after).to.not.equal(0);
+		});
+	});
+});
 
 describe("IEEE", function(){
     it("returnCorrectPdfUrl", function(){
@@ -116,6 +118,26 @@ describe('SearchOperatesWhenAuthorIsClicked', function(){
 		setTimeout(function(){
 			var secondList = list_of_words;
 			expect(firstList).not.to.equal(secondList);
-		}, 10000);
+		}, 100);
 	})
+});
+
+
+describe('SearchHistoryIsStillClickableBug', function(){
+	it("dropdownStillexistsAfterUnfocus", function(){
+		$("#search").trigger('focus');
+		$("#search").trigger('fucusout');
+		var dropdown = $('.dropdown-content');
+		expect(dropdown).not.to.equal(undefined);
+	})
+});
+
+describe('GenerateWordCloudFromSubset', function(){
+    it('generateWordCloudFromSubset', function(){
+        var listOfPapers =  []
+
+        var answer = getSubsetWordCloud(listOfPapers);
+
+        expect(answer).to.be.a('string');
+    });
 });

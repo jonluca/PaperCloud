@@ -32,7 +32,10 @@ $(document).ready(function() {
 
     //Search history dropdown - enable
     $('#search').on('focusout', function() {
-        $('.dropdown-content').removeClass('dropdown-is-active');
+        setTimeout(function() {
+            $('.dropdown-content').removeClass('dropdown-is-active');
+        }, 250);
+
     });
 
     //Makes enter search on num papers input box
@@ -45,6 +48,7 @@ $(document).ready(function() {
             $(this).trigger("enterKey");
         }
     });
+
     //Added back button after clicking on word in wordcloud
     $("#goBack").on('click', function() {
         $('#paperList').css('display', 'none');
@@ -79,6 +83,25 @@ $(document).ready(function() {
         $('#download').css('display', 'inline');
     });
 
+    //get subset word cloud from selected words
+    $("#getSubset").on('click', function() {
+        var array = [];
+
+        $('.getSubsetCheckbox').each(function(index, element) {
+            console.log($(element).prop('checked'));
+            if ($(element).prop('checked')) {
+                array.push($(element).data('title'));
+            }
+        });
+
+        console.log(array);
+        console.log(getSubsetWordCloud(array));
+        getWordFrequency(getSubsetWordCloud(array));
+        $('#paperList').css('display', 'none');
+        $('#searchPage').css('display', 'block');
+        $('#wordcloudPage').css('display', 'block');
+    });
+
     /*
     * Search
     */
@@ -106,6 +129,7 @@ function dlCanvas() {
 
 //function called when a previous search item is clicked
 function historyItemClicked(target) {
+    console.log('a history item was clicked');
     //get text, set search box to that text, then search again
     var text = target.textContent;
     $('#search').val(text);
@@ -353,6 +377,7 @@ function createPaperList(papers) {
     //Create titles array from papers object
     var titles = [];
     for (var key in papers) {
+        x;
         titles.push([]);
         titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].authors);
@@ -370,12 +395,13 @@ function createPaperList(papers) {
 
     $('.paperTable').DataTable({
         data: titles,
-        order: [[3, "desc"]],
-        sType: [{
-            "sType": "numeric",
-            "aTargets": [3]
-        }],
+        order: [[4, "desc"]],
         columns: [{
+            title: '',
+            "fnCreatedCell": function(nTd, sData, oData, iRow) {
+                $(nTd).html("<input type='checkbox' class='getSubsetCheckbox' data-title='" + papers[iRow].title + "'>");
+            }
+        }, {
             title: 'Title',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
                 $(nTd).html("<a href=\"#\" onClick='showAbstract(\"" + papers[iRow].abstract + "\")'>" + papers[iRow].title + "</a>");
@@ -635,4 +661,18 @@ function conferenceSearch(conference) {
 
         }
     });
+}
+function getSubsetWordCloud(array) {
+    var totalString = "";
+    for (var i = 0; i < array.length; i++) {
+
+        for (var j = 0; j < currFileList.length; j++) {
+            if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
+                totalString += currFileList[j].abstract;
+                break;
+            }
+        }
+    }
+
+    return totalString;
 }
