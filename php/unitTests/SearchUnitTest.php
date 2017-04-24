@@ -64,6 +64,41 @@ class GetIEEEtest extends TestCase {
 		//$this->assertTrue($equals);
 	}
 
+	public function testACMSearchCircuit() {
+		$keyword = "circuit";
+		exec('php ../get_ACM_list.php ' . escapeshellarg($keyword), $output, $return_var);
+		$json_output = json_decode($output[2], true);
+		$this->assertNotEquals(0, count($json_output));
+		$equals = false;
+		//The same search sometimes returns different results - these are the two titles it alternates between returning first
+		// if ($json_output[1] == "Finding HTML Presentation Failures Using Image Comparison Techniques" || $json_output[1] == "Web Application Modeling for Testing and Analysis" || $json_output[1]) {
+		// 	$equals = true;
+		// }
+		if (isset($json_output["2717788"])) {
+			$equals = true;
+		}
+
+		$this->assertTrue($equals);
+	}
+
+	public function testIEEESearchCircuit() {
+		$keyword = "circuit";
+		exec('php ../get_IEEE_list.php ' . escapeshellarg($keyword) . ' keyword', $output, $return_var);
+		$json_output = json_decode($output[0], true);
+		$this->assertNotEquals(0, count($json_output));
+		$equals = false;
+		//The same search sometimes returns different results - these are the two titles it alternates between returning first
+		// if ($json_output[1] == "Finding HTML Presentation Failures Using Image Comparison Techniques" || $json_output[1] == "Web Application Modeling for Testing and Analysis" || $json_output[1]) {
+		// 	$equals = true;
+		// }
+		var_dump($json_output);
+		if (isset($json_output["document"])) {
+			$equals = true;
+		}
+
+		$this->assertTrue($equals);
+	}
+
 }
 
 ?>
