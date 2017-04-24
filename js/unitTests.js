@@ -116,6 +116,16 @@ describe('SearchOperatesWhenAuthorIsClicked', function(){
 		setTimeout(function(){
 			var secondList = list_of_words;
 			expect(firstList).not.to.equal(secondList);
-		}, 10000);
+		}, 100);
+	})
+});
+
+
+describe('SearchHistoryIsStillClickableBug', function(){
+	it("dropdownStillexistsAfterUnfocus", function(){
+		$("#search").trigger('focus');
+		$("#search").trigger('fucusout');
+		var dropdown = $('.dropdown-content');
+		expect(dropdown).not.to.equal(undefined);
 	})
 });
