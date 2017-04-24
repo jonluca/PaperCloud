@@ -24,6 +24,10 @@ class PdfTest extends TestCase {
 			$this->removeDocumentID("../pdfs/output.pdf")
 		);
 	}
+	public function testPdfParsing() {
+		$text = get_raw_text("../pdfs/test.pdf");
+		$this->assertEquals(empty($text), false);
+	}
 }
 
 ?>

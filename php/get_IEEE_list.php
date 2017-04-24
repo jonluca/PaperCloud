@@ -1,5 +1,7 @@
 <?php
 
+$type = "author"; // default
+
 if (defined('STDIN')) {
 	global $type;
 	$search = $argv[1];
