@@ -321,6 +321,12 @@ function getPaperListByName(word) {
                 results_object.url = "http://dl.acm.org";
             }
 
+            if (currFileList.hasOwnProperty('url')) {
+                results_object.libURL = currFileList.url
+            } else if (currFileList.hasOwnProperty('pdf')) {
+                results_object.libURL = currFileList.pdf
+            }
+
             if (currFileList[i].hasOwnProperty("doi")) {
                 results_object.doi = currFileList[i].doi;
             }
@@ -392,7 +398,7 @@ function createPaperList(papers) {
         titles[titles.length - 1].push(papers[key].pubtitle);
         titles[titles.length - 1].push(papers[key].frequency);
         titles[titles.length - 1].push(papers[key].doi);
-        titles[titles.length - 1].push(papers[key].url);
+        titles[titles.length - 1].push(papers[key].libURL);
         titles[titles.length - 1].push(papers[key].arn);
     }
     //Create data table fromt titles, use render function to make them link to to their download
@@ -443,7 +449,7 @@ function createPaperList(papers) {
         }, {
             title: 'PDF',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                $(nTd).html("<a href=\"" + papers[iRow].url + "\">PDF</a>");
+                $(nTd).html("<a href=\"" + papers[iRow].libURL + "\">PDF</a>");
             }
         }, {
             title: 'TXT',
