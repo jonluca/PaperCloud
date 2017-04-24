@@ -679,15 +679,20 @@ function conferenceSearch(conference) {
 }
 function getSubsetWordCloud(array) {
     var totalString = "";
+
+    var newArray = []
     for (var i = 0; i < array.length; i++) {
 
         for (var j = 0; j < currFileList.length; j++) {
             if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
                 totalString += currFileList[j].abstract;
+                newArray.push(currFileList[j])
                 break;
             }
         }
     }
+
+    currFileList = newArray;
 
     return totalString;
 }
