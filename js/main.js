@@ -325,6 +325,7 @@ function getPaperListByName(word) {
                 results_object.libURL = currFileList[i].url
             } else if (currFileList[i].hasOwnProperty('pdf')) {
                 results_object.libURL = currFileList[i].pdf
+            }
 
 
             if (currFileList[i].hasOwnProperty("doi")) {
