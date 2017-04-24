@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Basic Page Needs
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta charset="utf-8">
-    <title>PaperCloud</title>
-    <meta name="description" content="next generation paper cloud generator">
-    <meta name="author" content="Team I">
-    <!-- Mobile Specific Metas
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- FONT
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-    <!-- CSS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css">
-    <!-- Favicon
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="icon" type="image/png" href="favicon.ico">
-    <script src="js/wordcloud2.js"></script>
-    <script src="js/wordCounter/wordfreq.js"> </script>
-  </head>
-  <body>
-    <!-- Primary Page Layout
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <div class="container">
-      <div class="holder">
-        <!-- Progress Bar
+    <head>
+        <!-- Basic Page Needs
         –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-        <div id="progressbar"> </div>
-        <div class="title">
-          <h1>PaperCloud</h1>
-          <p>A Project by Team I</p>
+        <meta charset="utf-8">
+        <title>PaperCloud</title>
+        <meta name="description" content="next generation paper cloud generator">
+        <meta name="author" content="Team I">
+        <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- FONT
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+        <!-- CSS
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/skeleton.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css">
+        <!-- Favicon
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="icon" type="image/png" href="favicon.ico">
+        <script src="js/wordcloud2.js"></script>
+        <script src="js/wordCounter/wordfreq.js"> </script>
+    </head>
+    <body>
+        <!-- Primary Page Layout
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <div class="container">
+            <div class="holder">
+                <!-- Progress Bar
+                –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+                <div id="progressbar"> </div>
+                <div class="title">
+                    <h1>PaperCloud</h1>
+                    <p>A Project by Team I</p>
+                </div>
+                <div id="wordcloudPage">
+                    <canvas id="wordcloud" width="800px" height="600px"></canvas>
+                </div>
+                <div id="paperList">
+                    <span class="backList">
+                        <button id="goBack">Back</button>
+                        <button id="exportPDF">Export - PDF</button>
+                        <button id="exportTXT">Export - TXT</button>
+                        <button id="getSubset">Generate Word Cloud from Subset</button>
+                    </span>
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                <table class="paperTable" id="listPapers" class="display" width="100%"></table>
+            </div>
+            <div id="pop-up-info" title="BibTeX"></div>
+            <div id="searchPage">
+                <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
+                <div class="dropdown">
+                    <input type="text" id="search" placeholder="Search (last name)" />
+                    <div class="dropdown-content">
+                    </div>
+                </div>
+                <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="number_papers" placeholder="# of papers" />
+                <button id="searchButton" disabled>Search</button>
+                <span class="switch">
+                    <input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-yes-no" type="checkbox">
+                    <label for="cmn-toggle-7" data-on="Author" data-off="Keyword"></label>
+                </span>
+                <button id="download">Download</button>
+            </div>
         </div>
-        <div id="wordcloudPage">
-          <canvas id="wordcloud" width="800px" height="600px"></canvas>
-        </div>
-        <div id="paperList">
-          <span class="backList">
-            <button id="goBack">Back</button>
-            <button id="exportPDF">Export - PDF</button>
-            <button id="exportTXT">Export - TXT</button>
-            <button id="getSubset">Generate Word Cloud from Subset</button>
-          </span>
-          <div class="sk-cube-grid">
-            <div class="sk-cube sk-cube1"></div>
-            <div class="sk-cube sk-cube2"></div>
-            <div class="sk-cube sk-cube3"></div>
-            <div class="sk-cube sk-cube4"></div>
-            <div class="sk-cube sk-cube5"></div>
-            <div class="sk-cube sk-cube6"></div>
-            <div class="sk-cube sk-cube7"></div>
-            <div class="sk-cube sk-cube8"></div>
-            <div class="sk-cube sk-cube9"></div>
-          </div>
-        <table class="paperTable" id="listPapers" class="display" width="100%"></table>
-      </div>
-      <div id="pop-up-info" title="BibTeX"></div>
-      <div id="searchPage">
-        <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
-        <div class="dropdown">
-          <input type="text" id="search" placeholder="Search (last name)" />
-          <div class="dropdown-content">
-          </div>
-        </div>
-        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="number_papers" placeholder="# of papers" />
-        <button id="searchButton" disabled>Search</button>
-        <button id="download">Download</button>
-      </div>
-    </div>
-    <!-- End Document
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script
-    src="https://code.jquery.com/jquery-3.2.1.js"
-    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-    crossorigin="anonymous"></script>
-    <script
-    src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
-    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-    crossorigin="anonymous"></script>
-    <!-- Hacky code found on stackoverflow to download canvas -->
-    <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
-    <script src ="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
-    <!-- PDF creator for table -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-    <script src='js/html2pdf.js'></script>
-    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js">
-    </script>
-  </body>
+        <!-- End Document
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <script
+        src="https://code.jquery.com/jquery-3.2.1.js"
+        integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+        crossorigin="anonymous"></script>
+        <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous"></script>
+        <!-- Hacky code found on stackoverflow to download canvas -->
+        <script src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>
+        <script src ="https://rawgit.com/eligrey/canvas-toBlob.js/master/canvas-toBlob.js"></script>
+        <!-- PDF creator for table -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+        <script src='js/html2pdf.js'></script>
+        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+        <script src="js/main.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js">
+        </script>
+    </body>
 </html>
