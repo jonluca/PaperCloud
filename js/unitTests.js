@@ -196,3 +196,15 @@ describe("conferenceDownLoadExists", function(){
 		}, 10000);
 	});
 });
+
+describe("ProgressBarBugFixedForConferenceSearch", function(){
+	it("initiatesProgressbarwhenconferenceisSearched", function(){
+		conferenceSearch("IEEE Transactions on Automatic Control");
+		var firstval = line.value();
+		setTimeout(function(){
+			var secondVal = line.value();
+			expect(firstVal).to.equal(0);
+			expect(firstVal).not.to.equal(secondVal);
+		})
+	});
+});
