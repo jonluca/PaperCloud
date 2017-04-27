@@ -22,21 +22,28 @@ class FeatureContext extends MinkContext {
 	 * @Given I have clicked on a word
 	 */
 	public function iHaveClickedOnAWord() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
 	}
 
 	/**
 	 * @When I view the page
 	 */
 	public function iViewThePage() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#paperList')->isVisible()) {
+			throw new Exception($this->page->find('css', '#paperList')->getAttribute('style'));
+		}
 	}
 
 	/**
 	 * @Then I will see a list of papers it appears in
 	 */
 	public function iWillSeeAListOfPapersItAppearsIn() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#paperList')->isVisible()) {
+			throw new Exception($this->page->find('css', '#paperList')->getAttribute('style'));
+		}
 	}
 
 	/**

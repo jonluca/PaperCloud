@@ -12,7 +12,9 @@ var line;
 $(document).ready(function() {
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
-
+    if (window.location.href.indexOf("word") > -1) {
+        generateWordList(["test"]);
+    }
     //enables/disables search button based on if there is text in box
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
@@ -661,9 +663,11 @@ function authorClicked(el) {
 
 function conferenceSearch(conference) {
     $(".backList").css('display', 'none');
+
     $('#paperList').css({
         display: 'none'
     });
+
     initiateProgressBar();
 
     var url = "php/get_IEEE_conference_list.php";
