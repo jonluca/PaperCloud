@@ -274,3 +274,15 @@ Feature: Word Cloud
 19 scenarios (9 passed, 10 pending)
 57 steps (36 passed, 10 pending, 11 skipped)
 0m28.67s (9.58Mb)
+Feature: Search
+    As a user of PaperCloud, one needs to be able to search for papers in the IEEE and ACM database.
+
+  @search-keyword
+  Scenario: Search                               # features/Search.feature:23
+    Given I have selected a search keyword       # FeatureContext::iHaveSelectedASearchKeyword()
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+1 scenario (1 passed)
+3 steps (3 passed)
+0m1.90s (9.49Mb)
