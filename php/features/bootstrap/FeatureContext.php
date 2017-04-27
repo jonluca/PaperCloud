@@ -99,14 +99,16 @@ class FeatureContext extends MinkContext {
 	 * @When I click on it's conference
 	 */
 	public function iClickOnItSConference() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(4) > a')->click();
 	}
 
 	/**
 	 * @Then the page will display papers from that conference
 	 */
 	public function thePageWillDisplayPapersFromThatConference() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
