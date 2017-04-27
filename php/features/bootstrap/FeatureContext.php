@@ -154,21 +154,29 @@ class FeatureContext extends MinkContext {
 	 * @Given I have clicked the title of a paper
 	 */
 	public function iHaveClickedTheTitleOfAPaper() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(2) > a')->click();
 	}
 
 	/**
 	 * @When I click download as PDF
 	 */
 	public function iClickDownloadAsPdf() {
-		throw new PendingException();
+		$this->page->find('css', '#pop-up-info > a');
+		sleep(3);
 	}
 
 	/**
 	 * @Then the occurences of the searched word in the pdf will be highlighted
 	 */
 	public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted() {
-		throw new PendingException();
+		$words = $this->getSession()->getDriver()->evaluateScript('function(){ var url = document.getElementById("abstract_link"); return url[0].href; }()');
+		if ($words != "http://localhost/php/pdfs/IEEE-747587-model.pdf") {
+			throw new Exception;
+		}
 	}
 
 	/**

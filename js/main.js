@@ -381,7 +381,7 @@ function getPaperListByName(word) {
 function showAbstract(abstract, url) {
 
 
-    var aElement = "<a href='" + url + "'>Download PDF</a>";
+    var aElement = "<a id=\"abstract_link\" href='" + url + "'>Download PDF</a>";
     $("#pop-up-info").html(abstract + "<br/>" + aElement);
     if (clickedWord.length > 0) {
         $("#pop-up-info").mark(clickedWord);
@@ -769,6 +769,9 @@ function getSubsetWordCloud(array) {
     }
 
     currFileList = newArray;
-
     return totalString;
+}
+
+function download_pdf_testing() {
+
 }
