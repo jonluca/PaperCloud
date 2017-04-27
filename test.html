@@ -30,6 +30,55 @@
     <!-- Import Testing Frameworks
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div id="progressbar"> </div>
+
+            –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <div class="container">
+            <div class="holder">
+                <!-- Progress Bar
+                –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+                <div id="progressbar"> </div>
+                <div class="title">
+                    <h1>PaperCloud</h1>
+                    <p>A Project by Team I</p>
+                </div>
+                <div id="wordcloudPage">
+                    <canvas id="wordcloud" width="800px" height="600px"></canvas>
+                </div>
+                <div id="paperList">
+                    <span class="backList">
+                        <button id="goBack">Back</button>
+                        <button id="exportPDF">Export - PDF</button>
+                        <button id="exportTXT">Export - TXT</button>
+                        <button id="getSubset">Generate Word Cloud from Subset</button>
+                    </span>
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                <table class="paperTable" id="listPapers" class="display" width="100%"></table>
+            </div>
+            <div id="pop-up-info" title="BibTeX"></div>
+            <div id="searchPage">
+                <!-- <input type="text" id="number_papers" placeholder="# of papers" /> -->
+                <div class="dropdown">
+                    <input type="text" id="search" placeholder="Search (last name)" />
+                    <div class="dropdown-content">
+                    </div>
+                </div>
+                <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="number_papers" placeholder="# of papers" />
+                <button id="searchButton" disabled>Search</button>
+                <button id="searchTypeButton">Author</button>
+                <button id="download">Download</button>
+            </div>
+        </div>
+    </div>
     <script src="js/vendor/mocha.js"></script>
     <script src="js/vendor/chai.js"></script>
     <script>mocha.setup('bdd')</script>
