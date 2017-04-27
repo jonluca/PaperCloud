@@ -24,7 +24,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveClickedOnAWord() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud?word=true');
+		$session->visit('http://localhost:8000?word=true');
 		$this->page = $session->getPage();
 	}
 
@@ -52,7 +52,7 @@ class FeatureContext extends MinkContext {
 	public function thereIsMoreThanOnePaperThatMentionsAWord() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud?word=true');
+		$session->visit('http://localhost:8000?word=true');
 		$this->page = $session->getPage();
 
 	}
@@ -75,7 +75,7 @@ class FeatureContext extends MinkContext {
 	public function iAmOnThePaperListPage() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud?word=true');
+		$session->visit('http://localhost:8000?word=true');
 		$this->page = $session->getPage();
 	}
 
@@ -117,7 +117,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveAValidSearchAndPaperCloud() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud');
+		$session->visit('http://localhost:8000');
 		$this->page = $session->getPage();
 
 		//click on search bar to have it open
@@ -156,7 +156,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveClickedTheTitleOfAPaper() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud?word=true');
+		$session->visit('http://localhost:8000?word=true');
 		$this->page = $session->getPage();
 		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(2) > a')->click();
 	}
@@ -173,7 +173,7 @@ class FeatureContext extends MinkContext {
 	 */
 	public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted() {
 		$words = $this->getSession()->getDriver()->evaluateScript('function(){ return download_pdf_testing();}()');
-		if ($words != "http://localhost/php/pdfs/IEEE-747587-model.pdf") {
+		if ($words != "http://localhost:8000/php/pdfs/IEEE-747587-model.pdf") {
 			throw new Exception;
 		}
 	}
@@ -203,7 +203,7 @@ class FeatureContext extends MinkContext {
 	public function theSearchBarHasNothingInIt() {
 		$session = $this->getSession();
 		//the search bar has no selected artist initially
-		$session->visit('http://localhost/PaperCloud');
+		$session->visit('http://localhost:8000');
 		$this->page = $session->getPage();
 	}
 
@@ -230,7 +230,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveSearchedForAnAuthor() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud');
+		$session->visit('http://localhost:8000');
 		$this->page = $session->getPage();
 
 		//click on search bar to have it open
@@ -242,7 +242,7 @@ class FeatureContext extends MinkContext {
 
 		//open search bar and focus (there will be no search results)
 		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
-		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
+		$this->page->find('css', '#searchButton')->click();
 
 		sleep(1);
 	}
@@ -269,7 +269,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveSearchedForSomethingBefore() {
 		//get session
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud');
+		$session->visit('http://localhost:8000');
 		$this->page = $session->getPage();
 
 		//click on search bar to have it open
@@ -315,7 +315,7 @@ class FeatureContext extends MinkContext {
 	public function iHaveSelectedASearchKeyword() {
 		#searchTypeButton
 		$session = $this->getSession();
-		$session->visit('http://localhost/PaperCloud');
+		$session->visit('http://localhost:8000');
 		$this->page = $session->getPage();
 		$this->page->find('css', '#searchTypeButton')->click();
 	}
@@ -348,21 +348,23 @@ class FeatureContext extends MinkContext {
 	 * @Given I have searched for an author's last name
 	 */
 	public function iHaveSearchedForAnAuthorSLastName() {
-		throw new PendingException();
+		$this->iHaveSearchedForAnAuthor();
 	}
 
 	/**
 	 * @When I view the word cloud page
 	 */
 	public function iViewTheWordCloudPage() {
-		throw new PendingException();
+		sleep(7); // Wait to load
 	}
 
 	/**
 	 * @Then I will see a word cloud of the top X papers
 	 */
 	public function iWillSeeAWordCloudOfTheTopXPapers() {
-		throw new PendingException();
+		if ($this->page->find('css', '#wordcloud') == null) {
+   throw new Exception("NO WORDCLOUD");
+		}
 	}
 
 	/**
@@ -386,62 +388,81 @@ class FeatureContext extends MinkContext {
 	 * @When I click export as pdf
 	 */
 	public function iClickExportAsPdf() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//button[text()="Export - PDF"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get a download of all papers as pdf
 	 */
 	public function iWillGetADownloadOfAllPapersAsPdf() {
-		throw new PendingException();
+		if ($this->getSession()->getPage()->find('xpath', '//button[text()="Export - PDF"]') == null) {
+			throw new Exception("Download PDF didn't work...");
+		}
 	}
 
 	/**
 	 * @When I click export as txt
 	 */
 	public function iClickExportAsTxt() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//button[text()="Export - TXT"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get a download of all papers as txt
 	 */
 	public function iWillGetADownloadOfAllPapersAsTxt() {
-		throw new PendingException();
+	 if ($this->getSession()->getPage()->find('xpath', '//button[text()="Export - TXT"]') == null) {
+			throw new Exception("Download TXT didn't work...");
+		}
 	}
 
 	/**
 	 * @When I click download from library for a paper
 	 */
 	public function iClickDownloadFromLibraryForAPaper() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//a[text()="PDF"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get redirected to the library page for that paper
 	 */
 	public function iWillGetRedirectedToTheLibraryPageForThatPaper() {
-		throw new PendingException();
+		$url = $this->getSession()->getCurrentUrl();
+		if (strpos($url, 'ieee.org') === false) {
+   throw new Exception("Not at the library site!");
+		}
 	}
 
 	/**
 	 * @When I click view bibtex for a paper
 	 */
 	public function iClickViewBibtexForAPaper() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//a[text()="BibTeX"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get redirected to its corresponding bibtex view
 	 */
 	public function iWillGetRedirectedToItsCorrespondingBibtexView() {
-		throw new PendingException();
+		if ($this->getSession()->getPage()->find('xpath', '//span[text()="BibTeX"]') == null) {
+			throw new Exception('NO BIBTEX');
+		}
 	}
 
 	/**
 	 * @Then I will get be shown the abstract
 	 */
-	public function iWillGetBeShownTheAbstract() {
-		throw new PendingException();
-	}
+		public function iWillGetBeShownTheAbstract() {
+			if ($this->getSession()->getPage()->find('xpath', '//span[text()="Abstract"]') == null) {
+	   throw new Exception('NO ABSTRACT');
+			}
+		}
 }
