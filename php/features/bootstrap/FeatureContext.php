@@ -138,14 +138,16 @@ class FeatureContext extends MinkContext {
 	 * @When I click the title of a paper
 	 */
 	public function iClickTheTitleOfAPaper() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(2) > a')->click();
 	}
 
 	/**
 	 * @Then the words in the abstract will be highlighted
 	 */
 	public function theWordsInTheAbstractWillBeHighlighted() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#pop-up-info > mark:nth-child(1)')->isVisible()) {
+			throw new Exception($this->page->find('css', '#pop-up-info > mark:nth-child(1)')->getAttribute('style'));
+		}
 	}
 
 	/**

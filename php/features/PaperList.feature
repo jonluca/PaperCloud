@@ -27,7 +27,7 @@ Feature: PaperList
 
     @highlight
     Scenario: Words in abstract are highlighted
-        Given I have a valid search and paper cloud
+        Given I am on the paper list page
         When I click the title of a paper
         Then the words in the abstract will be highlighted
 
