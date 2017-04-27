@@ -11,6 +11,13 @@ describe("NameOfFunctionalityToBeTested", function(){
 	});
 });
 
+describe('SearchHistoryNullPopup', function(){
+	it('DoesNotProduceContainerWithoutSearch', function(){
+		var dropdownlength = $('.dropdown-content').length;
+		expect(dropdownlength).to.equal(1);
+	});
+});
+
 describe("Wordcloud List", function(){
     it("getListOfPapers", function(){
         var output = getPaperListByName("hello");
@@ -58,17 +65,17 @@ describe("ACMSearchFormatsCorrectly", function(){
 	});
 });
 
-// describe("SearchSavesPreviousSearches". function(){
-// 	it('recordsSearchParameterOnSearch', function(){
-// 		var initialNumSearches = previousSearches.length;
-// 		search('smith');
-// 		var endNumSearches = previousSearches.length;
-// 		expect(initalNumSearches).to.equal(0);
-// 		expect(endNumSearches).to.equal(1);
-// 		expect(endNumSearches).not.to.equal(0);
-// 	});
-// });
-//
+describe("SearchSavesPreviousSearches", function(){
+	it('recordsSearchParameterOnSearch', function(){
+		var initialNumSearches = previousSearches.length;
+		search('smith');
+		var endNumSearches = previousSearches.length;
+		expect(initialNumSearches).to.equal(0);
+		expect(endNumSearches).to.equal(1);
+		expect(endNumSearches).not.to.equal(0);
+	});
+});
+
 
 describe('SearchHistoryFunctionsCorrectly', function(){
 	it('DoesNotDuplicateSearches', function(){
@@ -81,13 +88,6 @@ describe('SearchHistoryFunctionsCorrectly', function(){
 		console.log("Length", length);
 		console.log("Length2", length2);
 		expect(length).to.equal(length2);
-	});
-});
-
-describe('SearchHistoryNullPopup', function(){
-	it('DoesNotProduceContainerWithoutSearch', function(){
-		var dropdownlength = $('.dropdown-content').length;
-		expect(dropdownlength).to.equal(0);
 	});
 });
 
@@ -203,7 +203,7 @@ describe("ProgressBarBugFixedForConferenceSearch", function(){
 		var firstval = line.value();
 		setTimeout(function(){
 			var secondVal = line.value();
-			expect(firstVal).to.equal(0);
+			expect(firstval).to.equal(0);
 			expect(firstVal).not.to.equal(secondVal);
 		})
 	});
