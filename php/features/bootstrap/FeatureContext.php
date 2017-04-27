@@ -183,14 +183,19 @@ class FeatureContext extends MinkContext {
 	 * @When I select a subset of papers
 	 */
 	public function iSelectASubsetOfPapers() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(1) > input')->click();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(2) > td:nth-child(1) > input')->click();
+		$this->page->find('css', '#getSubset')->click();
+
 	}
 
 	/**
 	 * @Then a new word cloud will appear with the selected papers as its source
 	 */
 	public function aNewWordCloudWillAppearWithTheSelectedPapersAsItsSource() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
