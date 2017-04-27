@@ -49,7 +49,6 @@ describe("IEEE", function(){
 describe("ACMSearchFormatsCorrectly", function(){
 	it('ReturnsJson', function(){
 		ACMSearch("smith", 10).done(function(textResponse) {
-		 console.log('textResponse:', textResponse);
 		 var firstChar = textResponse.substring(0,1);
 		 var jsonChar = '{';
 		 var htmlErrorChar = '<';
@@ -79,8 +78,9 @@ describe('SearchHistoryFunctionsCorrectly', function(){
 		var length = previousSearches.length;
 		search();
 		var length2 = previousSearches.length;
+		console.log("Length", length);
+		console.log("Length2", length2);
 		expect(length).to.equal(length2);
-
 	});
 });
 
@@ -135,9 +135,76 @@ describe('SearchHistoryIsStillClickableBug', function(){
 describe('GenerateWordCloudFromSubset', function(){
     it('generateWordCloudFromSubset', function(){
         var listOfPapers =  []
-
         var answer = getSubsetWordCloud(listOfPapers);
-
         expect(answer).to.be.a('string');
     });
+});
+
+describe("ProgressBarBugFixed", function(){
+	it("ProgressBarIncreasesOverTimeWhile", function(){
+		$('#search').trigger('click');
+		setTimeout(function(){
+			var before = line.value();
+			setTimeout(function(){
+				var after = line.value();
+				expect(before).to.not.equal(after);
+			}, 200);
+		});
+	});
+});
+
+describe("BibtexExists", function(){
+	it("BibtexLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var bibtexVal = $('bibtex').val();
+			expect(bibtexVal).not.to.equal('');
+		}, 10000);
+	});
+});
+
+describe("PDFDownLoadExists", function(){
+	it("PDFLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var pdfVal = $('pdf-download').val();
+			expect(pdfVal).not.to.equal('');
+		}, 10000);
+	});
+});
+
+describe("TextDownLoadExists", function(){
+	it("TextLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var textDowload = $('text-download').val();
+			expect(textDownload).not.to.equal('');
+		}, 10000);
+	});
+});
+
+describe("conferenceDownLoadExists", function(){
+	it("ConferenceDownloadExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var conferenceLink = $('conferenceLing').val();
+			expect(conferenceLink).not.to.equal('');
+		}, 10000);
+	});
+});
+
+describe("ProgressBarBugFixedForConferenceSearch", function(){
+	it("initiatesProgressbarwhenconferenceisSearched", function(){
+		conferenceSearch("IEEE Transactions on Automatic Control");
+		var firstval = line.value();
+		setTimeout(function(){
+			var secondVal = line.value();
+			expect(firstVal).to.equal(0);
+			expect(firstVal).not.to.equal(secondVal);
+		})
+	});
 });

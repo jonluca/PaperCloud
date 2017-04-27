@@ -39,6 +39,6 @@ Feature: Word Cloud
 
     @abstract
     Scenario: See abstract of paper
-        Given I have a valid search and paper cloud
+        Given I am on the paper list page
         When I click the title of a paper
         Then I will get be shown the abstract

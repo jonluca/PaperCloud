@@ -1,0 +1,288 @@
+Feature: PaperList
+    As I user I want to be able to click on a word and see a list of papers it appears in
+
+  @selectword
+  Scenario: Select Word                            # features/PaperList.feature:5
+    Given I have clicked on a word                 # FeatureContext::iHaveClickedOnAWord()
+    When I view the page                           # FeatureContext::iViewThePage()
+    Then I will see a list of papers it appears in # FeatureContext::iWillSeeAListOfPapersItAppearsIn()
+
+  @papers
+  Scenario: Word appears in multiple papers                    # features/PaperList.feature:11
+    Given there is more than one paper that mentions a word    # FeatureContext::thereIsMoreThanOnePaperThatMentionsAWord()
+      TODO: write pending definition
+    When I view the page                                       # FeatureContext::iViewThePage()
+    Then all the papers which mention that word will be listed # FeatureContext::allThePapersWhichMentionThatWordWillBeListed()
+
+  @author
+  Scenario: Search based on author                    # features/PaperList.feature:17
+    Given I am on the paper list page                 # FeatureContext::iAmOnThePaperListPage()
+      TODO: write pending definition
+    When I click on an author                         # FeatureContext::iClickOnAnAuthor()
+    Then a new search will begin querying that author # FeatureContext::aNewSearchWillBeginQueryingThatAuthor()
+
+  @conference
+  Scenario: View papers within same conference             # features/PaperList.feature:23
+    Given I am on the paper list page                      # FeatureContext::iAmOnThePaperListPage()
+      TODO: write pending definition
+    When I click on it's conference                        # FeatureContext::iClickOnItSConference()
+    Then the page will display papers from that conference # FeatureContext::thePageWillDisplayPapersFromThatConference()
+
+  @highlight
+  Scenario: Words in abstract are highlighted          # features/PaperList.feature:29
+    Given I have a valid search and paper cloud        # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click the title of a paper                  # FeatureContext::iClickTheTitleOfAPaper()
+      TODO: write pending definition
+    Then the words in the abstract will be highlighted # FeatureContext::theWordsInTheAbstractWillBeHighlighted()
+
+  @download-highlight
+  Scenario: Words in abstract are highlighted in the pdf download           # features/PaperList.feature:35
+    Given I have clicked the title of a paper                               # FeatureContext::iHaveClickedTheTitleOfAPaper()
+      TODO: write pending definition
+    When I click download as PDF                                            # FeatureContext::iClickDownloadAsPdf()
+    Then the occurences of the searched word in the pdf will be highlighted # FeatureContext::theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted()
+
+  @subset
+  Scenario: Select subset of papers to create new word cloud                 # features/PaperList.feature:41
+    Given I am on the paper list page                                        # FeatureContext::iAmOnThePaperListPage()
+      TODO: write pending definition
+    When I select a subset of papers                                         # FeatureContext::iSelectASubsetOfPapers()
+    Then a new word cloud will appear with the selected papers as its source # FeatureContext::aNewWordCloudWillAppearWithTheSelectedPapersAsItsSource()
+
+Feature: Search
+    As a user of PaperCloud, one needs to be able to search for papers in the IEEE and ACM database.
+
+  @nosearch
+  Scenario: No Search Query has been made  # features/Search.feature:5
+    Given the search bar has nothing in it # FeatureContext::theSearchBarHasNothingInIt()
+    When I click on the Search Button      # FeatureContext::iClickOnTheSearchButton()
+    Then the button will be deactivated    # FeatureContext::theButtonWillBeDeactivated()
+
+  @loadingbar
+  Scenario: Loading Bar                 # features/Search.feature:11
+    Given I have searched for an author # FeatureContext::iHaveSearchedForAnAuthor()
+    When I click search                 # FeatureContext::iClickSearch()
+    Then a loading bar will appear      # FeatureContext::aLoadingBarWillAppear()
+
+  @prevsearch
+  Scenario: See previous searches                     # features/Search.feature:17
+    Given I have searched for something before        # FeatureContext::iHaveSearchedForSomethingBefore()
+    When I click on the history list                  # FeatureContext::iClickOnTheHistoryList()
+    Then The previously searched artist will be there # FeatureContext::thePreviouslySearchedArtistWillBeThere()
+
+  @search-keyword
+  Scenario: Search                               # features/Search.feature:23
+    Given I have selected a search keyword       # FeatureContext::iHaveSelectedASearchKeyword()
+      TODO: write pending definition
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+  @search-author
+  Scenario: Search                               # features/Search.feature:29
+    Given I have selected a search lastname      # FeatureContext::iHaveSelectedASearchLastname()
+      TODO: write pending definition
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+Feature: Word Cloud
+    As a user, I want to be able to view a word cloud of all the lyrics
+
+  @display
+  Scenario: Display Word Cloud                       # features/WordCloud.feature:5
+    Given I have searched for an author's last name  # FeatureContext::iHaveSearchedForAnAuthorSLastName()
+      TODO: write pending definition
+    When I view the word cloud page                  # FeatureContext::iViewTheWordCloudPage()
+    Then I will see a word cloud of the top X papers # FeatureContext::iWillSeeAWordCloudOfTheTopXPapers()
+
+  @display
+  Scenario: Download image Word Cloud           # features/WordCloud.feature:11
+    Given I have a valid search and paper cloud # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click save as image                  # FeatureContext::iClickSaveAsImage()
+    Then the image download will begin          # FeatureContext::theImageDownloadWillBegin()
+
+  @export-pdf
+  Scenario: Export list of papers as pdf            # features/WordCloud.feature:17
+    Given I have a valid search and paper cloud     # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click export as pdf                      # FeatureContext::iClickExportAsPdf()
+      TODO: write pending definition
+    Then I will get a download of all papers as pdf # FeatureContext::iWillGetADownloadOfAllPapersAsPdf()
+
+  @export-txt
+  Scenario: Export list of papers as txt            # features/WordCloud.feature:23
+    Given I have a valid search and paper cloud     # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click export as txt                      # FeatureContext::iClickExportAsTxt()
+      TODO: write pending definition
+    Then I will get a download of all papers as txt # FeatureContext::iWillGetADownloadOfAllPapersAsTxt()
+
+  @download-library
+  Scenario: Download from digital library                         # features/WordCloud.feature:29
+    Given I have a valid search and paper cloud                   # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click download from library for a paper                # FeatureContext::iClickDownloadFromLibraryForAPaper()
+      TODO: write pending definition
+    Then I will get redirected to the library page for that paper # FeatureContext::iWillGetRedirectedToTheLibraryPageForThatPaper()
+
+  @bibtex
+  Scenario: See bibtex of paper                                 # features/WordCloud.feature:35
+    Given I have a valid search and paper cloud                 # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click view bibtex for a paper                        # FeatureContext::iClickViewBibtexForAPaper()
+      TODO: write pending definition
+    Then I will get redirected to its corresponding bibtex view # FeatureContext::iWillGetRedirectedToItsCorrespondingBibtexView()
+
+  @abstract
+  Scenario: See abstract of paper               # features/WordCloud.feature:41
+    Given I have a valid search and paper cloud # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click the title of a paper           # FeatureContext::iClickTheTitleOfAPaper()
+      TODO: write pending definition
+    Then I will get be shown the abstract       # FeatureContext::iWillGetBeShownTheAbstract()
+
+19 scenarios (5 passed, 14 pending)
+57 steps (21 passed, 14 pending, 22 skipped)
+0m19.28s (9.53Mb)
+Feature: PaperList
+    As I user I want to be able to click on a word and see a list of papers it appears in
+
+  @selectword
+  Scenario: Select Word                            # features/PaperList.feature:5
+    Given I have clicked on a word                 # FeatureContext::iHaveClickedOnAWord()
+    When I view the page                           # FeatureContext::iViewThePage()
+    Then I will see a list of papers it appears in # FeatureContext::iWillSeeAListOfPapersItAppearsIn()
+
+  @papers
+  Scenario: Word appears in multiple papers                    # features/PaperList.feature:11
+    Given there is more than one paper that mentions a word    # FeatureContext::thereIsMoreThanOnePaperThatMentionsAWord()
+    When I view the page                                       # FeatureContext::iViewThePage()
+    Then all the papers which mention that word will be listed # FeatureContext::allThePapersWhichMentionThatWordWillBeListed()
+
+  @author
+  Scenario: Search based on author                    # features/PaperList.feature:17
+    Given I am on the paper list page                 # FeatureContext::iAmOnThePaperListPage()
+    When I click on an author                         # FeatureContext::iClickOnAnAuthor()
+    Then a new search will begin querying that author # FeatureContext::aNewSearchWillBeginQueryingThatAuthor()
+
+  @conference
+  Scenario: View papers within same conference             # features/PaperList.feature:23
+    Given I am on the paper list page                      # FeatureContext::iAmOnThePaperListPage()
+    When I click on it's conference                        # FeatureContext::iClickOnItSConference()
+    Then the page will display papers from that conference # FeatureContext::thePageWillDisplayPapersFromThatConference()
+
+  @highlight
+  Scenario: Words in abstract are highlighted          # features/PaperList.feature:29
+    Given I am on the paper list page                  # FeatureContext::iAmOnThePaperListPage()
+    When I click the title of a paper                  # FeatureContext::iClickTheTitleOfAPaper()
+    Then the words in the abstract will be highlighted # FeatureContext::theWordsInTheAbstractWillBeHighlighted()
+
+  @download-highlight
+  Scenario: Words in abstract are highlighted in the pdf download           # features/PaperList.feature:35
+    Given I have clicked the title of a paper                               # FeatureContext::iHaveClickedTheTitleOfAPaper()
+    When I click download as PDF                                            # FeatureContext::iClickDownloadAsPdf()
+    Then the occurences of the searched word in the pdf will be highlighted # FeatureContext::theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted()
+      TODO: write pending definition
+
+  @subset
+  Scenario: Select subset of papers to create new word cloud                 # features/PaperList.feature:41
+    Given I am on the paper list page                                        # FeatureContext::iAmOnThePaperListPage()
+    When I select a subset of papers                                         # FeatureContext::iSelectASubsetOfPapers()
+      TODO: write pending definition
+    Then a new word cloud will appear with the selected papers as its source # FeatureContext::aNewWordCloudWillAppearWithTheSelectedPapersAsItsSource()
+
+Feature: Search
+    As a user of PaperCloud, one needs to be able to search for papers in the IEEE and ACM database.
+
+  @nosearch
+  Scenario: No Search Query has been made  # features/Search.feature:5
+    Given the search bar has nothing in it # FeatureContext::theSearchBarHasNothingInIt()
+    When I click on the Search Button      # FeatureContext::iClickOnTheSearchButton()
+    Then the button will be deactivated    # FeatureContext::theButtonWillBeDeactivated()
+
+  @loadingbar
+  Scenario: Loading Bar                 # features/Search.feature:11
+    Given I have searched for an author # FeatureContext::iHaveSearchedForAnAuthor()
+    When I click search                 # FeatureContext::iClickSearch()
+    Then a loading bar will appear      # FeatureContext::aLoadingBarWillAppear()
+
+  @prevsearch
+  Scenario: See previous searches                     # features/Search.feature:17
+    Given I have searched for something before        # FeatureContext::iHaveSearchedForSomethingBefore()
+    When I click on the history list                  # FeatureContext::iClickOnTheHistoryList()
+    Then The previously searched artist will be there # FeatureContext::thePreviouslySearchedArtistWillBeThere()
+
+  @search-keyword
+  Scenario: Search                               # features/Search.feature:23
+    Given I have selected a search keyword       # FeatureContext::iHaveSelectedASearchKeyword()
+      TODO: write pending definition
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+  @search-author
+  Scenario: Search                               # features/Search.feature:29
+    Given I have selected a search lastname      # FeatureContext::iHaveSelectedASearchLastname()
+      TODO: write pending definition
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+Feature: Word Cloud
+    As a user, I want to be able to view a word cloud of all the lyrics
+
+  @display
+  Scenario: Display Word Cloud                       # features/WordCloud.feature:5
+    Given I have searched for an author's last name  # FeatureContext::iHaveSearchedForAnAuthorSLastName()
+      TODO: write pending definition
+    When I view the word cloud page                  # FeatureContext::iViewTheWordCloudPage()
+    Then I will see a word cloud of the top X papers # FeatureContext::iWillSeeAWordCloudOfTheTopXPapers()
+
+  @display
+  Scenario: Download image Word Cloud           # features/WordCloud.feature:11
+    Given I have a valid search and paper cloud # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click save as image                  # FeatureContext::iClickSaveAsImage()
+    Then the image download will begin          # FeatureContext::theImageDownloadWillBegin()
+
+  @export-pdf
+  Scenario: Export list of papers as pdf            # features/WordCloud.feature:17
+    Given I have a valid search and paper cloud     # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click export as pdf                      # FeatureContext::iClickExportAsPdf()
+      TODO: write pending definition
+    Then I will get a download of all papers as pdf # FeatureContext::iWillGetADownloadOfAllPapersAsPdf()
+
+  @export-txt
+  Scenario: Export list of papers as txt            # features/WordCloud.feature:23
+    Given I have a valid search and paper cloud     # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click export as txt                      # FeatureContext::iClickExportAsTxt()
+      TODO: write pending definition
+    Then I will get a download of all papers as txt # FeatureContext::iWillGetADownloadOfAllPapersAsTxt()
+
+  @download-library
+  Scenario: Download from digital library                         # features/WordCloud.feature:29
+    Given I have a valid search and paper cloud                   # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click download from library for a paper                # FeatureContext::iClickDownloadFromLibraryForAPaper()
+      TODO: write pending definition
+    Then I will get redirected to the library page for that paper # FeatureContext::iWillGetRedirectedToTheLibraryPageForThatPaper()
+
+  @bibtex
+  Scenario: See bibtex of paper                                 # features/WordCloud.feature:35
+    Given I have a valid search and paper cloud                 # FeatureContext::iHaveAValidSearchAndPaperCloud()
+    When I click view bibtex for a paper                        # FeatureContext::iClickViewBibtexForAPaper()
+      TODO: write pending definition
+    Then I will get redirected to its corresponding bibtex view # FeatureContext::iWillGetRedirectedToItsCorrespondingBibtexView()
+
+  @abstract
+  Scenario: See abstract of paper         # features/WordCloud.feature:41
+    Given I am on the paper list page     # FeatureContext::iAmOnThePaperListPage()
+    When I click the title of a paper     # FeatureContext::iClickTheTitleOfAPaper()
+    Then I will get be shown the abstract # FeatureContext::iWillGetBeShownTheAbstract()
+      TODO: write pending definition
+
+19 scenarios (9 passed, 10 pending)
+57 steps (36 passed, 10 pending, 11 skipped)
+0m28.67s (9.58Mb)
+Feature: Search
+    As a user of PaperCloud, one needs to be able to search for papers in the IEEE and ACM database.
+
+  @search-keyword
+  Scenario: Search                               # features/Search.feature:23
+    Given I have selected a search keyword       # FeatureContext::iHaveSelectedASearchKeyword()
+    When I click the Search button               # FeatureContext::iClickTheSearchButton()
+    Then I will be brough to the papercloud page # FeatureContext::iWillBeBroughToThePapercloudPage()
+
+1 scenario (1 passed)
+3 steps (3 passed)
+0m1.90s (9.49Mb)

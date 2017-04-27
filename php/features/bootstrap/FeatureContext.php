@@ -22,49 +22,68 @@ class FeatureContext extends MinkContext {
 	 * @Given I have clicked on a word
 	 */
 	public function iHaveClickedOnAWord() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
 	}
 
 	/**
 	 * @When I view the page
 	 */
 	public function iViewThePage() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#paperList')->isVisible()) {
+			throw new Exception($this->page->find('css', '#paperList')->getAttribute('style'));
+		}
 	}
 
 	/**
 	 * @Then I will see a list of papers it appears in
 	 */
 	public function iWillSeeAListOfPapersItAppearsIn() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#paperList')->isVisible()) {
+			throw new Exception($this->page->find('css', '#paperList')->getAttribute('style'));
+		}
 	}
 
 	/**
 	 * @Given there is more than one paper that mentions a word
 	 */
 	public function thereIsMoreThanOnePaperThatMentionsAWord() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
+
 	}
 
 	/**
 	 * @Then all the papers which mention that word will be listed
 	 */
 	public function allThePapersWhichMentionThatWordWillBeListed() {
-		throw new PendingException();
+		$words = $this->getSession()->getDriver()->evaluateScript("function(){ return all_items; }()");
+		if ($words[0][0] == "test" && $words[0][1] == "test2") {
+			//good!
+		} else {
+			throw new Exception();
+		}
 	}
 
 	/**
 	 * @Given I am on the paper list page
 	 */
 	public function iAmOnThePaperListPage() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
 	}
 
 	/**
 	 * @When I click on an author
 	 */
 	public function iClickOnAnAuthor() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(3) > a:nth-child(1)')->click();
 	}
 
 	/**
@@ -80,14 +99,16 @@ class FeatureContext extends MinkContext {
 	 * @When I click on it's conference
 	 */
 	public function iClickOnItSConference() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(4) > a')->click();
 	}
 
 	/**
 	 * @Then the page will display papers from that conference
 	 */
 	public function thePageWillDisplayPapersFromThatConference() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
@@ -117,49 +138,63 @@ class FeatureContext extends MinkContext {
 	 * @When I click the title of a paper
 	 */
 	public function iClickTheTitleOfAPaper() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(2) > a')->click();
 	}
 
 	/**
 	 * @Then the words in the abstract will be highlighted
 	 */
 	public function theWordsInTheAbstractWillBeHighlighted() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#pop-up-info > mark:nth-child(1)')->isVisible()) {
+			throw new Exception($this->page->find('css', '#pop-up-info > mark:nth-child(1)')->getAttribute('style'));
+		}
 	}
 
 	/**
 	 * @Given I have clicked the title of a paper
 	 */
 	public function iHaveClickedTheTitleOfAPaper() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(2) > a')->click();
 	}
 
 	/**
 	 * @When I click download as PDF
 	 */
 	public function iClickDownloadAsPdf() {
-		throw new PendingException();
+		$this->page->find('css', '#pop-up-info > a');
 	}
 
 	/**
 	 * @Then the occurences of the searched word in the pdf will be highlighted
 	 */
 	public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted() {
-		throw new PendingException();
+		$words = $this->getSession()->getDriver()->evaluateScript('function(){ return download_pdf_testing();}()');
+		if ($words != "http://localhost/php/pdfs/IEEE-747587-model.pdf") {
+			throw new Exception;
+		}
 	}
 
 	/**
 	 * @When I select a subset of papers
 	 */
 	public function iSelectASubsetOfPapers() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(1) > input')->click();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(2) > td:nth-child(1) > input')->click();
+		$this->page->find('css', '#getSubset')->click();
+
 	}
 
 	/**
 	 * @Then a new word cloud will appear with the selected papers as its source
 	 */
 	public function aNewWordCloudWillAppearWithTheSelectedPapersAsItsSource() {
-		throw new PendingException();
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
+			throw new Exception($this->page->find('css', '#progressbar')->getAttribute('style'));
+		}
 	}
 
 	/**
@@ -278,7 +313,11 @@ class FeatureContext extends MinkContext {
 	 * @Given I have selected a search keyword
 	 */
 	public function iHaveSelectedASearchKeyword() {
-		throw new PendingException();
+		#searchTypeButton
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud');
+		$this->page = $session->getPage();
+		$this->page->find('css', '#searchTypeButton')->click();
 	}
 
 	/**
@@ -293,7 +332,7 @@ class FeatureContext extends MinkContext {
 	 * @Then I will be brough to the papercloud page
 	 */
 	public function iWillBeBroughToThePapercloudPage() {
-		if (!$this->page->find('css', '#wordcloud')->isVisible()) {
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
 			throw new Exception($this->page->find('css', '#wordcloud')->getAttribute('style'));
 		}
 	}
