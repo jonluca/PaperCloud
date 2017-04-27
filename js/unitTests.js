@@ -80,7 +80,6 @@ describe('SearchHistoryFunctionsCorrectly', function(){
 		var length2 = previousSearches.length;
 		console.log("Length", length);
 		console.log("Length2", length2);
-
 		expect(length).to.equal(length2);
 	});
 });
@@ -136,21 +135,26 @@ describe('SearchHistoryIsStillClickableBug', function(){
 describe('GenerateWordCloudFromSubset', function(){
     it('generateWordCloudFromSubset', function(){
         var listOfPapers =  []
-
         var answer = getSubsetWordCloud(listOfPapers);
-
         expect(answer).to.be.a('string');
     });
 });
 
-describe("function", function(){
-	it("doesSomething", function(){
-			
+describe("ProgressBarBugFixed", function(){
+	it("ProgressBarIncreasesOverTimeWhile", function(){
+		$('#search').trigger('click');
+		setTimeout(function(){
+			var before = line.value();
+			setTimeout(function(){
+				var after = line.value();
+				expect(before).to.not.equal(after);
+			}, 200);
+		});
 	});
 });
 
-describe("function", function(){
-	it("doesSomething", function(){
+describe("", function(){
+	it("", function(){
 		
 	});
 });
