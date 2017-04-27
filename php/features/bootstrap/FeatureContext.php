@@ -173,7 +173,7 @@ class FeatureContext extends MinkContext {
 	 * @Then the occurences of the searched word in the pdf will be highlighted
 	 */
 	public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted() {
-		$words = $this->getSession()->getDriver()->evaluateScript('function(){ var url = document.getElementById("abstract_link"); return url[0].href; }()');
+		$words = $this->getSession()->getDriver()->evaluateScript('function(){ return download_pdf_testing();}()');
 		if ($words != "http://localhost/php/pdfs/IEEE-747587-model.pdf") {
 			throw new Exception;
 		}

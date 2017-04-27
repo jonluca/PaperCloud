@@ -773,5 +773,6 @@ function getSubsetWordCloud(array) {
 }
 
 function download_pdf_testing() {
-
+    var url = $("#pop-up-info > a");
+    return url[0].href;
 }
