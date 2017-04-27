@@ -1,0 +1,191 @@
+PHPUnit 6.1.0 by Sebastian Bergmann and contributors.
+
+........                                                            8 / 8 (100%)array(3) {
+  ["totalfound"]=>
+  string(1) "3"
+  ["totalsearched"]=>
+  string(7) "4200986"
+  ["document"]=>
+  array(3) {
+    [0]=>
+    array(20) {
+      ["rank"]=>
+      string(1) "1"
+      ["title"]=>
+      string(44) "A High-density file drum as a computer store"
+      ["authors"]=>
+      string(32) "Lorin Knight;  Martin P. Circuit"
+      ["controlledterms"]=>
+      array(1) {
+        ["term"]=>
+        array(2) {
+          [0]=>
+          string(13) "data handling"
+          [1]=>
+          string(18) "magnetic recording"
+        }
+      }
+      ["pubtitle"]=>
+      string(54) "Radio Engineers, Journal of the British Institution of"
+      ["punumber"]=>
+      string(7) "5258192"
+      ["pubtype"]=>
+      string(20) "Journals & Magazines"
+      ["publisher"]=>
+      string(3) "IET"
+      ["volume"]=>
+      string(2) "20"
+      ["issue"]=>
+      string(1) "1"
+      ["py"]=>
+      string(4) "1960"
+      ["spage"]=>
+      string(2) "41"
+      ["epage"]=>
+      string(2) "46"
+      ["abstract"]=>
+      string(677) "The paper describes a large-capacity magnetic drum store having a capacity of Â¿ 15,000,000 bits and an average random access time of Â¿ 200 millisec. A packing density of just over 1,000 bits per in. has been obtained by floating specially designed heads on a film of oil which automatically maintains a spacing of 0.002 in. between the head and the drum surface. Special considerations led to the use of a copper-nickel-iron alloy for the drum surface. A self-clocked reading system is used to obviate the need for high mechanical stability. The reading circuit also has special features which keep it operating under optimum conditions over a range of signal amplitudes."
+      ["arnumber"]=>
+      string(7) "5259683"
+      ["doi"]=>
+      string(23) "10.1049/jbire.1960.0007"
+      ["publicationId"]=>
+      string(7) "5259683"
+      ["partnum"]=>
+      string(7) "5259683"
+      ["mdurl"]=>
+      string(105) "http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5259683&contentType=Journals+%26+Magazines"
+      ["pdf"]=>
+      string(59) "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5259683"
+    }
+    [1]=>
+    array(18) {
+      ["rank"]=>
+      string(1) "2"
+      ["title"]=>
+      string(49) "Book review: Introduction to Computer Engineering"
+      ["authors"]=>
+      string(13) "M. P. Circuit"
+      ["pubtitle"]=>
+      string(61) "Electronic and Radio Engineers, Journal of the Institution of"
+      ["punumber"]=>
+      string(7) "5261261"
+      ["pubtype"]=>
+      string(20) "Journals & Magazines"
+      ["publisher"]=>
+      string(3) "IET"
+      ["volume"]=>
+      string(2) "56"
+      ["issue"]=>
+      string(1) "2"
+      ["py"]=>
+      string(4) "1986"
+      ["spage"]=>
+      string(2) "48"
+      ["issn"]=>
+      string(9) "0267-1689"
+      ["arnumber"]=>
+      string(7) "5261327"
+      ["doi"]=>
+      string(23) "10.1049/jiere.1986.0018"
+      ["publicationId"]=>
+      string(7) "5261327"
+      ["partnum"]=>
+      string(7) "5261327"
+      ["mdurl"]=>
+      string(105) "http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=5261327&contentType=Journals+%26+Magazines"
+      ["pdf"]=>
+      string(59) "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5261327"
+    }
+    [2]=>
+    array(24) {
+      ["rank"]=>
+      string(1) "3"
+      ["title"]=>
+      string(46) "A low jitter, low cost, time-of-flight circuit"
+      ["authors"]=>
+      string(78) "M. D. Cable;  M. S. Derzon;  R. G. Vieira;  H. P. Spracklen;  P. E. Consultant"
+      ["affiliations"]=>
+      string(66) "Lawrence Livermore Nat. Lab., California Univ., Livermore, CA, USA"
+      ["controlledterms"]=>
+      array(1) {
+        ["term"]=>
+        array(3) {
+          [0]=>
+          string(33) "neutron detection and measurement"
+          [1]=>
+          string(21) "neutron spectrometers"
+          [2]=>
+          string(22) "semiconductor counters"
+        }
+      }
+      ["thesaurusterms"]=>
+      array(1) {
+        ["term"]=>
+        array(10) {
+          [0]=>
+          string(8) "Circuits"
+          [1]=>
+          string(5) "Costs"
+          [2]=>
+          string(9) "Detectors"
+          [3]=>
+          string(18) "Energy measurement"
+          [4]=>
+          string(15) "Event detection"
+          [5]=>
+          string(5) "Fuels"
+          [6]=>
+          string(6) "Jitter"
+          [7]=>
+          string(8) "Neutrons"
+          [8]=>
+          string(13) "Sensor arrays"
+          [9]=>
+          string(7) "Silicon"
+        }
+      }
+      ["pubtitle"]=>
+      string(36) "IEEE Transactions on Nuclear Science"
+      ["punumber"]=>
+      string(2) "23"
+      ["pubtype"]=>
+      string(20) "Journals & Magazines"
+      ["publisher"]=>
+      string(4) "IEEE"
+      ["volume"]=>
+      string(2) "35"
+      ["issue"]=>
+      string(1) "1"
+      ["part"]=>
+      string(3) "1-2"
+      ["py"]=>
+      string(4) "1988"
+      ["spage"]=>
+      string(3) "133"
+      ["epage"]=>
+      string(3) "134"
+      ["abstract"]=>
+      string(384) "A low-cost, low-jitter circuit has been developed for use in a neutron time-of-flight spectrometer at the Nova Laser Facility. Using a silicon charged-particle detector, amplifier, and constant-fraction discriminator, timing resolution of better than 50 ps FWHM has been achieved. Using an array of many such detectors, very high data rates and precise spectra can be obtained.<<ETX>>"
+      ["issn"]=>
+      string(9) "0018-9499"
+      ["arnumber"]=>
+      string(5) "12690"
+      ["doi"]=>
+      string(16) "10.1109/23.12690"
+      ["publicationId"]=>
+      string(5) "12690"
+      ["partnum"]=>
+      string(5) "12690"
+      ["mdurl"]=>
+      string(103) "http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=12690&contentType=Journals+%26+Magazines"
+      ["pdf"]=>
+      string(57) "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=12690"
+    }
+  }
+}
+
+
+Time: 1.68 minutes, Memory: 4.00MB
+
+OK (8 tests, 16 assertions)
