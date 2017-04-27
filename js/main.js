@@ -660,6 +660,12 @@ function authorClicked(el) {
 }
 
 function conferenceSearch(conference) {
+    $(".backList").css('display', 'none');
+    $('#paperList').css({
+        display: 'none'
+    });
+    initiateProgressBar();
+
     var url = "php/get_IEEE_conference_list.php";
     $.ajax({
         method: 'GET',
@@ -675,14 +681,27 @@ function conferenceSearch(conference) {
                 console.log("Error parsing conferences!");
             }
             console.log(papers);
-            papers = papers.document;
-            $("#pop-up-info").html("<ul id='popup-table'></ul>");
-            for (key in papers) {
-                $("#popup-table").append('<li>' + papers[key].title + '</li>');
-            }
-            $('#pop-up-info').css('display', 'block');
-            $("#pop-up-info").dialog();
-            $("#pop-up-info").dialog('option', 'title', conference);
+            //reinit the file list so that we don't use the old stuff
+            currFileList = [];
+            list_of_words = "";
+            //parse data
+            parseIEEE(data);
+            //generate word cloud
+            getWordFrequency(list_of_words);
+            $('#wordcloudPage').css('display', 'block');
+
+            $('#searchPage').css('display', 'block');
+            $('#wordcloudPage').css('display', 'block');
+
+
+            // papers = papers.document;
+            // $("#pop-up-info").html("<ul id='popup-table'></ul>");
+            // for (key in papers) {
+            //     $("#popup-table").append('<li>' + papers[key].title + '</li>');
+            // }
+            // $('#pop-up-info').css('display', 'block');
+            // $("#pop-up-info").dialog();
+            // $("#pop-up-info").dialog('option', 'title', conference);
 
         }
     });
