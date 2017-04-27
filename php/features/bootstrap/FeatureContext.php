@@ -355,7 +355,7 @@ class FeatureContext extends MinkContext {
 	 * @When I view the word cloud page
 	 */
 	public function iViewTheWordCloudPage() {
-		sleep(7);
+		sleep(7); // Wait to load
 	}
 
 	/**
@@ -397,7 +397,9 @@ class FeatureContext extends MinkContext {
 	 * @Then I will get a download of all papers as pdf
 	 */
 	public function iWillGetADownloadOfAllPapersAsPdf() {
-		//if we are here without crashing in the other functions then it's good
+		if ($this->getSession()->getPage()->find('xpath', '//button[text()="Export - PDF"]') == null) {
+			throw new Exception("Download PDF didn't work...");
+		}
 	}
 
 	/**
@@ -413,7 +415,9 @@ class FeatureContext extends MinkContext {
 	 * @Then I will get a download of all papers as txt
 	 */
 	public function iWillGetADownloadOfAllPapersAsTxt() {
-	 //if we are here without crashing in the other functions then it's good
+	 if ($this->getSession()->getPage()->find('xpath', '//button[text()="Export - TXT"]') == null) {
+			throw new Exception("Download TXT didn't work...");
+		}
 	}
 
 	/**
