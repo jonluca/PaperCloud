@@ -402,6 +402,47 @@ function createPaperList(papers) {
     //show back button
     $(".backList").css('display', 'block');
     //Create titles array from papers object
+    //for testing
+    if (window.location.href.indexOf("word") > -1) {
+        papers = [
+            {
+                "title": "Heterogeneous multiprocessor implementations for JPEG:: a case study",
+                "frequency": 2,
+                "url": "php/pdfs/IEEE-4278518-model.pdf",
+                "libURL": "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4278518",
+                "doi": "10.1145/1176254.1176307",
+                "abstract": "Heteregenous multiprocessor SoCs are becoming a reality, largely due to the abundance of transistors, intellectual property cores and powerful design tools. In this project, we explore the use of multiple cores to speed up the JPEG compression algorithm. We show two methods to parallelize this algorithm: one, a master-slave model; and two, a pipeline model. The systems were implemented using Tensilica's Xtensa LX processors with queues. We show that even with this relatively simple application, parallelization can be carried out with up to nine processors with utilization of between 50% to 80%. We obtained speed ups of up to 4.6X with a seven core system with an area increase of 3. 1X.",
+                "authors": "Andrea Erdos;  Sri Parameswaran;  Seng Lin Shee",
+                "pubtitle": "Proceedings of the 4th International Conference on Hardware/Software Codesign and System Synthesis (CODES+ISSS '06)",
+                "arn": "4278518",
+                "org": "IEEE"
+            },
+            {
+                "title": "Density of states of one-dimensional random potentials",
+                "frequency": 1,
+                "url": "php/pdfs/IEEE-5390029-model.pdf",
+                "libURL": "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=5390029",
+                "doi": "10.1147/rd.321.0047",
+                "abstract": "Following an introduction to the early history of the theories of the density of electronic states in one-dimensional structures, pioneered, among others, by R. Landauer and J. C. Helland, a particular model, that of a multistep random potential, is discussed. It is shown that Kolmogorov-type equations can be obtained for the probability distribution of the phase of the wave function, and, by solving these equations, the density of states may be calculated. An analogy with the classical rotator in a random force field is worked out, and helps in visualizing the results.",
+                "authors": "Paul Erdos",
+                "pubtitle": "IBM Journal of Research and Development",
+                "arn": "5390029",
+                "org": "IEEE"
+            },
+            {
+                "title": "Extended Petri-net modeling for re-manufacturing line simulation",
+                "frequency": 8,
+                "url": "php/pdfs/IEEE-747587-model.pdf",
+                "libURL": "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=747587",
+                "doi": "10.1109/ECODIM.1999.747587",
+                "abstract": "We address the problem of building, simulating and improving the performance of a remanufacturing line computer model. We present a parametric Petri net model of a remanufacturing line: places represent precedence constraints on operations, while transitions model remanufacturing operations. Basic parameters of the Petri net model are the token type (its color), the capacity of places and the priority and firing duration of transitions. We use different token colors to model the different states of a product through the test and repair loop. The capacity parameter is used to model the grouping of products into boxes, that facilitate transportation. The priority of operations is used to resolve conflicts among alternative operations. We simulate the operation of the parametric Petri net model using the software POSES++ for a semi-automated telephone remanufacturing line test case. From the simulation experiments of the case study it turns out that throughput performance is not very sensitive to the duration of testing, cleaning or packing and optimal performance can be achieved when the ratio of disassembly to reassembly duration is close to one. We extend our previous base model to also include the effects of feeding the line with new covers and electronic circuits to avoid line starvation",
+                "authors": "G. Erdos;  P. Xirouchakis",
+                "pubtitle": "Proceedings First International Symposium on Environmentally Conscious Design and Inverse Manufacturing",
+                "arn": "747587",
+                "org": "IEEE"
+            }
+        ];
+    }
     var titles = [];
     for (var key in papers) {
         titles.push([]);

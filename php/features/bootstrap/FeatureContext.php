@@ -73,14 +73,17 @@ class FeatureContext extends MinkContext {
 	 * @Given I am on the paper list page
 	 */
 	public function iAmOnThePaperListPage() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
 	}
 
 	/**
 	 * @When I click on an author
 	 */
 	public function iClickOnAnAuthor() {
-		throw new PendingException();
+		$this->page->find('css', '#listPapers > tbody > tr:nth-child(1) > td:nth-child(3) > a:nth-child(1)')->click();
 	}
 
 	/**
