@@ -6,15 +6,13 @@ var titles = [];
 var papers = [];
 var previousSearches = [];
 var clickedWord = "";
-
+var all_items;
 var line;
 
 $(document).ready(function() {
     //create a progress bar
     line = new ProgressBar.Line('#progressbar');
-    if (window.location.href.indexOf("word") > -1) {
-        generateWordList(["test"]);
-    }
+
     //enables/disables search button based on if there is text in box
     $('#search').keyup(function() {
         if ($(this).val().length != 0) {
@@ -126,6 +124,9 @@ $(document).ready(function() {
     } else {
         document.getElementById("download").addEventListener('click', dlCanvas, false);
     }
+    if (window.location.href.indexOf("word") > -1) {
+        generateWordList([["test", "test2"]]);
+    }
 });
 
 //downloads canvas
@@ -149,6 +150,7 @@ function historyItemClicked(target) {
 
 function generateWordList(item, dimension, event) {
     //item[0] is the word being search for. getPaperListByName looks for all occurences of that word in all papers
+    all_items = item;
     papers = getPaperListByName(item[0]);
     createPaperList(papers);
 }

@@ -50,14 +50,23 @@ class FeatureContext extends MinkContext {
 	 * @Given there is more than one paper that mentions a word
 	 */
 	public function thereIsMoreThanOnePaperThatMentionsAWord() {
-		throw new PendingException();
+		//get session
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud?word=true');
+		$this->page = $session->getPage();
+
 	}
 
 	/**
 	 * @Then all the papers which mention that word will be listed
 	 */
 	public function allThePapersWhichMentionThatWordWillBeListed() {
-		throw new PendingException();
+		$words = $this->getSession()->getDriver()->evaluateScript("function(){ return all_items; }()");
+		if ($words[0][0] == "test" && $words[0][1] == "test2") {
+			//good!
+		} else {
+			throw new Exception();
+		}
 	}
 
 	/**
