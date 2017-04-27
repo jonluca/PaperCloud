@@ -173,7 +173,7 @@ class FeatureContext extends MinkContext {
 	 */
 	public function theOccurencesOfTheSearchedWordInThePdfWillBeHighlighted() {
 		$words = $this->getSession()->getDriver()->evaluateScript('function(){ return download_pdf_testing();}()');
-		if ($words != "http://localhost/php/pdfs/IEEE-747587-model.pdf") {
+		if ($words != "http://localhost:8000/php/pdfs/IEEE-747587-model.pdf") {
 			throw new Exception;
 		}
 	}
@@ -242,7 +242,7 @@ class FeatureContext extends MinkContext {
 
 		//open search bar and focus (there will be no search results)
 		$GLOBALS['searchBar'] = $this->page->find('css', '#search')->click();
-		$GLOBALS['searchBarText'] = $this->page->find('css', '#search')->focus();
+		$this->page->find('css', '#searchButton')->click();
 
 		sleep(1);
 	}
@@ -348,21 +348,23 @@ class FeatureContext extends MinkContext {
 	 * @Given I have searched for an author's last name
 	 */
 	public function iHaveSearchedForAnAuthorSLastName() {
-		throw new PendingException();
+		$this->iHaveSearchedForAnAuthor();
 	}
 
 	/**
 	 * @When I view the word cloud page
 	 */
 	public function iViewTheWordCloudPage() {
-		throw new PendingException();
+		sleep(7);
 	}
 
 	/**
 	 * @Then I will see a word cloud of the top X papers
 	 */
 	public function iWillSeeAWordCloudOfTheTopXPapers() {
-		throw new PendingException();
+		if ($this->page->find('css', '#wordcloud') == null) {
+   throw new Exception("NO WORDCLOUD");
+		}
 	}
 
 	/**
@@ -386,42 +388,51 @@ class FeatureContext extends MinkContext {
 	 * @When I click export as pdf
 	 */
 	public function iClickExportAsPdf() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//button[text()="Export - PDF"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get a download of all papers as pdf
 	 */
 	public function iWillGetADownloadOfAllPapersAsPdf() {
-		throw new PendingException();
+		//if we are here without crashing in the other functions then it's good
 	}
 
 	/**
 	 * @When I click export as txt
 	 */
 	public function iClickExportAsTxt() {
-		throw new PendingException();
+		$this->iHaveClickedOnAWord();
+		$this->getSession()->getPage()->find('xpath', '//button[text()="Export - TXT"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get a download of all papers as txt
 	 */
 	public function iWillGetADownloadOfAllPapersAsTxt() {
-		throw new PendingException();
+	 //if we are here without crashing in the other functions then it's good
 	}
 
 	/**
 	 * @When I click download from library for a paper
 	 */
 	public function iClickDownloadFromLibraryForAPaper() {
+		$this->iHaveClickedOnAWord();
 		$this->getSession()->getPage()->find('xpath', '//a[text()="PDF"]')->click();
+		sleep(2);
 	}
 
 	/**
 	 * @Then I will get redirected to the library page for that paper
 	 */
 	public function iWillGetRedirectedToTheLibraryPageForThatPaper() {
-		throw new PendingException();
+		$url = $this->getSession()->getCurrentUrl();
+		if (strpos($url, 'ieee.org') === false) {
+   throw new Exception("Not at the library site!");
+		}
 	}
 
 	/**
