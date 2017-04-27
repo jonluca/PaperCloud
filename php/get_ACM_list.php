@@ -44,7 +44,7 @@ function downloadPDFFromDOI($doi, $id) {
 			$query = "http://dl.acm.org/citation.cfm?id=$id";
 			$response = Requests::get($query);
 		} catch (Requests_Exception $e) {
-			//print($e->getMessage());
+			print($e->getMessage());
 		}
 		$document = new DOMDocument();
 
@@ -71,7 +71,7 @@ function downloadPDFFromDOI($doi, $id) {
 					$bibtex = strstr($start_bibtex, "</pre>", true);
 					$results[$id]["bibtex"] = $bibtex;
 				} catch (Requests_Exception $e) {
-					//print($e->getMessage());
+					print($e->getMessage());
 				}
 			}
 
@@ -95,7 +95,6 @@ function downloadPDFFromDOI($doi, $id) {
 	} else {
 		return null;
 	}
-
 }
 
 function performQuery($author, $num) {
@@ -113,13 +112,9 @@ function performQuery($author, $num) {
 	*/
 
 	$actualnum = intval($num);
-
-	//Headers that we probably don't even need
-	global $headers;
-
+	global $headers; //Headers that we probably DO need
 	$success = false;
-	//Continue trying to get the URL, as it'll fail sometimes
-	while (!$success) {
+	while (!$success) { //Continue trying to get the URL, as it'll fail sometimes
 		try {
 			$query = "http://dl.acm.org/exportformats_search.cfm?query=$author&filtered=&within=owners%2Eowner%3DHOSTED&dte=&bfr=&srt=%5Fscore&expformat=csv";
 			$response = Requests::get($query, $headers);
@@ -128,25 +123,19 @@ function performQuery($author, $num) {
 			$success = false;
 		}
 	}
-	//Parse results as CSV
-	$csv = str_getcsv($response->body);
+	$csv = str_getcsv($response->body); //Parse results as CSV
 	$lines = explode(PHP_EOL, $response->body);
 	$csv_to_array = array();
 	foreach ($lines as $line) {
 		$csv_to_array[] = str_getcsv($line);
 	}
-
 	$counter = 0;
 	$valid_downloads = 0;
-	//multithreaded curl
-	$rc = new RollingCurl("request_callback");
-//concurrent connections
-	$rc->window_size = $actualnum;
-
+	$rc = new RollingCurl("request_callback"); //multithreaded curl
+	$rc->window_size = $actualnum; //concurrent connections
 	$rc->options = array(CURLOPT_RETURNTRANSFER => true, CURLOPT_FOLLOWLOCATION => true, CURLOPT_HTTPHEADER => $headers);
 	//This will be the results array
 	foreach ($csv_to_array as $line) {
-
 		if (array_key_exists(1, $line) && array_key_exists(11, $line) && array_key_exists(6, $line) && $line[1] != "" && $line[1] != "id") {
 			$id = $line[1];
 			$doi = $line[11];
@@ -169,21 +158,18 @@ function performQuery($author, $num) {
 	if ($valid_downloads > 1) {
 		$rc->execute();
 	}
-
 }
 
 function request_callback($data, $info) {
-	$id = strstr($info["url"], 'id=');
-	$id = strstr($id, '&', true);
-	$id = str_replace("id=", "", $id);
-
+	$id2 = strstr($info["url"], 'id=');
+	$id1 = strstr($id2, '&', true);
+	$id = str_replace("id=", "", $id1);
 	$path = 'pdfs/' . $id . '.pdf';
 	$result = file_put_contents($path, $data);
 	try {
 		global $results;
 		$parser = new \Smalot\PdfParser\Parser();
 		$pdf = $parser->parseFile($path);
-
 		$text = $pdf->getText();
 		$results[$id]["paper"] = $text;
 		$results[$id]["url"] = 'php/' . $path;
@@ -191,7 +177,7 @@ function request_callback($data, $info) {
 			$results[$id]["abstract"] = substr($text, 0, 250);
 		}
 	} catch (Exception $e) {
-		//print($e->getMessage());
+		print($e->getMessage());
 	}
 }
 performQuery($search, $num);
