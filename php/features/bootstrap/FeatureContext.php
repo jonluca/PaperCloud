@@ -166,7 +166,6 @@ class FeatureContext extends MinkContext {
 	 */
 	public function iClickDownloadAsPdf() {
 		$this->page->find('css', '#pop-up-info > a');
-		sleep(3);
 	}
 
 	/**
@@ -314,7 +313,11 @@ class FeatureContext extends MinkContext {
 	 * @Given I have selected a search keyword
 	 */
 	public function iHaveSelectedASearchKeyword() {
-		throw new PendingException();
+		#searchTypeButton
+		$session = $this->getSession();
+		$session->visit('http://localhost/PaperCloud');
+		$this->page = $session->getPage();
+		$this->page->find('css', '#searchTypeButton')->click();
 	}
 
 	/**
@@ -329,7 +332,7 @@ class FeatureContext extends MinkContext {
 	 * @Then I will be brough to the papercloud page
 	 */
 	public function iWillBeBroughToThePapercloudPage() {
-		if (!$this->page->find('css', '#wordcloud')->isVisible()) {
+		if (!$this->page->find('css', '#progressbar')->isVisible()) {
 			throw new Exception($this->page->find('css', '#wordcloud')->getAttribute('style'));
 		}
 	}
