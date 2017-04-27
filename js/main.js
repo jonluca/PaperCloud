@@ -1,13 +1,13 @@
-var currFileList = [];
-var list_of_words = "";
-var counter = 0;
-var num_papers = 0;
-var titles = [];
-var papers = [];
-var previousSearches = [];
-var clickedWord = "";
-var all_items;
-var line;
+let currFileList = [];
+let list_of_words = "";
+let counter = 0;
+let num_papers = 0;
+let titles = [];
+let papers = [];
+let previousSearches = [];
+let clickedWord = "";
+let all_items;
+let line;
 
 $(document).ready(function() {
     //create a progress bar
@@ -68,7 +68,7 @@ $(document).ready(function() {
 
     //Export table as PDF
     $("#exportPDF").on('click', function() {
-        var pdf = new jsPDF('p', 'pt', 'letter');
+        let pdf = new jsPDF('p', 'pt', 'letter');
         pdf.canvas.height = 72 * 11;
         pdf.canvas.width = 72 * 8.5;
         html2pdf(document.getElementById('listPapers'), pdf, function(pdf) {
@@ -94,7 +94,7 @@ $(document).ready(function() {
 
     //get subset word cloud from selected words
     $("#getSubset").on('click', function() {
-        var array = [];
+        let array = [];
 
         $('.getSubsetCheckbox').each(function(index, element) {
             console.log($(element).prop('checked'));
@@ -132,7 +132,7 @@ $(document).ready(function() {
 //downloads canvas
 function dlCanvas() {
     //get canvas
-    var canvas = document.getElementById("wordcloud");
+    let canvas = document.getElementById("wordcloud");
     //call function defined by hacky github js code
     canvas.toBlob(function(blob) {
         saveAs(blob, "output.png");
@@ -143,7 +143,7 @@ function dlCanvas() {
 function historyItemClicked(target) {
     console.log('a history item was clicked');
     //get text, set search box to that text, then search again
-    var text = target.textContent;
+    let text = target.textContent;
     $('#search').val(text);
     search();
 }
@@ -157,7 +157,7 @@ function generateWordList(item, dimension, event) {
 
 //Returns Bibtex in a string format (with newlines already)
 function getBibtex(doi) {
-    var url = "php/get_bibtex.php";
+    let url = "php/get_bibtex.php";
 
     $.ajax({
         method: 'GET',
@@ -178,19 +178,19 @@ function getBibtex(doi) {
 
 function getWordFrequency(text) {
     //Options for word counter
-    var wordFreqOptions = {
+    let wordFreqOptions = {
         workerUrl: './js/wordCounter/wordfreq.worker.js',
         language: 'english',
         stopWordSets: ['cjk', 'english1', 'english2']
     };
 
     //callbacks generates a wordcloud
-    var wordfreq = WordFreq(wordFreqOptions).process(text, function(list) {
+    let wordfreq = WordFreq(wordFreqOptions).process(text, function(list) {
         //Word cloud options
         if (list.length > 250) {
             list = list.slice(0, 250);
         }
-        var options = {
+        let options = {
             list: list,
             gridSize: Math.round(24 * $('#wordcloud').width() / 1024),
             weightFactor: function(size) {
@@ -218,7 +218,7 @@ function getWordFrequency(text) {
 
 function initiateProgressBar() {
     //Logarithmic decay progress bar
-    var duration = 400000;
+    let duration = 400000;
 
     line.animate(1, {
         // Duration for animation in milliseconds
@@ -228,7 +228,7 @@ function initiateProgressBar() {
         // Easing for animation. See #easing section.
         // Default: 'linear'
         easing: function(pos) {
-            var val = Math.log(pos * duration + 1) / 14;
+            let val = Math.log(pos * duration + 1) / 14;
             return val;
         },
 
@@ -249,7 +249,7 @@ function initiateProgressBar() {
 
 //Returns a promise for $.when...
 function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
-    var url = "php/get_IEEE_text.php";
+    let url = "php/get_IEEE_text.php";
     return $.ajax({
         method: "GET",
         url: url,
@@ -262,7 +262,7 @@ function IEEEGetText(arnumber) { // arnumber is taken from the search JSON
 
 //Get URL of each PDF
 function IEEEGetPdfUrl(arnumber, word) {
-    var url = "php/get_IEEE_text.php";
+    let url = "php/get_IEEE_text.php";
     $.ajax({
         method: "GET",
         url: url,
@@ -277,7 +277,7 @@ function IEEEGetPdfUrl(arnumber, word) {
 
 //Actual search - returns promise for $.when...
 function IEEESearch(search_param) {
-    var url = "php/get_IEEE_list.php";
+    let url = "php/get_IEEE_list.php";
 
     return $.ajax({
         method: 'GET',
@@ -292,7 +292,7 @@ function IEEESearch(search_param) {
 //ACM search which takes in the actual search query by user
 //REturns promise of search. ACM has one query field, so no differentiation needed between author and keyword
 function ACMSearch(search_param, num_papers) {
-    var url = "php/get_ACM_list.php";
+    let url = "php/get_ACM_list.php";
 
     return $.ajax({
         method: 'GET',
@@ -308,16 +308,16 @@ function ACMSearch(search_param, num_papers) {
 //Looks in array of abstract to see if search word is there. If it is, push the title of that abstract into array
 //return array after checking every abstract. This is to build the list of papers
 function getPaperListByName(word) {
-    var results = [];
+    let results = [];
     clickedWord = word;
     //Iterate over array of objects
-    for (var i = 0; i < currFileList.length; i++) {
+    for (let i = 0; i < currFileList.length; i++) {
         //If abstract of current object contains the word (guaranteed at least one!)
-        var re = new RegExp(word, "g");
-        var count = (currFileList[i].abstract.match(re) || []).length;
+        let re = new RegExp(word, "g");
+        let count = (currFileList[i].abstract.match(re) || []).length;
         if (count > 0) {
             //Create object to insert to results, initiate with title
-            var results_object = {
+            let results_object = {
                 title: currFileList[i].title
             };
             results_object.frequency = count;
@@ -381,7 +381,7 @@ function getPaperListByName(word) {
 function showAbstract(abstract, url) {
 
 
-    var aElement = "<a id=\"abstract_link\" href='" + url + "'>Download PDF</a>";
+    let aElement = "<a id=\"abstract_link\" href='" + url + "'>Download PDF</a>";
     $("#pop-up-info").html(abstract + "<br/>" + aElement);
     if (clickedWord.length > 0) {
         $("#pop-up-info").mark(clickedWord);
@@ -443,8 +443,8 @@ function createPaperList(papers) {
             }
         ];
     }
-    var titles = [];
-    for (var key in papers) {
+    let titles = [];
+    for (let key in papers) {
         titles.push([]);
         titles[titles.length - 1].push(papers[key].title);
         titles[titles.length - 1].push(papers[key].title);
@@ -478,10 +478,10 @@ function createPaperList(papers) {
         }, {
             title: 'Author',
             "fnCreatedCell": function(nTd, sData, oData, iRow) {
-                var authorString = papers[iRow].authors;
-                var authorArray = authorString.split(';');
+                let authorString = papers[iRow].authors;
+                let authorArray = authorString.split(';');
                 $(nTd).html('');
-                for (var i = 0; i < authorArray.length; i++) {
+                for (let i = 0; i < authorArray.length; i++) {
                     $(nTd).append("<a class='author-link' onClick='authorClicked(this)' href='#'>" + authorArray[i] + "</a></br>");
                 }
             }
@@ -521,7 +521,7 @@ function createPaperList(papers) {
 function saveAsTextIEEE(data) {
     $(".sk-cube-grid").css('display', 'none');
 
-    var blob = new Blob([data], {
+    let blob = new Blob([data], {
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, "download.txt");
@@ -537,7 +537,7 @@ function downloadAsText(type, uniquenum) {
         for (key in currFileList) {
             if (currFileList[key].doi == uniquenum) {
                 $(".sk-cube-grid").css('display', 'none');
-                var blob = new Blob([currFileList[key].paper], {
+                let blob = new Blob([currFileList[key].paper], {
                     type: "text/plain;charset=utf-8"
                 });
                 saveAs(blob, "download.txt");
@@ -559,16 +559,16 @@ function addSearchToHistory(search_param) {
 function parseIEEE(a1) {
     console.log("IEEE:");
 
-    var results = JSON.parse(a1);
+    let results = JSON.parse(a1);
     console.log(results);
 
-    var papers = results.document;
+    let papers = results.document;
 
     //list_of_words is space delimited string of every word in every title
     //IEEE returns more information than ACM, so it must be in subkey document, and then pull title for each
     for (key in papers) {
         //Get paper title, add to title list
-        var title = papers[key].title;
+        let title = papers[key].title;
         titles.push(title);
         //If it has an abstract add it to list_of_words, the large string containing all words for word cloud
         if (papers[key].hasOwnProperty("abstract")) {
@@ -594,11 +594,11 @@ function parseACM(a2) {
 
     //Only parse them if we don't have enough papers in our paper list yet
     if (counter < num_papers) {
-        var results2 = JSON.parse(a2[0]);
+        let results2 = JSON.parse(a2[0]);
         console.log(results2);
         //ACM search returns array of titles, very little parsing needed
         for (key in results2) {
-            var title = results2[key].title;
+            let title = results2[key].title;
             //Add title to list of titles
             titles.push(title);
             //If it has an abstract, add it to the full list of them
@@ -636,7 +636,7 @@ function search() {
     //Start top progress bar
     initiateProgressBar();
     //Get contents of search bar & num papers
-    var search_param = $("#search").val();
+    let search_param = $("#search").val();
     num_papers = $("#number_papers").val();
 
     //Add the search to the history
@@ -647,8 +647,8 @@ function search() {
     list_of_words = "";
     if (parseInt(num_papers) <= 20) {
         //recycled code from IEEESearch function so we don't have to deal with promises for a single ajax call
-        var url = "php/get_IEEE_list.php";
-        var type = $('#searchTypeButton')[0].textContent;
+        let url = "php/get_IEEE_list.php";
+        let type = $('#searchTypeButton')[0].textContent;
         $.ajax({
             method: 'GET',
             url: url,
@@ -669,7 +669,7 @@ function search() {
     } else {
         //IEEE search returns 20 ish results. Only search ACM (which takes a lot longer) if search query is >20
         //Only search for num_papers - 20 amount
-        var acm_amount = num_papers - 20;
+        let acm_amount = num_papers - 20;
         $.when(IEEESearch(search_param), ACMSearch(search_param, acm_amount)).done(parseTwoResults);
         $('#wordcloudPage').css('display', 'block');
 
@@ -677,23 +677,23 @@ function search() {
 }
 
 function downloadListAsText() {
-    var textToSave = '';
+    let textToSave = '';
 
-    for (var i = 0; i < papers.length; i++) {
-        var paper = papers[i];
+    for (let i = 0; i < papers.length; i++) {
+        let paper = papers[i];
         textToSave += 'Title: ' + paper.title + '\n';
         textToSave += 'Authors: ' + paper.authors + '\n';
         textToSave += 'Conference: ' + paper.pubtitle + '\n \n';
     }
 
-    var blob = new Blob([textToSave], {
+    let blob = new Blob([textToSave], {
         type: "text/plain;charset=utf-8"
     });
     saveAs(blob, 'myText.txt');
 }
 
 function authorClicked(el) {
-    var searchAuthor = $(el)[0].innerText;
+    let searchAuthor = $(el)[0].innerText;
     $('#paperList').css({
         display: 'none'
     });
@@ -713,7 +713,7 @@ function conferenceSearch(conference) {
 
     initiateProgressBar();
 
-    var url = "php/get_IEEE_conference_list.php";
+    let url = "php/get_IEEE_conference_list.php";
     $.ajax({
         method: 'GET',
         url: url,
@@ -721,7 +721,7 @@ function conferenceSearch(conference) {
             search: conference
         },
         success: function(data, code, jqXHR) {
-            var papers;
+            let papers;
             try {
                 papers = JSON.parse(data);
             } catch ( e ) {
@@ -754,12 +754,12 @@ function conferenceSearch(conference) {
     });
 }
 function getSubsetWordCloud(array) {
-    var totalString = "";
+    let totalString = "";
 
-    var newArray = [];
-    for (var i = 0; i < array.length; i++) {
+    let newArray = [];
+    for (let i = 0; i < array.length; i++) {
 
-        for (var j = 0; j < currFileList.length; j++) {
+        for (let j = 0; j < currFileList.length; j++) {
             if (currFileList[j].title === array[i] && currFileList[j].hasOwnProperty("abstract")) {
                 totalString += currFileList[j].abstract;
                 newArray.push(currFileList[j]);
@@ -773,6 +773,6 @@ function getSubsetWordCloud(array) {
 }
 
 function download_pdf_testing() {
-    var url = $("#pop-up-info > a");
+    let url = $("#pop-up-info > a");
     return url[0].href;
 }
