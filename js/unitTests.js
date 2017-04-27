@@ -153,20 +153,46 @@ describe("ProgressBarBugFixed", function(){
 	});
 });
 
-describe("", function(){
-	it("", function(){
-		
+describe("BibtexExists", function(){
+	it("BibtexLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var bibtexVal = $('bibtex').val();
+			expect(bibtexVal).not.to.equal('');
+		}, 10000);
 	});
 });
 
-describe("function", function(){
-	it("doesSomething", function(){
-		
+describe("PDFDownLoadExists", function(){
+	it("PDFLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var pdfVal = $('pdf-download').val();
+			expect(pdfVal).not.to.equal('');
+		}, 10000);
 	});
 });
 
-describe("function", function(){
-	it("doesSomething", function(){
-		
+describe("TextDownLoadExists", function(){
+	it("TextLinkExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var textDowload = $('text-download').val();
+			expect(textDownload).not.to.equal('');
+		}, 10000);
+	});
+});
+
+describe("conferenceDownLoadExists", function(){
+	it("ConferenceDownloadExistsAfterPaperListCreated", function(){
+		search("denham");
+		setTimeout(function(){
+			createPaperList();
+			var conferenceLink = $('conferenceLing').val();
+			expect(conferenceLink).not.to.equal('');
+		}, 10000);
 	});
 });
