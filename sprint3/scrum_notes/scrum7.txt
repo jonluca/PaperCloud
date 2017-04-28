@@ -1,0 +1,51 @@
+Scrum Meeting 7
+
+Scrum master: Myrl Marmarelis
+
+======================================================
+
+SCRUM QUESTIONS:
+
+1. What have you accomplished?
+
+2. What do you plan on doing before next meeting?
+
+3. Is there anything blocking you?
+
+======================================================
+
+Alex
+
+1. Documentation.
+2. N/A.
+3. Nothing.
+
+JonLuca
+
+1. Documentation and reimplementing conference search.
+2. Demonstrate final product.
+3. Nothing.
+
+Marshall
+
+1. Documentation.
+2. Nothing.
+3. Nothing.
+
+Zachary
+
+1. Docs.
+2. Nothing.
+3. Nothing.
+
+Myrl
+
+1. Polished the documentation.
+2. N/A.
+3. Nothing.
+
+Janson
+
+1. Pair programming and doc.
+2. Finish doc.
+3. Nothing.
