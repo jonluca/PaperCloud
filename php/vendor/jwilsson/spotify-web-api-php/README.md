@@ -1,22 +1,24 @@
 # Spotify Web API PHP
 
-[![Latest Stable Version](https://poser.pugx.org/jwilsson/spotify-web-api-php/v/stable.svg)](https://packagist.org/packages/jwilsson/spotify-web-api-php)
-[![Build Status](https://travis-ci.org/jwilsson/spotify-web-api-php.svg?branch=master)](https://travis-ci.org/jwilsson/spotify-web-api-php)
+[![Packagist](https://img.shields.io/packagist/v/jwilsson/spotify-web-api-php.svg)](https://packagist.org/packages/jwilsson/spotify-web-api-php)
+![build](https://github.com/jwilsson/spotify-web-api-php/workflows/build/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/jwilsson/spotify-web-api-php/badge.svg?branch=master)](https://coveralls.io/r/jwilsson/spotify-web-api-php?branch=master)
 
 This is a PHP wrapper for [Spotify's Web API](https://developer.spotify.com/web-api/). It includes the following:
 
 * Helper methods for all API endpoints:
-    * Information about artists, albums, tracks, and users.
+    * Information about artists, albums, tracks, podcasts, and users.
     * List music featured by Spotify.
     * Playlist and user music library management.
     * Spotify catalog search.
     * User playback control.
 * Authorization flow helpers.
+* Automatic refreshing of access tokens.
+* Automatic retry of rate limited requests.
 * PSR-4 autoloading support.
 
 ## Requirements
-* PHP 5.5 or greater.
+* PHP 7.2 or later.
 * PHP [cURL extension](http://php.net/manual/en/book.curl.php) (Usually included with PHP).
 
 ## Installation

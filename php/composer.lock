@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f3bb65f1d78ea75f737b734a764aef0",
+    "content-hash": "4fcc4cc2560d10c1140d8c1f48d172f7",
     "packages": [
         {
             "name": "behat/behat",
@@ -398,6 +398,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -514,25 +515,25 @@
         },
         {
             "name": "jwilsson/spotify-web-api-php",
-            "version": "2.6.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jwilsson/spotify-web-api-php.git",
-                "reference": "ed2b32d73125b692f74b6b852ba56e156757c96e"
+                "reference": "8ea2df27bda109e4ab06eb3221e80abe700c1480"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/ed2b32d73125b692f74b6b852ba56e156757c96e",
-                "reference": "ed2b32d73125b692f74b6b852ba56e156757c96e",
+                "url": "https://api.github.com/repos/jwilsson/spotify-web-api-php/zipball/8ea2df27bda109e4ab06eb3221e80abe700c1480",
+                "reference": "8ea2df27bda109e4ab06eb3221e80abe700c1480",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^5.7 || ^6.0",
+                "phpunit/phpunit": "^8.5",
                 "squizlabs/php_codesniffer": "^3.0"
             },
             "type": "library",
@@ -552,11 +553,11 @@
                 }
             ],
             "description": "A PHP wrapper for Spotify's Web API.",
-            "homepage": "http://jwilsson.github.io/spotify-web-api-php/",
+            "homepage": "https://github.com/jwilsson/spotify-web-api-php",
             "keywords": [
                 "spotify"
             ],
-            "time": "2018-11-07T17:40:08+00:00"
+            "time": "2020-12-07T18:09:57+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -1301,6 +1302,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2017-02-27T10:12:30+00:00"
         },
         {
@@ -1444,6 +1446,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-03-03T06:30:20+00:00"
         },
         {
@@ -2286,7 +2289,7 @@
             ],
             "authors": [
                 {
-                    "name": "Sebastien MALOT",
+                    "name": "Sebastien Malot",
                     "email": "sebastien@malot.fr"
                 }
             ],
@@ -3057,5 +3060,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

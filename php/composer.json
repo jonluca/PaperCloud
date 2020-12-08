@@ -1,7 +1,7 @@
 {
   "require": {
     "monolog/monolog": "1.24.*",
-    "jwilsson/spotify-web-api-php": "^2.0.0",
+    "jwilsson/spotify-web-api-php": "^4.0.0",
     "phpunit/phpunit": "*",
     "behat/behat": "*",
     "behat/mink": "*",
