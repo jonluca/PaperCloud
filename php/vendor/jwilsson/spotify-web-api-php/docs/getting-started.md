@@ -1,7 +1,7 @@
 # Getting Started
 
 ## Requirements
-* PHP 5.5 or greater.
+* PHP 7.2 or later.
 * PHP [cURL extension](http://php.net/manual/en/book.curl.php) (Usually included with PHP).
 
 ## Autoloading
@@ -27,7 +27,7 @@ require_once 'vendor/autoload.php';
 Download the latest release from the [releases page](https://github.com/jwilsson/spotify-web-api-php/releases). Unzip the files somewhere in your project and include a [PSR-4 compatible autoloader](http://www.php-fig.org/psr/psr-4/examples/) in your project.
 
 ## Configuration and setup
-First off, make sure you've created an app on [Spotify's developer site](https://developer.spotify.com/web-api/).
+First off, make sure you've created an app on [Spotify's developer site](https://developer.spotify.com/documentation/web-api/).
 
 Now, before sending requests to Spotify, we need to create a session using your app info:
 
@@ -79,8 +79,6 @@ $session = new SpotifyWebAPI\Session(
     'REDIRECT_URI'
 );
 
-$api = new SpotifyWebAPI\SpotifyWebAPI();
-
 // Request a access token using the code from Spotify
 $session->requestAccessToken($_GET['code']);
 
@@ -102,11 +100,8 @@ require 'vendor/autoload.php';
 
 $session = new SpotifyWebAPI\Session(
     'CLIENT_ID',
-    'CLIENT_SECRET',
-    'REDIRECT_URI'
+    'CLIENT_SECRET'
 );
-
-$api = new SpotifyWebAPI\SpotifyWebAPI();
 
 $session->requestCredentialsToken();
 $accessToken = $session->getAccessToken();
@@ -116,6 +111,8 @@ $accessToken = $session->getAccessToken();
 header('Location: some-other-file.php');
 die();
 ```
+
+You'll notice the missing redirect URI when initializing the `Session`. When using the Client Credentials Flow, it isn't needed and can simply be omitted from the constructor call.
 
 ## Making requests to the Spotify API
 Once you have a access token, it's time to start making some requests to the API!

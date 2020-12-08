@@ -1,23 +1,78 @@
 <?php
-class RequestTest extends PHPUnit_Framework_TestCase
-{
-    private $request = null;
 
-    public function setUp()
+class RequestTest extends PHPUnit\Framework\TestCase
+{
+    private function setupStub($expectedMethod, $expectedUri, $expectedParameters, $expectedHeaders, $expectedReturn)
     {
-        $this->request = new SpotifyWebAPI\Request();
+        $stub = $this->createPartialMock(SpotifyWebAPI\Request::class, ['send']);
+
+        $invocation = $stub->expects($this->once())
+            ->method('send')
+            ->with(
+                $this->equalTo($expectedMethod),
+                $this->equalTo($expectedUri),
+                $this->equalTo($expectedParameters),
+                $this->equalTo($expectedHeaders)
+            );
+
+        if ($expectedReturn instanceof Exception) {
+            $invocation->willThrowException($expectedReturn);
+        } else {
+            $invocation->willReturn($expectedReturn);
+        }
+
+        return $stub;
+    }
+
+    public function testConstructorOptions()
+    {
+        $request = new SpotifyWebAPI\Request([
+            'return_assoc' => true,
+        ]);
+
+        $response = $request->send('GET', 'https://httpbin.org/get');
+
+        $this->assertArrayHasKey('url', $response['body']);
     }
 
     public function testApi()
     {
-        $response = $this->request->api('GET', '/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $return = [
+            'body' => get_fixture('album'),
+            'url' => 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk',
+        ];
+
+        $request = $this->setupStub(
+            'GET',
+            'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk',
+            [],
+            [],
+            $return
+        );
+
+        $response = $request->api('GET', '/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
 
         $this->assertObjectHasAttribute('id', $response['body']);
     }
 
     public function testApiParameters()
     {
-        $response = $this->request->api('GET', '/v1/albums', [
+        $return = [
+            'body' => get_fixture('albums'),
+            'url' => 'https://api.spotify.com/v1/albums?ids=1oR3KrPIp4CbagPa3PhtPp,6lPb7Eoon6QPbscWbMsk6a',
+        ];
+
+        $request = $this->setupStub(
+            'GET',
+            'https://api.spotify.com/v1/albums',
+            [
+                'ids' => '1oR3KrPIp4CbagPa3PhtPp,6lPb7Eoon6QPbscWbMsk6a',
+            ],
+            [],
+            $return
+        );
+
+        $response = $request->api('GET', '/v1/albums', [
             'ids' => '1oR3KrPIp4CbagPa3PhtPp,6lPb7Eoon6QPbscWbMsk6a',
         ]);
 
@@ -27,9 +82,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 
     public function testApiMalformed()
     {
-        $this->setExpectedException('SpotifyWebAPI\SpotifyWebAPIException');
+        $this->expectException(SpotifyWebAPI\SpotifyWebAPIException::class);
 
-        $response = $this->request->api('GET', '/v1/albums/NON_EXISTING_ALBUM');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->api('GET', '/v1/albums/NON_EXISTING_ALBUM');
     }
 
     public function testAccountMalformed()
@@ -46,25 +102,96 @@ class RequestTest extends PHPUnit_Framework_TestCase
             'Authorization' => 'Basic ' . $payload,
         ];
 
-        $this->setExpectedException('SpotifyWebAPI\SpotifyWebAPIException');
+        $this->expectException(SpotifyWebAPI\SpotifyWebAPIAuthException::class);
+        $request = new SpotifyWebAPI\Request();
+        try {
+            $response = $request->account('POST', '/api/token', $parameters, $headers);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(SpotifyWebAPI\SpotifyWebAPIAuthException::class, $e);
+            $this->assertTrue($e->hasInvalidCredentials());
+            throw $e; // throw again for last test
+        }
+    }
 
-        $response = $this->request->account('POST', '/api/token', $parameters, $headers);
+    public function testExpiredToken()
+    {
+        $headers = [
+            'Authorization' => 'Bearer Expired token',
+        ];
+
+        $return = new SpotifyWebAPI\SpotifyWebAPIException('The access token expired', 401);
+
+        $request = $this->setupStub(
+            'GET',
+            'https://api.spotify.com/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V',
+            [],
+            $headers,
+            $return
+        );
+
+        $this->expectException(SpotifyWebAPI\SpotifyWebAPIException::class);
+
+        try {
+            $response = $request->api('GET', '/v1/tracks/2TpxZ7JUBn3uw46aR7qd6V', [], $headers);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(SpotifyWebAPI\SpotifyWebAPIException::class, $e);
+            $this->assertTrue($e->hasExpiredToken());
+            throw $e;
+        }
+    }
+
+    public function testInvalidRefreshToken()
+    {
+        $clientID = 'VALID_ID';
+        $clientSecret = 'VALID_ID';
+        $payload = base64_encode($clientID . ':' . $clientSecret);
+
+        $parameters = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => 'Invalid refresh token',
+        ];
+
+        $headers = [
+            'Authorization' => 'Basic ' . $payload,
+        ];
+
+        $return = new SpotifyWebAPI\SpotifyWebAPIAuthException('Invalid refresh token', 400);
+
+        $request = $this->setupStub(
+            'POST',
+            'https://accounts.spotify.com/api/token',
+            $parameters,
+            $headers,
+            $return
+        );
+
+        $this->expectException(SpotifyWebAPI\SpotifyWebAPIAuthException::class);
+
+        try {
+            $response = $request->account('POST', '/api/token', $parameters, $headers);
+        } catch (Exception $e) {
+            $this->assertInstanceOf(SpotifyWebAPI\SpotifyWebAPIAuthException::class, $e);
+            $this->assertTrue($e->hasInvalidRefreshToken());
+            throw $e;
+        }
     }
 
     public function testGetLastResponse()
     {
-        $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $request->send('GET', 'https://httpbin.org/get');
 
-        $response = $this->request->getLastResponse();
+        $response = $request->getLastResponse();
 
-        $this->assertObjectHasAttribute('id', $response['body']);
+        $this->assertObjectHasAttribute('url', $response['body']);
     }
 
     public function testSend()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('GET', 'https://httpbin.org/get');
 
-        $this->assertObjectHasAttribute('id', $response['body']);
+        $this->assertObjectHasAttribute('url', $response['body']);
     }
 
     public function testSendDelete()
@@ -73,7 +200,8 @@ class RequestTest extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
         ];
 
-        $response = $this->request->send('DELETE', 'https://httpbin.org/delete', $parameters);
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('DELETE', 'https://httpbin.org/delete', $parameters);
 
         $this->assertObjectHasAttribute('foo', $response['body']->form);
     }
@@ -84,7 +212,8 @@ class RequestTest extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
         ];
 
-        $response = $this->request->send('POST', 'https://httpbin.org/post', $parameters);
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('POST', 'https://httpbin.org/post', $parameters);
 
         $this->assertObjectHasAttribute('foo', $response['body']->form);
     }
@@ -95,45 +224,60 @@ class RequestTest extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
         ];
 
-        $response = $this->request->send('PUT', 'https://httpbin.org/put', $parameters);
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('PUT', 'https://httpbin.org/put', $parameters);
 
         $this->assertObjectHasAttribute('foo', $response['body']->form);
     }
 
-    public function testSendParameters()
+    public function testSendGetParameters()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums', [
-            'ids' => '1oR3KrPIp4CbagPa3PhtPp,6lPb7Eoon6QPbscWbMsk6a',
-        ]);
+        $parameters = [
+            'foo' => 'bar',
+        ];
 
-        $this->assertObjectHasAttribute('id', $response['body']->albums[0]);
-        $this->assertObjectHasAttribute('id', $response['body']->albums[1]);
+        $request = new SpotifyWebAPI\Request();
+
+        /**
+         * httpbin doesn't like trailing slashes which we append to
+         * GET requests with parameters. So it'll throw which we ignore.
+         * Not super pretty, but we really just want to assert the URL creation.
+         */
+        $this->expectException(SpotifyWebAPI\SpotifyWebAPIException::class);
+
+        $response = $request->send('GET', 'https://httpbin.org/get', $parameters);
+
+        $this->assertEquals('https://httpbin.org/get/?foo=bar', $response['url']);
     }
 
     public function testSendHeaders()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('GET', 'https://httpbin.org/get');
 
-        $this->assertInternalType('array', $response['headers']);
+        $this->assertIsArray($response['headers']);
     }
 
     public function testSendHeadersParsingKey()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('GET', 'https://httpbin.org/get');
 
         $this->assertArrayHasKey('Content-Type', $response['headers']);
     }
 
     public function testSendHeadersParsingValue()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('GET', 'https://httpbin.org/get');
 
-        $this->assertEquals('application/json; charset=utf-8', $response['headers']['Content-Type']);
+        $this->assertEquals('application/json', $response['headers']['Content-Type']);
     }
 
     public function testSendStatus()
     {
-        $response = $this->request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
+        $request = new SpotifyWebAPI\Request();
+        $response = $request->send('GET', 'https://httpbin.org/get');
 
         $this->assertEquals(200, $response['status']);
     }
@@ -143,43 +287,43 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $request = new SpotifyWebAPI\Request();
         $request->setReturnType(SpotifyWebAPI\Request::RETURN_ASSOC);
 
-        $response = $request->send('GET', 'https://api.spotify.com/v1/albums/7u6zL7kqpgLPISZYXNTgYk');
-        $this->assertArrayHasKey('id', $response['body']);
+        $response = $request->send('GET', 'https://httpbin.org/get');
+
+        $this->assertArrayHasKey('url', $response['body']);
     }
 
-    public function testSetReturnAssoc()
+    public function testSendCurlOptions()
     {
-        PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
         $request = new SpotifyWebAPI\Request();
-        $this->assertFalse($request->getReturnAssoc());
+        $request->setCurlOptions([
+            CURLOPT_HTTPHEADER => ['Accept: applicaton/json'],
+        ]);
 
-        $request->setReturnAssoc(true);
-        $this->assertTrue($request->getReturnAssoc());
-        $this->assertEquals(SpotifyWebAPI\Request::RETURN_ASSOC, $request->getReturnType());
+        $response = $request->send('GET', 'https://httpbin.org/headers');
 
-        $request->setReturnAssoc(false);
-        $this->assertFalse($request->getReturnAssoc());
-        $this->assertEquals(SpotifyWebAPI\Request::RETURN_OBJECT, $request->getReturnType());
+        $this->assertEquals('applicaton/json', $response['body']->headers->Accept);
+    }
 
-        PHPUnit_Framework_Error_Deprecated::$enabled = true;
+    public function testSetOptions()
+    {
+        $request = new SpotifyWebAPI\Request();
+        $request->setOptions([
+            'return_assoc' => true,
+        ]);
+
+        $response = $request->send('GET', 'https://httpbin.org/get');
+
+        $this->assertArrayHasKey('url', $response['body']);
     }
 
     public function testSetReturnType()
     {
-        PHPUnit_Framework_Error_Deprecated::$enabled = false;
-
         $request = new SpotifyWebAPI\Request();
-        $this->assertFalse($request->getReturnAssoc());
 
         $request->setReturnType(SpotifyWebAPI\Request::RETURN_ASSOC);
-        $this->assertTrue($request->getReturnAssoc());
         $this->assertEquals(SpotifyWebAPI\Request::RETURN_ASSOC, $request->getReturnType());
 
         $request->setReturnType(SpotifyWebAPI\Request::RETURN_OBJECT);
-        $this->assertFalse($request->getReturnAssoc());
         $this->assertEquals(SpotifyWebAPI\Request::RETURN_OBJECT, $request->getReturnType());
-
-        PHPUnit_Framework_Error_Deprecated::$enabled = true;
     }
 }

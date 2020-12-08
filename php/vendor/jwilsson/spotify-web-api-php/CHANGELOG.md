@@ -1,4 +1,219 @@
 # Changelog
+## 4.1.0 (2020-12-07)
+* Added the `SpotifyWebAPI::getPlaylistImage()` method to get a playlist's cover image. ([7a4f0e6](https://github.com/jwilsson/spotify-web-api-php/commit/7a4f0e67ef8affa2010a429c45da2a51e32e04b1))
+
+## 4.0.0 (2020-11-30)
+* **Breaking** Dropped support for PHP versions less than 7.2. ([2bbefc7](https://github.com/jwilsson/spotify-web-api-php/commit/2bbefc731a3cd58669823209014ca657da422d83))
+* Added PHP 8 support. ([3e37d76](https://github.com/jwilsson/spotify-web-api-php/commit/3e37d7649f845dc6504fde8917d0789f4758a1c7))
+
+## 3.6.2 (2020-10-19)
+* Made sure `&` is always passed to all `http_build_query()` calls. ([e2f0c26](https://github.com/jwilsson/spotify-web-api-php/commit/e2f0c26daef517dd507da80799c8821c677e660d))
+* Updated CA bundle. ([4b824c3](https://github.com/jwilsson/spotify-web-api-php/commit/4b824c3b639b1702569b3ec7f2a95e79e96577a6))
+
+## 3.6.1 (2020-10-11)
+* Fixed an issue with the auto retry feature sometimes not working correctly due to lowercased header names. ([28c7b1d](https://github.com/jwilsson/spotify-web-api-php/commit/28c7b1da3ac18a82b0b74aadfb7da47024ddb6e5))
+
+## 3.6.0 (2020-09-19)
+* Methods deprecated in `3.x` releases will now print deprecation warnings. ([fe67153](https://github.com/jwilsson/spotify-web-api-php/commit/fe6715358cb12e8fbb600c528a1ea2534bd39c2b))
+* `SpotifyWebAPI::queue()` can now also accept track IDs. ([a3aee78](https://github.com/jwilsson/spotify-web-api-php/commit/a3aee782e1aa0ee7d88a201a70d00263f31c84f8))
+* Updated CA bundle. ([dfa4edc](https://github.com/jwilsson/spotify-web-api-php/commit/dfa4edc0891767799f54b214d9ade77168a4148b))
+
+## 3.5.1 (2020-08-15)
+* Fixed an issue where URIs couldn't be passed in `SpotifyWebAPI::deletePlaylistTracks()`. ([f6e61e5](https://github.com/jwilsson/spotify-web-api-php/commit/f6e61e54bbe56548f75cd5ba68c5f4683505c4f7))
+* Hardened check before replacing in `SpotifyWebAPI::idToUri()`. ([299062a](https://github.com/jwilsson/spotify-web-api-php/commit/299062ac0aa73c66d319b4d9fdde7295866a6719))
+
+## 3.5.0 (2020-06-23)
+* Added support for the PKCE authorization flow. ([88e4cad](https://github.com/jwilsson/spotify-web-api-php/commit/88e4cad251c0155f73093373ed92542ee6ef7266))
+
+## 3.4.0 (2020-04-22)
+* Added the `SpotifyWebAPI::queue()` method to add tracks to the user's playback queue. ([d6859a5](https://github.com/jwilsson/spotify-web-api-php/commit/d6859a5ad8509eee2685a3b779ff8cf639b56d4e))
+
+## 3.3.0 (2020-03-28)
+* Options and `Session` instance can now be passed to the `SpotifyWebAPI` constructor. ([d178204](https://github.com/jwilsson/spotify-web-api-php/commit/d178204c23de1e5785f70cc70368d9e373999746))
+* Options can now be passed to the `Request` constructor. ([065a7fc](https://github.com/jwilsson/spotify-web-api-php/commit/065a7fcba61f472efe0ebb8e17821510c80a647e))
+
+## 3.2.0 (2020-03-21)
+* Added support for new Podcast endpoints ([eba5971](https://github.com/jwilsson/spotify-web-api-php/commit/eba597182b0d9a05aec80153da4b152d50c66d41)):
+    * `SpotifyWebAPI::addMyShows()`
+    * `SpotifyWebAPI::getMySavedShows()`
+    * `SpotifyWebAPI::getShow()`
+    * `SpotifyWebAPI::getShows()`
+    * `SpotifyWebAPI::getShowEpisodes()`
+    * `SpotifyWebAPI::getEpisode()`
+    * `SpotifyWebAPI::getEpisodes()`
+    * `SpotifyWebAPI::myShowsContains()`
+    * `SpotifyWebAPI::deleteMyShows()`
+* Added support for the new `additional_types` option to ([b04e06e](https://github.com/jwilsson/spotify-web-api-php/commit/b04e06eb72b8876611108eca94b740eeb1156a25)):
+    * `SpotifyWebAPI::getMyCurrentTrack()`
+    * `SpotifyWebAPI::getMyCurrentPlaybackInfo()`
+* Updated CA bundle. ([4359fc3](https://github.com/jwilsson/spotify-web-api-php/commit/4359fc3697e6a7408ed978bb850d1d033ca6753c))
+
+## 3.1.0 (2020-02-21)
+* Deprecated the following methods ([e643628](https://github.com/jwilsson/spotify-web-api-php/commit/e643628698e146371d1944099bb107e7a9165a19)):
+    * `SpotifyWebAPI::followPlaylistForCurrentUser()` (use `SpotifyWebAPI::followPlaylist()` instead)
+    * `SpotifyWebAPI::unfollowPlaylistForCurrentUser()` (use `SpotifyWebAPI::unfollowPlaylist()` instead)
+* Updated `SpotifyWebAPI::addPlaylistTracks()` to always send everything in request body. ([ac862ef](https://github.com/jwilsson/spotify-web-api-php/commit/ac862ef66548e49352c88e167b64bbfd86407c62))
+* Refactored calls to `SpotifyWebAPI::authHeaders()`. ([7d0badd](https://github.com/jwilsson/spotify-web-api-php/commit/7d0badd842ae9a4a2700dc8a2a29dd70bdad90fe))
+
+## 3.0.0 (2019-12-14)
+* **Breaking** The following, deprecated, methods have been removed ([02d5598](https://github.com/jwilsson/spotify-web-api-php/commit/02d5598b9fb8c06615e67e31fc00cbca1a67af36)):
+    * `SpotifyWebAPI::addUserPlaylistTracks()` (use `SpotifyWebAPI::addPlaylistTracks()` instead)
+    * `SpotifyWebAPI::createUserPlaylist()` (use `SpotifyWebAPI::createPlaylist()` instead)
+    * `SpotifyWebAPI::deleteUserPlaylistTracks()` (use `SpotifyWebAPI::deletePlaylistTracks()` instead)
+    * `SpotifyWebAPI::followPlaylist()` (use `SpotifyWebAPI::followPlaylistForCurrentUser()` instead)
+    * `SpotifyWebAPI::getUserPlaylist()` (use `SpotifyWebAPI::getPlaylist()` instead)
+    * `SpotifyWebAPI::getUserPlaylistTracks()` (use `SpotifyWebAPI::getPlaylistTracks()` instead)
+    * `SpotifyWebAPI::reorderUserPlaylistTracks()` (use `SpotifyWebAPI::reorderPlaylistTracks()` instead)
+    * `SpotifyWebAPI::replaceUserPlaylistTracks()` (use `SpotifyWebAPI::replacePlaylistTracks()` instead)
+    * `SpotifyWebAPI::unfollowPlaylist()` (use `SpotifyWebAPI::unfollowPlaylistForCurrentUser()` instead)
+    * `SpotifyWebAPI::updateUserPlaylist()` (use `SpotifyWebAPI::updatePlaylist()` instead)
+    * `SpotifyWebAPI::updateUserPlaylistImage()` (use `SpotifyWebAPI::updatePlaylistImage()` instead)
+    * `SpotifyWebAPI::userFollowsPlaylist()` (use `SpotifyWebAPI::usersFollowPlaylist()` instead)
+    * `SpotifyWebAPI::userFollowsPlaylist()` (use `SpotifyWebAPI::usersFollowPlaylist()` instead)
+* **Breaking** Removed the possibility to omit `tracks` in calls to `SpotifyWebAPI::deletePlaylistTracks()`. ([3562402](https://github.com/jwilsson/spotify-web-api-php/commit/35624027f82b37ce6f3a32497754dcb26abf9900))
+* **Breaking** Dropped support for PHP versions less than 7. ([461a0e4](https://github.com/jwilsson/spotify-web-api-php/commit/461a0e440b7447c98f04cb237bdbd3c44f538928))
+* `SpotifyWebAPI::getReturnType()`/`SpotifyWebAPI::setReturnType()` and `Request::getReturnType()`/`Request::setReturnType()` are deprecated. Use the new `return_assoc` option instead. ([2a3d5ee](https://github.com/jwilsson/spotify-web-api-php/commit/2a3d5ee192a39299904e8e0ce46926dae7a99a71))
+* `Request::setCurlOptions()` is deprecated. Use the new `curl_options` option instead. ([1615d07](https://github.com/jwilsson/spotify-web-api-php/commit/1615d076733274a01c40ad40a29b6af2a2019f64))
+
+## 2.12.0 (2019-11-01)
+* Added support for automatically retrying rate limited requests. ([5fe8903](https://github.com/jwilsson/spotify-web-api-php/commit/5fe8903ea598d558639b35055ce9d32073ded634))
+* Updated CA bundle. ([19df152](https://github.com/jwilsson/spotify-web-api-php/commit/19df152302fc6ad8fc7b887d5d909e11745ca035))
+
+## 2.11.1 (2019-10-19)
+* Remove unfinished code that accidentally snuck into `2.11.0`. ([eb3f51c](https://github.com/jwilsson/spotify-web-api-php/commit/eb3f51c5cf5fa1b7629a59376ee54294f3aa02b7))
+
+## 2.11.0 (2019-10-19)
+* Added support for automatically refreshing access tokens. ([5ec5fd4](https://github.com/jwilsson/spotify-web-api-php/commit/5ec5fd49b0d6c79db54ce78953e0598809350e84))
+
+## 2.10.1 (2019-10-02)
+* Fixed an issue where `SpotifyWebAPI::deletePlaylistTracks()` wouldn't return the snapshot ID when return type was set to `SpotifyWebAPI::RETURN_ASSOC`. ([f9d580f](https://github.com/jwilsson/spotify-web-api-php/commit/f9d580f322fb39512c3886872213322bf9dc66b2))
+* Fixed an issue where `SpotifyWebAPI::reorderPlaylistTracks()` wouldn't return the snapshot ID when return type was set to `SpotifyWebAPI::RETURN_ASSOC`. ([89fe613](https://github.com/jwilsson/spotify-web-api-php/commit/89fe613bf649533ee173234776cc2c28991ee5c0))
+
+## 2.10.0 (2019-08-27)
+* Added a `$options` argument to `SpotifyWebAPI::getAlbum()`. ([e92121f](https://github.com/jwilsson/spotify-web-api-php/commit/e92121fd26da920cade7b8c79ccd1debc6581407))
+
+## 2.9.0 (2019-08-03)
+* The following deprecated methods will now emit a run time notice when used ([fc1e535](https://github.com/jwilsson/spotify-web-api-php/commit/fc1e5351bfd1ab395b14bf0981420c199d6cce76)):
+    * `SpotifyWebAPI::addUserPlaylistTracks()`
+    * `SpotifyWebAPI::createUserPlaylist()`
+    * `SpotifyWebAPI::deleteUserPlaylistTracks()`
+    * `SpotifyWebAPI::followPlaylistForCurrentUser()`
+    * `SpotifyWebAPI::getUserPlaylist()`
+    * `SpotifyWebAPI::getUserPlaylistTracks()`
+    * `SpotifyWebAPI::reorderUserPlaylistTracks()`
+    * `SpotifyWebAPI::replaceUserPlaylistTracks()`
+    * `SpotifyWebAPI::unfollowPlaylistForCurrentUser()`
+    * `SpotifyWebAPI::updateUserPlaylist()`
+    * `SpotifyWebAPI::updateUserPlaylistImage()`
+    * `SpotifyWebAPI::usersFollowPlaylist`
+* When passing `$tracks` without a `tracks` or `positions` key to `SpotifyWebAPI::deletePlaylistTracks` a run time notice will be emitted. ([2f457bd](https://github.com/jwilsson/spotify-web-api-php/commit/2f457bd8bd1ab86a64e51942a637fdd07a2ce350))
+
+## 2.8.0 (2019-06-29)
+* Added a `Request::setCurlOptions()` method to make it possible to set custom cURL options. ([5a8b1e5](https://github.com/jwilsson/spotify-web-api-php/commit/5a8b1e5cd7cc3b4969ea615e55ac3dd66b12a872))
+
+## 2.7.0 (2019-06-19)
+* Added a `SpotifyWebAPIException::getReason()` method to retrieve the reason for a player error. ([ce728e1](https://github.com/jwilsson/spotify-web-api-php/commit/ce728e1319996894d2cd1eb90f7bc8e8482fa327))
+* Updated CA bundle. ([4732256](https://github.com/jwilsson/spotify-web-api-php/commit/4732256b21a430f7fffe67bec79a915d445fc8ec))
+
+## 2.6.1 (2018-11-07)
+* Corrected the authorization URL ([891cd0f](https://github.com/jwilsson/spotify-web-api-php/commit/891cd0f1be525def4bf9f9969bfb6e34bd7b0ffc))
+
+## 2.6.0 (2018-09-19)
+* Added new methods for handling following of playlists, no longer requiring `$userId` ([6f1bb6b](https://github.com/jwilsson/spotify-web-api-php/commit/6f1bb6b01e253e5b44e02333d6dbd4815773552b)):
+    * `SpotifyWebAPI::followPlaylistForCurrentUser()`
+    * `SpotifyWebAPI::unfollowPlaylistForCurrentUser()`
+    * `SpotifyWebAPI::usersFollowPlaylist`
+* Deprecated the following methods ([6f1bb6b](https://github.com/jwilsson/spotify-web-api-php/commit/6f1bb6b01e253e5b44e02333d6dbd4815773552b)):
+    * `SpotifyWebAPI::followPlaylist()`
+    * `SpotifyWebAPI::unfollowPlaylist()`
+    * `SpotifyWebAPI::userFollowPlaylist`
+
+## 2.5.1 (2018-07-18)
+* Corrected the URI in `SpotifyWebAPI::createUserPlaylist()`. ([d8a59eb](https://github.com/jwilsson/spotify-web-api-php/commit/d8a59eb878b5a785bc9c84887f86ba43cf50b13b))
+
+## 2.5.0 (2018-07-03)
+* Because of [recent changes](https://developer.spotify.com/community/news/2018/06/12/changes-to-playlist-uris/) in the handling of playlist related calls, the following methods are deprecated ([a05db96](https://github.com/jwilsson/spotify-web-api-php/commit/a05db96755928d914ceae83c20cc8c72fe5f1568)):
+    * `SpotifyWebAPI::addUserPlaylistTracks()`
+    * `SpotifyWebAPI::createUserPlaylist()`
+    * `SpotifyWebAPI::deleteUserPlaylistTracks()`
+    * `SpotifyWebAPI::getUserPlaylist()`
+    * `SpotifyWebAPI::getUserPlaylistTracks()`
+    * `SpotifyWebAPI::reorderUserPlaylistTracks()`
+    * `SpotifyWebAPI::replaceUserPlaylistTracks()`
+    * `SpotifyWebAPI::updateUserPlaylist()`
+    * `SpotifyWebAPI::updateUserPlaylistImage()`
+* The following methods should be used instead, accepting the same arguments except for `$userId` ([a05db96](https://github.com/jwilsson/spotify-web-api-php/commit/a05db96755928d914ceae83c20cc8c72fe5f1568)):
+    * `SpotifyWebAPI::addPlaylistTracks()`
+    * `SpotifyWebAPI::createPlaylist()`
+    * `SpotifyWebAPI::deletePlaylistTracks()`
+    * `SpotifyWebAPI::getPlaylist()`
+    * `SpotifyWebAPI::getPlaylistTracks()`
+    * `SpotifyWebAPI::reorderPlaylistTracks()`
+    * `SpotifyWebAPI::replacePlaylistTracks()`
+    * `SpotifyWebAPI::updatePlaylist()`
+    * `SpotifyWebAPI::updatePlaylistImage()`
+
+## 2.4.0 (2018-06-06)
+* Authentication errors will now throw an `SpotifyWebAPIAuthException` instead of the regular `SpotifyWebAPIException`. ([4b068d0](https://github.com/jwilsson/spotify-web-api-php/commit/4b068d0f0e9951fbb0f938a5a8e95ead7813f53b))
+
+## 2.3.0 (2018-06-05)
+* Restored support for PHP 5.6. It's used by too many at this point and nothing PHP 7 specific is really used. ([ff3de71](https://github.com/jwilsson/spotify-web-api-php/commit/ff3de719dde9604aeb9e3647fd92adbba20f9130))
+* Added a `Session::setRefreshToken()` method ([c30ebfe](https://github.com/jwilsson/spotify-web-api-php/commit/c30ebfed76963df046b0cacf1ae3f888f0e44bce))
+
+## 2.2.1 (2018-05-05)
+* When running behind a proxy, the first set of proxy response headers are now stripped. ([a9dfa55](https://github.com/jwilsson/spotify-web-api-php/commit/a9dfa559ded1584001b30d4518fee1ce84e21dc2))
+
+## 2.2.0 (2018-03-01)
+* Added `positions` support to `SpotifyWebAPI::deleteUserPlaylistTracks()`. ([4dfa494](https://github.com/jwilsson/spotify-web-api-php/commit/4dfa49476ddc6fe8a17435782112e081f5becd5a))
+* Updated CA bundle. ([cd63d1a](https://github.com/jwilsson/spotify-web-api-php/commit/cd63d1adbc008d9e3d25360788dd139b5d0e8692))
+
+## 2.1.1 (2018-02-02)
+* Fixed an issue where a new refresh token wouldn't be properly updated in the `Session` class when a new one was returned from Spotify. ([2bf18e0](https://github.com/jwilsson/spotify-web-api-php/commit/2bf18e08201464416408c2e94f56e81e7df6553c))
+
+## 2.1.0 (2017-12-06)
+* Added the `Session::getScope()` method to check which scopes that are granted by the current user. ([f741511](https://github.com/jwilsson/spotify-web-api-php/commit/f741511fab6856d0f5eec05b4861dc0979c62e03))
+* CI tests are now run on PHP `7.2`. ([3649e78](https://github.com/jwilsson/spotify-web-api-php/commit/3649e789ae89340b0de6b3050fca26a9ec6475c1))
+* Improved authorization docs. ([14bb6e6](https://github.com/jwilsson/spotify-web-api-php/commit/14bb6e6fbc8bc723af6a18a5e7af53fe9532237d))
+
+## 2.0.1 (2017-09-25)
+* Updated CA bundle. ([d846e8c](https://github.com/jwilsson/spotify-web-api-php/commit/d846e8cded5822b87e3e6b3e0eb812aadf163554))
+
+## 2.0.0 (2017-08-15)
+* **Breaking** The following, deprecated, methods have been removed ([fdaa1bd](https://github.com/jwilsson/spotify-web-api-php/commit/fdaa1bd2fea4e1831221e3ce5c0cac20d59d7ce2)):
+    * `Request::getReturnAssoc()` (use `Request::getReturnType()` instead)
+    * `Request::setReturnAssoc()` (use `Request::setReturnType(Request::RETURN_ASSOC)` instead)
+    * `SpotifyWebAPI::getReturnAssoc()` (use `SpotifyWebAPI::getReturnType()` instead)
+    * `SpotifyWebAPI::setReturnAssoc()` (use `SpotifyWebAPI::setReturnType(SpotifyWebAPI::RETURN_ASSOC)` instead)
+* **Breaking** The `$type` parameter in `SpotifyWebAPI::idToUri()` and `SpotifyWebAPI::uriToId()` no longer has a default value. ([fdcba71](https://github.com/jwilsson/spotify-web-api-php/commit/fdcba718b56f9fb2c84c41257bffa3d02680207f))
+* **Breaking** Dropped support for PHP versions less than 7. ([71de436](https://github.com/jwilsson/spotify-web-api-php/commit/71de436bab8f1a8f6159eac68b277bcd605aa5c1))
+* **Breaking** Tests are no longer run on HHVM, support for it was never documented anyway.  ([7b9ff5d](https://github.com/jwilsson/spotify-web-api-php/commit/7b9ff5d41021ceed509a47afb562018abb25fc93))
+* Removed unused `$scope` parameter in `Session::requestCredentialsToken()`. ([582f983](https://github.com/jwilsson/spotify-web-api-php/commit/582f98358996d936102fe238f8b0339b5bdb25d9))
+* Updated PHPUnit to `6.x`. ([49829ac](https://github.com/jwilsson/spotify-web-api-php/commit/49829acd6a16f949e59f071ad36eda8467f3f8b6))
+* Updated CA bundle. ([ac09f96](https://github.com/jwilsson/spotify-web-api-php/commit/ac09f9698b90570dec018f595f2415c015b4b3cd))
+
+## 1.12.0 (2017-07-26)
+* Added the `SpotifyWebAPI::updateUserPlaylistImage()` method. ([14a9631](https://github.com/jwilsson/spotify-web-api-php/commit/14a9631b37ab45f6aaa7c819249e6d5529648940))
+
+## 1.11.1 (2017-06-12)
+* Fixed an issue where some URI IDs wouldn't be properly cast to an array. ([713e8e7](https://github.com/jwilsson/spotify-web-api-php/commit/713e8e794cf1a7964ba0055f783516ac6f446715))
+
+## 1.11.0 (2017-06-09)
+* All methods accepting Album, Artist, Playlist, Track, or User IDs can now also accept Spotify URIs.
+    ([1a47fa1](https://github.com/jwilsson/spotify-web-api-php/commit/1a47fa143771d3148d6cda9b59a2d500ed540a1d),
+    [e71daeb](https://github.com/jwilsson/spotify-web-api-php/commit/e71daebdc7204ed9d2c704e2f5bfe0798ae3da60),
+    [63dde40](https://github.com/jwilsson/spotify-web-api-php/commit/63dde405829e7894f2c0ce659ac5cc09cfa48bb7),
+    [4bf29b1](https://github.com/jwilsson/spotify-web-api-php/commit/4bf29b13f64819513cd573cd86ce19ccd321ac40))
+* Corrected `SpotifyWebAPI::getMySavedTracks` example. ([0eedf1c](https://github.com/jwilsson/spotify-web-api-php/commit/0eedf1cfbd6211eb41b99aedd71dabc9901d47b2))
+* Updated `PHP_CodeSniffer` to `3.x`. ([60adb2c](https://github.com/jwilsson/spotify-web-api-php/commit/60adb2cb05b7adeccc271faeb8d6cceb6f949288))
+* Travis builds now uses Trusty as the distribution. ([011524b](https://github.com/jwilsson/spotify-web-api-php/commit/011524b46c44c98b67bdd5930f534d40cc19804c))
+
+## 1.10.1 (2017-04-29)
+* Updated CA bundle. ([ff8d87e](https://github.com/jwilsson/spotify-web-api-php/commit/ff8d87eabbffc3e3c1e4e5d9145faf2ef1ef4932))
+* Corrected the name of some Markdown example files. ([d6425f6](https://github.com/jwilsson/spotify-web-api-php/commit/d6425f610bfd377a4156a421f1246b50e57690ae))
+* Corrected `SpotifyWebAPI::play()` example. ([ce2c08c](https://github.com/jwilsson/spotify-web-api-php/commit/ce2c08c90ca8d0fa420d15790dceb40ebb9f1297))
+* Corrected inline method docs. ([d725d16](https://github.com/jwilsson/spotify-web-api-php/commit/d725d16a8726b19cc51da42557b97d00f4f52395))
+* Removed stray `SpotifyWebApi` object in examples. ([7ef922b](https://github.com/jwilsson/spotify-web-api-php/commit/7ef922bf2fca35b0601578c51f870d481f5762d5))
+
 ## 1.10.0 (2017-04-12)
 * Added Spotify Connect endpoints:
     * `SpotifyWebAPI::changeMyDevice()` ([21dd887](https://github.com/jwilsson/spotify-web-api-php/commit/21dd887271ba7c905fd2df0ea0f600421ef74baf))
