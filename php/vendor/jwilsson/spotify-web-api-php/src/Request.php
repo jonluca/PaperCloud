@@ -10,7 +10,6 @@ class Request
     const RETURN_OBJECT = 'object';
 
     protected $lastResponse = [];
-    protected $returnAssoc = false;
     protected $returnType = self::RETURN_OBJECT;
 
     /**
@@ -20,6 +19,7 @@ class Request
      * @param int $status The HTTP status code, used to see if additional error handling is needed.
      *
      * @throws SpotifyWebAPIException
+     * @throws SpotifyWebAPIAuthException
      *
      * @return array|object The parsed response body. Type is controlled by `Request::setReturnType()`.
      */
@@ -32,14 +32,14 @@ class Request
         }
 
         $body = json_decode($body);
-        $error = (isset($body->error)) ? $body->error : null;
+        $error = isset($body->error) ? $body->error : null;
 
         if (isset($error->message) && isset($error->status)) {
             // API call error
             throw new SpotifyWebAPIException($error->message, $error->status);
         } elseif (isset($body->error_description)) {
             // Auth call error
-            throw new SpotifyWebAPIException($body->error_description, $status);
+            throw new SpotifyWebAPIAuthException($body->error_description, $status);
         } else {
             // Something went really wrong
             throw new SpotifyWebAPIException('An unknown error occurred.', $status);
@@ -75,12 +75,15 @@ class Request
      *
      * @param string $method The HTTP method to use.
      * @param string $uri The URI to request.
-     * @param array $parameters Optional. Query parameters.
+     * @param array $parameters Optional. Query string parameters or HTTP body, depending on $method.
      * @param array $headers Optional. HTTP headers.
+     *
+     * @throws SpotifyWebAPIException
+     * @throws SpotifyWebAPIAuthException
      *
      * @return array Response data.
      * - array|object body The response body. Type is controlled by `Request::setReturnType()`.
-     * - string headers Response headers.
+     * - array headers Response headers.
      * - int status HTTP status code.
      * - string url The requested URL.
      */
@@ -94,12 +97,15 @@ class Request
      *
      * @param string $method The HTTP method to use.
      * @param string $uri The URI to request.
-     * @param array $parameters Optional. Query parameters.
+     * @param array $parameters Optional. Query string parameters or HTTP body, depending on $method.
      * @param array $headers Optional. HTTP headers.
+     *
+     * @throws SpotifyWebAPIException
+     * @throws SpotifyWebAPIAuthException
      *
      * @return array Response data.
      * - array|object body The response body. Type is controlled by `Request::setReturnType()`.
-     * - string headers Response headers.
+     * - array headers Response headers.
      * - int status HTTP status code.
      * - string url The requested URL.
      */
@@ -125,23 +131,6 @@ class Request
     /**
      * Get a value indicating the response body type.
      *
-     * @deprecated Use `Request::getReturnType()` instead.
-     *
-     * @return bool Whether the body is returned as an associative array or an stdClass.
-     */
-    public function getReturnAssoc()
-    {
-        trigger_error(
-            'Request::getReturnAssoc() is deprecated. Use Request::getReturnType() instead.',
-            E_USER_DEPRECATED
-        );
-
-        return $this->returnAssoc;
-    }
-
-    /**
-     * Get a value indicating the response body type.
-     *
      * @return string A value indicating if the response body is an object or associative array.
      */
     public function getReturnType()
@@ -155,10 +144,11 @@ class Request
      *
      * @param string $method The HTTP method to use.
      * @param string $url The URL to request.
-     * @param array $parameters Optional. Query parameters.
+     * @param array $parameters Optional. Query string parameters or HTTP body, depending on $method.
      * @param array $headers Optional. HTTP headers.
      *
      * @throws SpotifyWebAPIException
+     * @throws SpotifyWebAPIAuthException
      *
      * @return array Response data.
      * - array|object body The response body. Type is controlled by `Request::setReturnType()`.
@@ -227,6 +217,11 @@ class Request
 
         list($headers, $body) = explode("\r\n\r\n", $response, 2);
 
+        // Skip the first set of headers for proxied requests
+        if (preg_match('/^HTTP\/1\.\d 200 Connection established$/', $headers) === 1) {
+            list($headers, $body) = explode("\r\n\r\n", $body, 2);
+        }
+
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $headers = $this->parseHeaders($headers);
 
@@ -247,33 +242,12 @@ class Request
     /**
      * Set the return type for the response body.
      *
-     * @deprecated Use `Request::setReturnType()` instead.
-     *
-     * @param bool $returnAssoc Whether to return an associative array or an stdClass.
-     *
-     * @return void
-     */
-    public function setReturnAssoc($returnAssoc)
-    {
-        trigger_error(
-            'Request::setReturnType() is deprecated. Use Request::setReturnType() instead.',
-            E_USER_DEPRECATED
-        );
-
-        $this->returnAssoc = $returnAssoc;
-        $this->returnType = $returnAssoc ? self::RETURN_ASSOC : self::RETURN_OBJECT;
-    }
-
-    /**
-     * Set the return type for the response body.
-     *
      * @param string $returnType One of the `Request::RETURN_*` constants.
      *
      * @return void
      */
     public function setReturnType($returnType)
     {
-        $this->returnAssoc = $returnType == self::RETURN_ASSOC;
         $this->returnType = $returnType;
     }
 }

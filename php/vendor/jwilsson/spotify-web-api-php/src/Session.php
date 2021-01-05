@@ -9,6 +9,7 @@ class Session
     protected $expirationTime = 0;
     protected $redirectUri = '';
     protected $refreshToken = '';
+    protected $scope = '';
     protected $request = null;
 
     /**
@@ -52,7 +53,7 @@ class Session
             'state' => isset($options['state']) ? $options['state'] : null,
         ];
 
-        return Request::ACCOUNT_URL . '/authorize/?' . http_build_query($parameters);
+        return Request::ACCOUNT_URL . '/authorize?' . http_build_query($parameters);
     }
 
     /**
@@ -116,6 +117,16 @@ class Session
     }
 
     /**
+     * Get the scope for the current access token
+     *
+     * @return array The scope for the current access token
+     */
+    public function getScope()
+    {
+        return explode(' ', $this->scope);
+    }
+
+    /**
      * Refresh an access token.
      *
      * @param string $refreshToken The refresh token to use.
@@ -141,6 +152,13 @@ class Session
         if (isset($response->access_token)) {
             $this->accessToken = $response->access_token;
             $this->expirationTime = time() + $response->expires_in;
+            $this->scope = isset($response->scope) ? $response->scope : $this->scope;
+
+            if (isset($response->refresh_token)) {
+                $this->refreshToken = $response->refresh_token;
+            } elseif (empty($this->refreshToken)) {
+                $this->refreshToken = $refreshToken;
+            }
 
             return true;
         }
@@ -151,17 +169,14 @@ class Session
     /**
      * Request an access token using the Client Credentials Flow.
      *
-     * @param array $scope Optional. Scope(s) to request from the user.
-     *
      * @return bool True when an access token was successfully granted, false otherwise.
      */
-    public function requestCredentialsToken($scope = [])
+    public function requestCredentialsToken()
     {
         $payload = base64_encode($this->getClientId() . ':' . $this->getClientSecret());
 
         $parameters = [
             'grant_type' => 'client_credentials',
-            'scope' => implode(' ', $scope),
         ];
 
         $headers = [
@@ -174,6 +189,7 @@ class Session
         if (isset($response->access_token)) {
             $this->accessToken = $response->access_token;
             $this->expirationTime = time() + $response->expires_in;
+            $this->scope = isset($response->scope) ? $response->scope : $this->scope;
 
             return true;
         }
@@ -205,6 +221,7 @@ class Session
             $this->refreshToken = $response->refresh_token;
             $this->accessToken = $response->access_token;
             $this->expirationTime = time() + $response->expires_in;
+            $this->scope = isset($response->scope) ? $response->scope : $this->scope;
 
             return true;
         }
@@ -246,5 +263,17 @@ class Session
     public function setRedirectUri($redirectUri)
     {
         $this->redirectUri = $redirectUri;
+    }
+
+    /**
+     * Set the session's refresh token.
+     *
+     * @param string $refreshToken The refresh token.
+     *
+     * @return void
+     */
+    public function setRefreshToken($refreshToken)
+    {
+        $this->refreshToken = $refreshToken;
     }
 }
