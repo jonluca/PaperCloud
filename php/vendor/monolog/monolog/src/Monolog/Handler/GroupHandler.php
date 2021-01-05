@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -11,20 +11,27 @@
 
 namespace Monolog\Handler;
 
+use Monolog\Formatter\FormatterInterface;
+use Monolog\ResettableInterface;
+
 /**
  * Forwards records to multiple handlers
  *
  * @author Lenar Lõhmus <lenar@city.ee>
  */
-class GroupHandler extends AbstractHandler
+class GroupHandler extends Handler implements ProcessableHandlerInterface, ResettableInterface
 {
+    use ProcessableHandlerTrait;
+
+    /** @var HandlerInterface[] */
     protected $handlers;
+    protected $bubble;
 
     /**
-     * @param array $handlers Array of Handlers.
-     * @param Boolean $bubble Whether the messages that are handled can bubble up the stack or not
+     * @param HandlerInterface[] $handlers Array of Handlers.
+     * @param bool               $bubble   Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(array $handlers, $bubble = true)
+    public function __construct(array $handlers, bool $bubble = true)
     {
         foreach ($handlers as $handler) {
             if (!$handler instanceof HandlerInterface) {
@@ -39,7 +46,7 @@ class GroupHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         foreach ($this->handlers as $handler) {
             if ($handler->isHandling($record)) {
@@ -53,8 +60,12 @@ class GroupHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
+        if ($this->processors) {
+            $record = $this->processRecord($record);
+        }
+
         foreach ($this->handlers as $handler) {
             $handler->handle($record);
         }
@@ -65,10 +76,52 @@ class GroupHandler extends AbstractHandler
     /**
      * {@inheritdoc}
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
+        if ($this->processors) {
+            $processed = [];
+            foreach ($records as $record) {
+                $processed[] = $this->processRecord($record);
+            }
+            $records = $processed;
+        }
+
         foreach ($this->handlers as $handler) {
             $handler->handleBatch($records);
         }
+    }
+
+    public function reset()
+    {
+        $this->resetProcessors();
+
+        foreach ($this->handlers as $handler) {
+            if ($handler instanceof ResettableInterface) {
+                $handler->reset();
+            }
+        }
+    }
+
+    public function close(): void
+    {
+        parent::close();
+
+        foreach ($this->handlers as $handler) {
+            $handler->close();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
+    {
+        foreach ($this->handlers as $handler) {
+            if ($handler instanceof FormattableHandlerInterface) {
+                $handler->setFormatter($formatter);
+            }
+        }
+
+        return $this;
     }
 }
