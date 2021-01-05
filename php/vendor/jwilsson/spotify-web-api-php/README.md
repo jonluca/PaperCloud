@@ -1,6 +1,6 @@
 # Spotify Web API PHP
 
-[![Latest Stable Version](https://poser.pugx.org/jwilsson/spotify-web-api-php/v/stable.svg)](https://packagist.org/packages/jwilsson/spotify-web-api-php)
+[![Packagist](https://img.shields.io/packagist/v/jwilsson/spotify-web-api-php.svg)](https://packagist.org/packages/jwilsson/spotify-web-api-php)
 [![Build Status](https://travis-ci.org/jwilsson/spotify-web-api-php.svg?branch=master)](https://travis-ci.org/jwilsson/spotify-web-api-php)
 [![Coverage Status](https://coveralls.io/repos/jwilsson/spotify-web-api-php/badge.svg?branch=master)](https://coveralls.io/r/jwilsson/spotify-web-api-php?branch=master)
 
@@ -16,7 +16,7 @@ This is a PHP wrapper for [Spotify's Web API](https://developer.spotify.com/web-
 * PSR-4 autoloading support.
 
 ## Requirements
-* PHP 5.5 or greater.
+* PHP 5.6 or later.
 * PHP [cURL extension](http://php.net/manual/en/book.curl.php) (Usually included with PHP).
 
 ## Installation
