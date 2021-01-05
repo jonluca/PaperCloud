@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /*
  * This file is part of the Monolog package.
@@ -12,120 +12,55 @@
 namespace Monolog\Handler;
 
 use Monolog\Logger;
-use Monolog\Formatter\FormatterInterface;
-use Monolog\Formatter\LineFormatter;
+use Monolog\ResettableInterface;
 
 /**
- * Base Handler class providing the Handler structure
+ * Base Handler class providing basic level/bubble support
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-abstract class AbstractHandler implements HandlerInterface
+abstract class AbstractHandler extends Handler implements ResettableInterface
 {
     protected $level = Logger::DEBUG;
-    protected $bubble = false;
+    protected $bubble = true;
 
     /**
-     * @var FormatterInterface
+     * @param int|string $level  The minimum logging level at which this handler will be triggered
+     * @param bool       $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    protected $formatter;
-    protected $processors = array();
-
-    /**
-     * @param integer $level The minimum logging level at which this handler will be triggered
-     * @param Boolean $bubble Whether the messages that are handled can bubble up the stack or not
-     */
-    public function __construct($level = Logger::DEBUG, $bubble = true)
+    public function __construct($level = Logger::DEBUG, bool $bubble = true)
     {
-        $this->level = $level;
+        $this->setLevel($level);
         $this->bubble = $bubble;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $record['level'] >= $this->level;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function handleBatch(array $records)
-    {
-        foreach ($records as $record) {
-            $this->handle($record);
-        }
-    }
-
-    /**
-     * Closes the handler.
-     *
-     * This will be called automatically when the object is destroyed
-     */
-    public function close()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pushProcessor($callback)
-    {
-        if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('Processors must be valid callables (callback or object with an __invoke method), '.var_export($callback, true).' given');
-        }
-        array_unshift($this->processors, $callback);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function popProcessor()
-    {
-        if (!$this->processors) {
-            throw new \LogicException('You tried to pop from an empty processor stack.');
-        }
-        return array_shift($this->processors);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFormatter(FormatterInterface $formatter)
-    {
-        $this->formatter = $formatter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFormatter()
-    {
-        if (!$this->formatter) {
-            $this->formatter = $this->getDefaultFormatter();
-        }
-
-        return $this->formatter;
-    }
-
-    /**
      * Sets minimum logging level at which this handler will be triggered.
      *
-     * @param integer $level
+     * @param  int|string $level Level or level name
+     * @return self
      */
-    public function setLevel($level)
+    public function setLevel($level): self
     {
-        $this->level = $level;
+        $this->level = Logger::toMonologLevel($level);
+
+        return $this;
     }
 
     /**
      * Gets minimum logging level at which this handler will be triggered.
      *
-     * @return integer
+     * @return int
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
@@ -133,37 +68,29 @@ abstract class AbstractHandler implements HandlerInterface
     /**
      * Sets the bubbling behavior.
      *
-     * @param Boolean $bubble True means that bubbling is not permitted.
-     *                        False means that this handler allows bubbling.
+     * @param  bool $bubble true means that this handler allows bubbling.
+     *                      false means that bubbling is not permitted.
+     * @return self
      */
-    public function setBubble($bubble)
+    public function setBubble(bool $bubble): self
     {
         $this->bubble = $bubble;
+
+        return $this;
     }
 
     /**
      * Gets the bubbling behavior.
      *
-     * @return Boolean True means that bubbling is not permitted.
-     *                 False means that this handler allows bubbling.
+     * @return bool true means that this handler allows bubbling.
+     *              false means that bubbling is not permitted.
      */
-    public function getBubble()
+    public function getBubble(): bool
     {
         return $this->bubble;
     }
 
-    public function __destruct()
+    public function reset()
     {
-        $this->close();
-    }
-
-    /**
-     * Gets the default formatter.
-     *
-     * @return FormatterInterface
-     */
-    protected function getDefaultFormatter()
-    {
-        return new LineFormatter();
     }
 }

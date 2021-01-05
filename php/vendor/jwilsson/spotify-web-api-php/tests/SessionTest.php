@@ -1,5 +1,5 @@
 <?php
-class SessionTest extends PHPUnit_Framework_TestCase
+class SessionTest extends PHPUnit\Framework\TestCase
 {
     private $clientID = 'b777292af0def22f9257991fc770b520';
     private $clientSecret = '6a0419f43d0aa93b2ae881429b6b9bc2';
@@ -137,7 +137,69 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $session->refreshAccessToken($this->refreshToken);
 
         $this->assertNotEmpty($session->getAccessToken());
+        $this->assertNotEmpty($session->getRefreshToken());
         $this->assertEquals(time() + 3600, $session->getTokenExpiration());
+        $this->assertEquals(['user-follow-read', 'user-follow-modify'], $session->getScope());
+    }
+
+    public function testRefreshAccessTokenNoReturnedToken()
+    {
+        $refreshToken = 'refresh-token';
+        $expected = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+        ];
+
+        $headers = [
+            'Authorization' => 'Basic Yjc3NzI5MmFmMGRlZjIyZjkyNTc5OTFmYzc3MGI1MjA6NmEwNDE5ZjQzZDBhYTkzYjJhZTg4MTQyOWI2YjliYzI=',
+        ];
+
+        $return = [
+            'body' => get_fixture('refresh-token-no-refresh-token'),
+        ];
+
+        $stub = $this->setupStub(
+            'POST',
+            '/api/token',
+            $expected,
+            $headers,
+            $return
+        );
+
+        $session = new SpotifyWebAPI\Session($this->clientID, $this->clientSecret, $this->redirectURI, $stub);
+        $session->setRefreshToken($this->refreshToken);
+        $session->refreshAccessToken($refreshToken);
+
+        $this->assertEquals($session->getRefreshToken(), $this->refreshToken);
+    }
+
+    public function testRefreshAccessTokenNoPreviousToken()
+    {
+        $expected = [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $this->refreshToken,
+        ];
+
+        $headers = [
+            'Authorization' => 'Basic Yjc3NzI5MmFmMGRlZjIyZjkyNTc5OTFmYzc3MGI1MjA6NmEwNDE5ZjQzZDBhYTkzYjJhZTg4MTQyOWI2YjliYzI=',
+        ];
+
+        $return = [
+            'body' => get_fixture('refresh-token-no-refresh-token'),
+        ];
+
+        $stub = $this->setupStub(
+            'POST',
+            '/api/token',
+            $expected,
+            $headers,
+            $return
+        );
+
+        $session = new SpotifyWebAPI\Session($this->clientID, $this->clientSecret, $this->redirectURI, $stub);
+        $session->refreshAccessToken($this->refreshToken);
+
+        $this->assertEquals($session->getRefreshToken(), $this->refreshToken);
     }
 
     public function testRequestAccessToken()
@@ -170,13 +232,13 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($session->getAccessToken());
         $this->assertNotEmpty($session->getRefreshToken());
         $this->assertEquals(time() + 3600, $session->getTokenExpiration());
+        $this->assertEquals(['user-follow-read', 'user-follow-modify', 'user-library-read', 'user-library-modify'], $session->getScope());
     }
 
     public function testRequestCredentialsToken()
     {
         $expected = [
             'grant_type' => 'client_credentials',
-            'scope' => 'user-read-email',
         ];
 
         $headers = [
@@ -196,7 +258,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         );
 
         $session = new SpotifyWebAPI\Session($this->clientID, $this->clientSecret, $this->redirectURI, $stub);
-        $result = $session->requestCredentialsToken(['user-read-email']);
+        $result = $session->requestCredentialsToken();
 
         $this->assertTrue($result);
         $this->assertNotEmpty($session->getAccessToken());
@@ -231,5 +293,15 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $session->setRedirectUri($expected);
 
         $this->assertEquals($expected, $session->getRedirectUri());
+    }
+
+    public function testSetRefreshToken()
+    {
+        $session = new SpotifyWebAPI\Session($this->clientID, $this->clientSecret, $this->redirectURI);
+        $expected = $this->refreshToken;
+
+        $session->setRefreshToken($expected);
+
+        $this->assertEquals($expected, $session->getRefreshToken());
     }
 }
